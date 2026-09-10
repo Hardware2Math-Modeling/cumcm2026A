@@ -1,0 +1,42 @@
+# CODEOWNERS —— 每个路径的负责人
+#
+# ⚠️ 开赛第一件事：把下面的 <handle> 替换成真实的 GitHub 用户名。
+#    格式：@username，或 @org/team。
+#    不填的话 GitHub 无法自动指派 reviewer。
+#
+# 规则：最后匹配的一条生效。所以默认规则放最前面，特例放后面。
+# 与 docs/OWNERS.md、AGENTS.md §2 的所有权矩阵保持一致。
+
+# --- 默认：三人共同负责 -----------------------------------------------------
+*                       @<model-handle> @<impl-handle> @<paper-handle>
+
+# --- 原始题目：只读冻结，不指定 owner（改动会被 CI 拒绝）--------------------
+/problem/               @<impl-handle>
+
+# --- 建模线 -----------------------------------------------------------------
+/docs/NOTATION.md       @<model-handle>
+/docs/DECISIONS.md      @<model-handle>
+/docs/model/            @<model-handle>
+
+# --- 编程线 -----------------------------------------------------------------
+/src/                   @<impl-handle>
+/scripts/               @<impl-handle>
+/tests/                 @<impl-handle>
+/data/                  @<impl-handle>
+/results/               @<impl-handle>
+/environment.yml        @<impl-handle>
+/Makefile               @<impl-handle>
+/pyproject.toml         @<impl-handle>
+
+# --- 论文线 -----------------------------------------------------------------
+/paper/                 @<paper-handle>
+
+# --- 共享基础设施：改这些要全员 review --------------------------------------
+/AGENTS.md              @<model-handle> @<impl-handle> @<paper-handle>
+/.gitignore             @<impl-handle>
+/.gitattributes         @<impl-handle>
+/docs/BRANCHING.md      @<model-handle> @<impl-handle> @<paper-handle>
+/docs/OWNERS.md         @<model-handle> @<impl-handle> @<paper-handle>
+/docs/INTERFACES.md     @<impl-handle> @<model-handle>
+/docs/TASKS.md          @<model-handle> @<impl-handle> @<paper-handle>
+/.github/               @<impl-handle>

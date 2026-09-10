@@ -1,0 +1,76 @@
+# CI：保证 main 永远可运行、可编译
+#
+# 对应 docs/BRANCHING.md §3.4 的「PR 合并条件」第 1、2 条。
+# 在 GitHub 上把 "lint-and-test" 设为 required status check。
+
+name: check
+
+on:
+  push:
+    branches: [main, model, impl, paper]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  lint-and-test:
+    name: lint-and-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 题目原件是只读冻结的，若被改动直接失败（AGENTS.md 铁律 1）
+      - name: 检查 problem/ 未被修改
+        run: |
+          changed=$(git diff --name-only origin/${{ github.base_ref || 'main' }}...HEAD -- problem/ || true)
+          if [ -n "$changed" ]; then
+            echo "::error::problem/ 是只读冻结目录，不允许修改："
+            echo "$changed"
+            exit 1
+          fi
+
+      - name: 安装 conda 环境
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yml
+          cache-environment: true
+          init-shell: bash
+
+      - name: lint
+        run: ruff check . && ruff format --check .
+
+      - name: 冒烟测试（框架级，不依赖求解器）
+        run: pytest -q -m "not slow"
+
+      # 交付格式校验：模板存在且结构可读
+      - name: 探查交付模板结构
+        run: python scripts/probe_templates.py
+
+  # ---------------------------------------------------------------------------
+  paper:
+    name: build-paper
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 编译论文
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: paper/main.tex
+          latexmk_use_xelatex: true
+          work_in_root_file_dir: true
+
+      - name: 上传 PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-pdf
+          path: paper/build/main.pdf
+          if-no-files-found: error

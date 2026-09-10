@@ -1,0 +1,41 @@
+# 依赖由 conda 管理（见 environment.yml）。
+# 本文件只放「工具配置」，让 ruff / pytest 在任何机器上行为一致，
+# 也让 AI agent 不必猜项目约定。
+[project]
+name = "cumcm2026a"
+version = "0.1.0"
+description = "2026 CUMCM A 题：药材的烘干问题"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# 让 tests/ 能直接 import common，无需 pip install -e .
+pythonpath = ["src"]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: 完整数值求解，默认不跑",
+    "physics: 守恒律 / 收敛阶 / 边界条件验证",
+    "format: 交付物 result*.xlsx 的格式约束",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# 数值求解器里 X[i+1,j-1] 这类矩阵下标很常见，不要因为「变量名 l」等误报
+exclude = ["paper/build", "outputs", "data", "problem"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "NPY", "RUF"]
+ignore = [
+    "E501",   # 行宽由 formatter 控制，物理公式注释常常需要写长
+    "RUF001", # 中文全角标点
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# 题目要求：表 1~表 6 的列名就是中文，必须在 io 层出现中文标识符字符串
+"src/common/io_excel.py" = ["RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.format]
+quote-style = "double"

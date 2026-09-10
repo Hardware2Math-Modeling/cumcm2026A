@@ -1,0 +1,46 @@
+% =============================================================
+% paper/refs.bib —— 参考文献数据库（骨架）
+%
+% 引用格式要求：
+%   - 正式引用请使用真实文献，禁止编造假作者 / 假期刊 / 假卷期 / 假 DOI。
+%   - 下方条目均为「格式模板」，用 BibTeX 原生 @comment 注释掉，不参与编译；
+%     需要引用时把模板复制到 @comment 之外并填入真实信息即可。
+%   - 当前 main.tex 使用 BibTeX + \bibliographystyle{plain}；
+%     若需 GB/T 7714 格式，可换用 biblatex（先 kpsewhich gbt7714.sty 确认安装）。
+% =============================================================
+
+@comment{
+  ---- 期刊文章模板 ----
+  @article{key,
+    author  = {作者姓名},
+    title   = {文章标题},
+    journal = {期刊名},
+    volume  = {},
+    number  = {},
+    pages   = {},
+    year    = {},
+    doi     = {},
+  }
+}
+
+@comment{
+  ---- 专著/教材模板 ----
+  @book{key2,
+    author    = {作者姓名},
+    title     = {书名},
+    publisher = {出版社},
+    address   = {},
+    year      = {},
+  }
+}
+
+@comment{
+  ---- 网络资源模板 ----
+  @misc{key3,
+    author       = {},
+    title        = {},
+    howpublished = {\url{https://...}},
+    year         = {},
+    note         = {访问日期：},
+  }
+}

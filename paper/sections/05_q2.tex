@@ -1,0 +1,45 @@
+\section{问题二的分析与求解}
+
+\instruction{本节占位。问题二：恒温干燥阶段（附录 3 变物性：$\rho$、\cp、\kcond、\Ddiff 均为 \C、\T 的函数）。由 @model 提供公式、@impl 求解、@paper 排版。}
+
+\subsection{模型的建立}
+\instruction{变物性控制方程、表面对流换热 + 蒸发潜热耦合边界条件占位。}
+
+\subsection{模型的求解}
+\instruction{非线性/变物性的离散与迭代策略占位。}
+
+\subsection{结果与分析}
+\instruction{结果表/图由 scripts 生成。表编号以 scripts/make\_tables.py 输出为准，此处仅占位。}
+
+\begin{table}[htbp]
+  \centering
+  \caption{恒温干燥阶段药材的温度分布}
+  \label{tab:q2-temperature}
+  \IfFileExists{tab/tab3.tex}{%
+    \input{tab/tab3}%
+  }{%
+    \instruction{表占位：tab/tab3（编号待 make\_tables.py 确认）尚未生成。}
+  }
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{恒温干燥阶段药材的水分浓度分布}
+  \label{tab:q2-concentration}
+  \IfFileExists{tab/tab4.tex}{%
+    \input{tab/tab4}%
+  }{%
+    \instruction{表占位：tab/tab4（编号待 make\_tables.py 确认）尚未生成。}
+  }
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \IfFileExists{figs/q2_concentration.pdf}{%
+    \includegraphics[width=0.75\linewidth]{figs/q2_concentration.pdf}%
+  }{%
+    \instruction{图占位：figs/q2\_concentration.pdf 尚未生成（scripts/make\_figs.py）。}
+  }
+  \caption{恒温干燥阶段药材内部水分浓度分布（图待生成）}
+  \label{fig:q2-concentration}
+\end{figure}

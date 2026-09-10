@@ -1,0 +1,34 @@
+\section{问题一的分析与求解}
+
+\instruction{本节由 @model 提供控制方程、边界/初始条件与离散格式后，由 @paper 搬运公式并排版。问题一：预热平衡阶段（常数物性，附录 2）。禁止手打数字与手抄表格，公式一律用 NOTATION.md 的符号宏。}
+
+\subsection{模型的建立}
+\instruction{控制方程与定解条件占位（用 \T、\C、\t、\rpos、\R、\cp、\kcond、\Ddiff、\hconv、\hmass、\Tinf、\Cinf 等宏）。}
+
+\subsection{模型的求解}
+\instruction{离散格式、稳定性条件、求解策略占位。}
+
+\subsection{结果与分析}
+\instruction{结果表/图由 scripts/make\_tables.py、scripts/make\_figs.py 生成，见下方占位（当前为空仓库，故用 \code{IfFileExists} 保护）。}
+
+\begin{table}[htbp]
+  \centering
+  \caption{30 分钟内药材的温度分布}
+  \label{tab:q1-temperature}
+  \IfFileExists{tab/tab1.tex}{%
+    \input{tab/tab1}% 由 scripts/make_tables.py 从 results/result1.xlsx 生成
+  }{%
+    \instruction{表占位：tab/tab1 尚未生成（scripts/make\_tables.py）。}
+  }
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \IfFileExists{figs/q1_temperature.pdf}{%
+    \includegraphics[width=0.75\linewidth]{figs/q1_temperature.pdf}%
+  }{%
+    \instruction{图占位：figs/q1\_temperature.pdf 尚未生成（scripts/make\_figs.py）。}
+  }
+  \caption{30 分钟内药材内部温度分布（图待生成）}
+  \label{fig:q1-temperature}
+\end{figure}

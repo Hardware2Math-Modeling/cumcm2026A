@@ -1,0 +1,109 @@
+% =============================================================
+% paper/preamble.tex —— 论文全局宏包、格式、符号宏、自定义命令
+% 唯一真源：docs/NOTATION.md（符号）、docs/OWNERS.md（章节契约）
+% 编译方式：XeLaTeX（latexmk -xelatex），严禁 pdflatex（中文会炸）
+% =============================================================
+
+% ---------- 页面设置（数模论文常规 2.5cm 页边距） ----------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+% ---------- 数学 ----------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}   % 向量/矩阵加粗用 \bm
+
+% ---------- 表格（一律 booktabs 三线表，禁用竖线） ----------
+\usepackage{booktabs}
+\usepackage{longtable}  % 跨页符号表
+\usepackage{multirow}
+\usepackage{array}
+
+% ---------- 颜色（xcolor 需早于 listings 加载） ----------
+\usepackage{xcolor}
+
+% ---------- 插图 ----------
+\usepackage{graphicx}
+\graphicspath{{figs/}}
+
+% ---------- 代码（Python 样式；XeLaTeX 下中文注释可能受限，以实际编译为准） ----------
+\usepackage{listings}
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  extendedchars=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  breaklines=true,
+  commentstyle=\color{gray},
+  keywordstyle=\color{blue!60!black},
+  stringstyle=\color{orange!80!black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  tabsize=4,
+}
+
+% ---------- 数学单位（siunitx v3 语法：\qty{}{} 与 \unit{}，勿用 v2 的 \SI{}{}） ----------
+\usepackage{siunitx}
+\sisetup{
+  per-mode=symbol,
+  detect-all,
+}
+
+% ---------- 算法（algorithm2e；备选 algorithm+algpseudocode，二选一勿同开） ----------
+\usepackage[linesnumbered,ruled]{algorithm2e}
+
+% ---------- 超链接与交叉引用（hyperref 必须最后加载，cleveref 在其之后） ----------
+\usepackage[hidelinks,bookmarksnumbered=true]{hyperref}
+\hypersetup{
+  pdftitle={2026 年高教社杯全国大学生数学建模竞赛 A 题：药材的烘干问题},
+  pdfauthor={},
+}
+\usepackage[nameinlink]{cleveref}
+
+% =============================================================
+% 符号宏（唯一真源：docs/NOTATION.md §0「三层命名映射」）
+% 规则：论文里不要直接写 $T$，要写 \T；改名只改这一处，全文自动同步。
+% 说明：\t 覆盖 LaTeX 原生的 tie 重音（\renewcommand）；
+%       r/k/h/L/D 等常用简写已按 NOTATION.md 规避：
+%       r→\rpos、k→\kcond、h→\hconv、L→\Llen、D→\Ddiff。
+% =============================================================
+\renewcommand{\t}{\ensuremath{t}}           % 时间
+\newcommand{\T}{\ensuremath{T}}             % 药材温度
+\newcommand{\C}{\ensuremath{C}}             % 水分浓度（干基含水率）
+\newcommand{\rpos}{\ensuremath{r}}          % 到药材中心的径向距离
+\newcommand{\R}{\ensuremath{R}}             % 药材半径（问题 4 中随时间变化）
+\newcommand{\Rzero}{\ensuremath{R_0}}       % 初始半径
+\newcommand{\Llen}{\ensuremath{L}}          % 药材长度
+\newcommand{\cp}{\ensuremath{c_p}}          % 定压比热容
+\newcommand{\kcond}{\ensuremath{k}}         % 导热系数
+\newcommand{\Ddiff}{\ensuremath{D}}         % 水分扩散系数
+\newcommand{\hconv}{\ensuremath{h}}         % 对流换热系数
+\newcommand{\hmass}{\ensuremath{h_m}}       % 对流传质系数
+\newcommand{\Tinf}{\ensuremath{T_\infty}}   % 烘房（环境）温度
+\newcommand{\Cinf}{\ensuremath{C_\infty}}   % 烘房（环境）水分浓度
+\newcommand{\wfrac}{\ensuremath{w}}         % 水分质量分数 w = C/(1+C)
+\newcommand{\dt}{\ensuremath{\Delta t}}     % 时间步长
+\newcommand{\dr}{\ensuremath{\Delta r}}     % 空间步长
+\newcommand{\Nr}{\ensuremath{N_r}}          % 径向网格节点数
+% （\rho、\xi 为 LaTeX 原生，无需定义）
+
+% =============================================================
+% 自定义命令
+% =============================================================
+% \instruction{...}：醒目的 TODO 占位提示（待填内容用）
+\newcommand{\instruction}[1]{%
+  \par\medskip\noindent
+  \fcolorbox{orange!70!black}{orange!10}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+      \textbf{\textcolor{orange!60!black}{【TODO 占位】}}\, #1}}%
+  \par\medskip
+}
+
+% \code{...}：行内代码
+\newcommand{\code}[1]{\texttt{#1}}
+
+% 关键词（若 ctexart 已定义则不覆盖）
+\providecommand{\keywords}[1]{%
+  \par\medskip\noindent\textbf{关键词：}#1\par}

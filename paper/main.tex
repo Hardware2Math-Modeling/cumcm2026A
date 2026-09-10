@@ -1,0 +1,42 @@
+% =============================================================
+% paper/main.tex —— 论文入口（只做结构组装，正文一律在 sections/）
+% 编译：latexmk -xelatex -interaction=nonstopmode -halt-on-error -cd -outdir=build paper/main.tex
+% 注意：正文一个字都不要写在本文件（共享文件，冲突高发）。
+% =============================================================
+\documentclass[12pt,a4paper]{ctexart}
+
+\input{preamble}
+
+\title{2026 年高教社杯全国大学生数学建模竞赛 A 题\\药材的烘干问题}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+% ---- 摘要页（正文在 sections/00_abstract.tex） ----
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ---- 正文各节 ----
+\input{sections/01_restate}
+\input{sections/02_assumptions}
+\input{sections/03_notation}
+\input{sections/04_q1}
+\input{sections/05_q2}
+\input{sections/06_q3}
+\input{sections/07_q4}
+\input{sections/08_evaluation}
+\input{sections/09_conclusion}
+
+% ---- 参考文献（refs.bib 目前为空骨架；正式引用后取消条目注释） ----
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

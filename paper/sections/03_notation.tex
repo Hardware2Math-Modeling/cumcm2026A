@@ -1,0 +1,26 @@
+\section{符号说明}
+
+\instruction{本表内容应从 docs/NOTATION.md §0 生成，不要手抄。下方仅搭好 booktabs + longtable 表头结构；两行示例用于验证符号宏与单位命令能编译，最终以自动生成为准。}
+
+\begin{center}
+\begin{longtable}{@{}c p{5.5cm} c c@{}}
+\caption{符号说明（结构占位，内容待填充）}
+\label{tab:notation}\\
+\toprule
+\textbf{符号} & \textbf{含义} & \textbf{单位} & \textbf{首次出现} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}c}{\small 续表：符号说明}\\
+\toprule
+\textbf{符号} & \textbf{含义} & \textbf{单位} & \textbf{首次出现} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+% ---- 示例行（验证编译；最终由 NOTATION.md 自动生成，勿手抄） ----
+\T & 药材温度 & \unit{\kelvin}（代码）/ \unit{\degreeCelsius}（展示） & 问题一 \\
+\C & 水分浓度（干基） & \unit{\kg\per\kg} & 问题一 \\
+\end{longtable}
+\end{center}
+
+\instruction{其余符号（\t、\rpos、\R、\Rzero、\Llen、\cp、\kcond、\Ddiff、\hconv、\hmass、\Tinf、\Cinf、\wfrac、\dt、\dr、\Nr、$\rho$、$\xi$ 等）待从 docs/NOTATION.md §0 生成后填充。}

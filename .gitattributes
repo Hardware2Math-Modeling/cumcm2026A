@@ -1,0 +1,45 @@
+# =============================================================================
+# 关键作用：防止 git 把「二进制交付物」当文本处理而损坏它。
+# 尤其是 Windows 协作时，若 *.pdf / *.xlsx 未标记为 binary，
+# git 可能做 CRLF 转换或行尾 merge，直接写坏 PDF / Excel。
+# =============================================================================
+
+# --- 默认：文本、LF、交由 git 归一化行尾 ------------------------------------
+* text=auto eol=lf
+
+# --- 二进制：禁止 diff / merge / 行尾转换 -----------------------------------
+*.pdf   binary
+*.xlsx  binary
+*.xls   binary
+*.doc   binary
+*.docx  binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.svg   -text diff
+*.npz   binary
+*.npy   binary
+*.h5    binary
+*.pkl   binary
+*.zip   binary
+
+# --- LaTeX：让 github 上能看出改动，且不因 CRLF 产生噪声 -------------------
+*.tex   text diff=tex eol=lf
+*.bib   text eol=lf
+*.sty   text eol=lf
+*.cls   text eol=lf
+
+# --- 代码与配置 -------------------------------------------------------------
+*.py    text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.toml  text eol=lf
+*.json  text eol=lf
+*.sh    text eol=lf
+Makefile text eol=lf
+
+# --- 语言统计：避免把 LaTeX / 附件算进「代码」 -----------------------------
+problem/** linguist-vendored
+data/**    linguist-vendored
