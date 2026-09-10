@@ -150,21 +150,54 @@ gh pr create --base main --head impl \
 
 ---
 
-## 4. 分支保护（开赛前 5 分钟配置好）
+## 4. 分支保护：赛期内**不启用**（零成本方案）
 
-GitHub → Settings → Branches → Add rule for `main`：
+### 4.1 为什么不用
 
-- [x] Require a pull request before merging
-- [x] Require approvals: **1**
-- [x] Dismiss stale approvals when new commits are pushed
-- [x] Require status checks to pass（挂 CI 的 `make check`）
-- [x] Require conversation resolution before merging
-- [ ] Allow force pushes —— **不要勾**
-- [ ] Allow deletions —— **不要勾**
+GitHub 对**私有仓库**的分支保护/rulesets 是**付费功能**。官方 API 描述的措辞是
+"Protected branches are available in public repositories with GitHub Free and GitHub
+Free for organizations" —— 反过来，私有仓库要 GitHub Team（约 $4/人/月）。
 
-同时把 `.github/CODEOWNERS` 里的 `<handle>` 填上真实用户名。
+而本仓库**必须是私有**：CUMCM 规则要求参赛论文与解题过程赛期内不得公开。
+**不要为了让功能免费而把仓库转 public**，那是拿参赛资格换每月 12 美元。
 
-**三条集成分支不要设保护**，否则自己合自己还要等审批，浪费时间。
+> **学生包也救不了**：GitHub Student Developer Pack 送的是**个人账号**的 Pro，
+> **不会把组织升级到 Team**。本仓库挂在组织下，所以个人认证无效。
+
+### 4.2 免费替代方案
+
+| 分支保护原本要做什么 | 免费的替代 |
+|---|---|
+| 禁止直接提交 `main` | 约定 + 看 CI 红绿（见下） |
+| 禁止 force push `main` | 约定。**这一条最需要自律** |
+| PR 必须有人 approve | PR 描述里 `@` 指定 reviewer，人工确认 |
+| 自动指派 reviewer（CODEOWNERS） | 同上，手动 `@` |
+| Required status checks 拦截合并 | **CI 照常跑**（私有仓库免费额度 2000 分钟/月，够用），只是不能设成"不绿就拦"。看红绿再点合并 |
+
+**关键点：CI 本身是免费的**，`.github/workflows/ci.yml` 照常工作。
+失去的只是"不绿就物理上合不了"这个强制力，而这一条在三人团队里靠人看就够了。
+
+### 4.3 赛期内唯一靠得住的是三条约定
+
+分支保护给的是**强制力**，不是**正确性**。三个都有写权限的人，真想违规谁也拦不住。
+所以下面三条靠自律，比任何设置都重要：
+
+1. **不在 `main` 上直接提交。**
+2. **不对 `main` 与三条集成分支 force push。** ← 这条一旦违反，直接抹掉别人的工作且无法恢复
+3. **合并前 `make check` 是绿的，PR 描述里指了 reviewer。**
+
+### 4.4 `.github/CODEOWNERS` 仍然保留
+
+虽然赛期内不生效，但它有两个作用：
+- 把所有权矩阵**编码进仓库**，是给队友和 AI 看的机器可读文档；
+- **赛后仓库转 public，它立即生效，一行都不用改。**
+
+**要做的**：把 `.github/CODEOWNERS` 里的 `<handle>` 填成真实用户名。
+
+### 4.5 三条集成分支不要设保护
+
+即使将来开了付费套餐，也**不要**给 `model` / `impl` / `paper` 设保护 ——
+否则自己合自己还要等审批，平白增加摩擦。
 
 ---
 
