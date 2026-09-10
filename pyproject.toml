@@ -36,6 +36,11 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 # 题目要求：表 1~表 6 的列名就是中文，必须在 io 层出现中文标识符字符串
 "src/common/io_excel.py" = ["RUF001", "RUF002", "RUF003"]
+# scripts/*.py 使用 bootstrap 模式：先 import _bootstrap 并调用 setup() 把 src/ 加入
+# sys.path，之后才能 import common。这个导入顺序是刻意的，不是疏忽。
+"scripts/*.py" = ["E402", "I001"]
+# plotting.py 同理：必须在 import matplotlib 之前设置缓存环境变量
+"src/common/plotting.py" = ["E402", "I001"]
 
 [tool.ruff.format]
 quote-style = "double"

@@ -14,15 +14,44 @@ import os
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 
-import matplotlib
-
 from . import paths
 
-# matplotlib 默认往 ~/.matplotlib 写缓存。若该目录不可写（受限环境、CI、沙箱），
-# 它会退回临时目录并每次重新扫描字体 —— 中文环境下这个开销很显著。
-# 因此在 import pyplot 之前把缓存目录固定到仓库内（outputs/ 已被 gitignore）。
-os.environ.setdefault("MPLCONFIGDIR", str(paths.OUTPUTS_CACHE / "mplconfig"))
-Path(os.environ["MPLCONFIGDIR"]).mkdir(parents=True, exist_ok=True)
+
+def _ensure_cache_dir(env_var: str, default_dir: Path, repo_dir: Path) -> None:
+    """给 matplotlib / fontconfig 找一个可写的缓存目录。
+
+    默认位置在受限环境（容器、CI、只读 HOME）里常常不可写，matplotlib 会退回
+    临时目录并**每次重新扫描字体**——中文环境下这个开销很明显，fontconfig 还会
+    直接报 "No writable cache directories"。
+
+    策略：先试默认位置；**不可写时**才回退到仓库内（outputs/ 已被 gitignore）。
+    不无条件覆盖环境变量，以免擅自搬动别人机器上的缓存。
+
+    ⚠️ 必须在 `import matplotlib` **之前**调用 —— matplotlib 在自身导入期间就会
+       解析配置目录，之后再设环境变量已经太晚了（实测确认）。
+    """
+    if os.environ.get(env_var):
+        return
+    probe = default_dir / ".write_test"
+    try:
+        default_dir.mkdir(parents=True, exist_ok=True)
+        probe.touch()
+        probe.unlink()
+        return  # 默认位置可写，不动它
+    except OSError:
+        pass
+
+    fallback = repo_dir / "mplconfig"
+    fallback.mkdir(parents=True, exist_ok=True)
+    os.environ[env_var] = str(fallback)
+
+
+# 必须在 import matplotlib 之前设置
+_ensure_cache_dir("MPLCONFIGDIR", Path.home() / ".matplotlib", paths.OUTPUTS_CACHE)
+# fontconfig 用的是 XDG_CACHE_HOME（Linux/容器里常见报错源）
+_ensure_cache_dir("XDG_CACHE_HOME", Path.home() / ".cache", paths.OUTPUTS_CACHE)
+
+import matplotlib  # noqa: E402
 
 # 必须在 import pyplot 之前设置，否则在无头环境（CI / 服务器）会失败
 matplotlib.use("Agg")

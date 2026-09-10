@@ -26,16 +26,39 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 必须完整历史：下面的 problem/ 冻结检查需要 merge-base 与基线提交
+          fetch-depth: 0
 
       # 题目原件是只读冻结的，若被改动直接失败（AGENTS.md 铁律 1）
+      #
+      # ⚠️ 这段刻意写得啰嗦：基线拿不到时必须**报错退出**，不能静默放过。
+      #    之前的版本用 `origin/main` + `|| true`，在浅克隆下会退化成永远通过的空检查。
       - name: 检查 problem/ 未被修改
         run: |
-          changed=$(git diff --name-only origin/${{ github.base_ref || 'main' }}...HEAD -- problem/ || true)
+          set -euo pipefail
+          BASE="${{ github.event.pull_request.base.sha }}"
+          [ -n "$BASE" ] || BASE="${{ github.event.before }}"
+
+          # 新分支首次推送时 before 是全 0
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            BASE=$(git merge-base origin/main HEAD || true)
+          fi
+
+          if [ -z "$BASE" ] || ! git cat-file -e "${BASE}^{commit}" 2>/dev/null; then
+            echo "::error::无法确定基线提交，problem/ 冻结检查未生效。"
+            echo "不会静默跳过 —— 请检查 checkout 的 fetch-depth。"
+            exit 1
+          fi
+
+          echo "基线: $BASE"
+          changed=$(git diff --name-only "$BASE" HEAD -- problem/)
           if [ -n "$changed" ]; then
-            echo "::error::problem/ 是只读冻结目录，不允许修改："
+            echo "::error::problem/ 是只读冻结目录，不允许修改（AGENTS.md 铁律 1）："
             echo "$changed"
             exit 1
           fi
+          echo "✓ problem/ 未被修改"
 
       - name: 安装 conda 环境
         uses: mamba-org/setup-micromamba@v1
