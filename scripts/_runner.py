@@ -11,6 +11,8 @@ from __future__ import annotations
 import sys
 import time
 import traceback
+import json
+import numpy as np
 
 from _bootstrap import setup
 
@@ -34,7 +36,7 @@ def run(problem: str) -> int:
         return 1
 
     try:
-        sol = solver.solve(spec)
+        sol = solver.solve(spec, n_internal=641)
     except NotImplementedError as e:
         print()
         print(f"⏸  {spec.name} 的求解器尚未实现。这不是故障，是框架的预期状态。")
@@ -55,6 +57,7 @@ def run(problem: str) -> int:
     sol.meta.setdefault("wall_time_s", round(wall, 3))
     print(f"  求解完成，耗时 {wall:.2f} s")
     print("  " + export.summarize(sol, spec))
+    print("  正在流式写入结果文件……", flush=True)
 
     # 2) 交付物
     try:
@@ -71,10 +74,13 @@ def run(problem: str) -> int:
         print(f"    工作表「{name}」 {df.shape[0]} 行 x {df.shape[1]} 列")
 
     # 3) 论文用展示网格
-    try:
-        _write_table_csvs(sol, spec)
-    except Exception as e:  # noqa: BLE001 - 展示表格失败不应让交付物白跑
-        print(f"  ⚠️ 论文展示表格生成失败（交付物已写出）：{e}")
+    _write_table_csvs(sol, spec)
+    metadata = {k:v for k,v in sol.meta.items() if k not in {"R","event_T","event_C"}}
+    (paths.RESULTS_DIR / f"{problem}_summary.json").write_text(
+        json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
+    paths.OUTPUTS_CACHE.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(paths.OUTPUTS_CACHE / f"{problem}.npz", t=sol.t, r=sol.r,
+                        T=sol.T,C=sol.C,meta=json.dumps(sol.meta))
 
     print()
     print("  提示：别忘了 make tables figs，以及更新 docs/TASKS.md")
@@ -98,7 +104,7 @@ def _write_table_csvs(sol, spec) -> None:
         made.append(("q2_moist", export.table_rows(sol, spec, times_s=times, field="C")))
     else:
         # 问题 3/4：每隔 6 h 一行，最后一行是烘干结束时间
-        t_end = float(sol.first_time_below(spec.extra["target_C"]))
+        t_end = float(sol.meta["event_time_s"])
         times = list(np.arange(6.0, t_end / 3600.0, 6.0) * 3600.0) + [t_end]
         # 问题 4 表 6 的末列是「药材表面」而非固定 2 cm，故只取 0~1.5 的固定列
         dists = ps.TABLE_R_CM[:-1] if spec.uses_shrinkage else ps.TABLE_R_CM

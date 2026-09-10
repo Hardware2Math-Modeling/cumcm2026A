@@ -56,6 +56,7 @@ import matplotlib  # noqa: E402
 # 必须在 import pyplot 之前设置，否则在无头环境（CI / 服务器）会失败
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np
 
 from . import units  # noqa: E402
 from .solution import Solution  # noqa: E402
@@ -88,7 +89,7 @@ def apply_style() -> None:
             "font.size": 9,
             "axes.labelsize": 10,
             "axes.titlesize": 10,
-            "legend.fontsize": 8,
+            "legend.fontsize": 9,
             "xtick.labelsize": 9,
             "ytick.labelsize": 9,
             "figure.figsize": _FIGSIZE,

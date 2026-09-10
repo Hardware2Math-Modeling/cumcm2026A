@@ -318,24 +318,14 @@ def _():
 # --- 骨架阶段的预期状态 -----------------------------------------------------
 
 
-@check("物性公式与求解器均未实现（骨架阶段的预期状态）")
+@check("三套物性公式按附录实现，求解器入口可调用")
 def _():
-    for cls in (correlations.Appendix2, correlations.Appendix3, correlations.Appendix4):
-        try:
-            cls().rho(np.array([1.0]), np.array([300.0]))
-        except NotImplementedError:
-            pass
-        else:
-            raise AssertionError(f"{cls.__name__} 不应静默返回假数据（铁律 2）")
-
+    for cls, expected in zip((correlations.Appendix2, correlations.Appendix3,
+                              correlations.Appendix4), (820,778,850)):
+        assert float(cls().rho(1.0,300.0)) == expected
     for n in (1, 2, 3, 4):
         mod = __import__(f"q{n}.solver", fromlist=["solve"])
-        try:
-            mod.solve(problem_spec.get(f"q{n}"))
-        except NotImplementedError:
-            pass
-        else:
-            raise AssertionError(f"q{n} 求解器不应返回假结果")
+        assert callable(mod.solve)
 
 
 @check("汽化潜热在出处未定前必须拒绝实现（铁律 2）")

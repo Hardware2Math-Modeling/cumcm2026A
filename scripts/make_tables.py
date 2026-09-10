@@ -83,6 +83,65 @@ TABLES: dict[str, tuple[str, str]] = {
 
 
 def main() -> int:
+    # 本次用户只要求第一问论文：数值表直接从正式xlsx读取，不从手抄CSV拼装。
+    import json
+    from common.io_excel import read_attachment
+    source = paths.RESULTS_DIR / "result1.xlsx"
+    sheets = pd.read_excel(source, sheet_name=None)
+    paths.TABLES_DIR.mkdir(parents=True, exist_ok=True)
+    times = [100,300,600,900,1200,1500,1800]
+    for sheet,key,unit in (("温度","q1_temp","°C"),("水分浓度","q1_moist","kg/kg")):
+        df=sheets[sheet].set_index(sheets[sheet].columns[0])
+        df.columns=[str(c) for c in df.columns]
+        chosen=df.loc[times,["0","0.5","1","1.5","2"]].copy()
+        chosen.index.name="时间/s"
+        chosen=chosen.reset_index()
+        caption,label=TABLES[key]
+        text=to_booktabs(chosen,caption+f"（{unit}；距离单位：cm）",label)
+        (paths.TABLES_DIR/f"{key}.tex").write_text(text,encoding="utf-8")
+    report=json.loads((paths.RESULTS_DIR/"validation/numerics.json").read_text(encoding="utf-8"))
+    grid=[x for x in report["grid"] if x["q"]=="q1"]
+    rows=[]
+    for g in grid:
+        rows.append([g["n"], "--" if "delta_T_K" not in g else f'{g["delta_T_K"]:.2e}',
+                     "--" if "delta_C" not in g else f'{g["delta_C"]:.2e}'])
+    frame=pd.DataFrame(rows,columns=["节点数",r"相邻加密温度差/K",r"相邻加密含水率差"])
+    # 科学计数法列须保留字符串，避免四位小数把误差显示成0。
+    tex=to_booktabs(frame,"空间网格加密验证（七个指定时刻、21个输出位置的最大差）","tab:validation")
+    for g in grid[1:]:
+        for key in ("delta_T_K","delta_C"):
+            tex=tex.replace(f'{g[key]:.4f}',f'{g[key]:.2e}',1)
+    (paths.TABLES_DIR/"q1_validation.tex").write_text(tex,encoding="utf-8")
+    summary=json.loads((paths.RESULTS_DIR/"q1_summary.json").read_text(encoding="utf-8"))
+    temperature=sheets["温度"].set_index(sheets["温度"].columns[0])
+    moisture=sheets["水分浓度"].set_index(sheets["水分浓度"].columns[0])
+    scalars={"QOneCenterT":f'{temperature.loc[1800,"0"]:.4f}',
+             "QOneSurfaceT":f'{temperature.loc[1800,"2"]:.4f}',
+             "QOneCenterC":f'{moisture.loc[1800,"0"]:.4f}',
+             "QOneSurfaceC":f'{moisture.loc[1800,"2"]:.4f}',
+             "QOneMassError":f'{summary["mass_balance_relative"]:.2e}',
+             "QOneEnergyError":f'{summary["q1_energy_balance_relative"]:.2e}'}
+    temporal=next(x for x in report["time"] if x["q"]=="q1")
+    scalars["QOneTimeErrorT"]=f'{temporal["delta_T_K"]:.2e}'
+    scalars["QOneTimeErrorC"]=f'{temporal["delta_C"]:.2e}'
+    (paths.TABLES_DIR/"q1_values.tex").write_text("\n".join(
+        "\\newcommand{\\"+k+"}{"+v+"}" for k,v in scalars.items())+"\n",encoding="utf-8")
+    # 符号表从唯一真源解析生成，不手工复制一套定义。
+    notation=(paths.ROOT/"docs/NOTATION.md").read_text(encoding="utf-8")
+    section=notation.split("## 0.",1)[1].split("## 1.",1)[0]
+    symbol_rows=[]
+    for line in section.splitlines():
+        fields=[x.strip() for x in line.strip().strip("|").split("|")]
+        if len(fields)==4 and fields[0].startswith("$") and fields[0] not in {r"$\xi$",r"$R_0$",r"$w$",r"$\theta$"}:
+            symbol_rows.append(fields[0]+" & "+fields[3]+r" \\")
+    (paths.TABLES_DIR/"notation.tex").write_text(
+        r"\begin{longtable}{ll}"+"\n"+r"\toprule 符号 & 含义 \\ \midrule"+"\n"+
+        "\n".join(symbol_rows)+"\n"+r"\bottomrule\end{longtable}",encoding="utf-8")
+    print("已从result1.xlsx及验证报告生成第一问表格、数值宏、符号表。")
+    return 0
+
+
+def legacy_all_tables() -> int:
     src_dir = paths.RESULTS_TABLES
     csvs = sorted(src_dir.glob("*.csv")) if src_dir.exists() else []
     if not csvs:

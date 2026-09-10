@@ -345,22 +345,21 @@ def test_solution_table_grid_is_21_by_21_for_q1():
 # --- 未实现的东西必须显式失败 -----------------------------------------------
 
 
-def test_property_sets_raise_not_implemented():
-    """骨架阶段的预期状态：物性公式未实现，必须抛 NotImplementedError。"""
+def test_property_sets_match_appendices():
+    """原题三套密度关系，独立点值核验。"""
     from common import correlations
 
-    for cls in (correlations.Appendix2, correlations.Appendix3, correlations.Appendix4):
+    for cls, expected in zip((correlations.Appendix2, correlations.Appendix3,
+                             correlations.Appendix4),(820,778,850)):
         ps = cls()
-        with pytest.raises(NotImplementedError):
-            ps.rho(np.array([1.0]), np.array([300.0]))
+        assert ps.rho(1.0,300.0) == pytest.approx(expected)
 
 
-def test_solvers_raise_not_implemented():
-    """骨架阶段的预期状态：四个求解器都未实现。"""
+def test_solvers_have_callable_entrypoints():
+    """数值验证在test_numerics.py，框架只检查入口。"""
     for n in (1, 2, 3, 4):
         mod = __import__(f"q{n}.solver", fromlist=["solve"])
-        with pytest.raises(NotImplementedError):
-            mod.solve(problem_spec.get(f"q{n}"))
+        assert callable(mod.solve)
 
 
 def test_latent_heat_requires_sourced_value():

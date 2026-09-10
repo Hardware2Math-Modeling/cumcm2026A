@@ -1,34 +1,93 @@
-\section{问题一的分析与求解}
+\section{问题一模型的建立与求解}
+\subsection{控制方程及物性}
+对单位轴向长度的微小圆柱环作能量和水分收支，得到
+\begin{align}
+\rho\cp\frac{\partial\T}{\partial\t}
+ &=\frac{1}{\rpos}\frac{\partial}{\partial\rpos}
+   \left(\rpos\kcond\frac{\partial\T}{\partial\rpos}\right),\label{eq:heat}\\
+\frac{\partial\C}{\partial\t}
+ &=\frac{1}{\rpos}\frac{\partial}{\partial\rpos}
+   \left(\rpos\Ddiff(\C)\frac{\partial\C}{\partial\rpos}\right),\label{eq:mass}
+\end{align}
+其中$0<\rpos<\R$，$0<\t\le1800$。水分方程是在固定几何及恒定参考干物质密度下的有效扩散模型，参考密度从方程两端消去。不能将湿药材密度乘以干基含水率当作水质量密度。
 
-\instruction{本节由 @model 提供控制方程、边界/初始条件与离散格式后，由 @paper 搬运公式并排版。问题一：预热平衡阶段（常数物性，附录 2）。禁止手打数字与手抄表格，公式一律用 NOTATION.md 的符号宏。}
+附录2给出
+\begin{gather}
+\rho=820~\mathrm{kg/m^3},\quad \cp=2600~\mathrm{J/(kg\,K)},\quad
+\kcond=0.36~\mathrm{W/(m\,K)},\\
+\Ddiff(\C)=7\times10^{-9}\exp\left(-\frac{0.89}{\C}\right)~\mathrm{m^2/s},\quad
+\hconv=25~\mathrm{W/(m^2\,K)},\quad \hmass=8\times10^{-7}~\mathrm{m/s}.
+\end{gather}
+扩散系数随\C{}下降而减小，不能在整个预热过程中固定为初始值，也不能把式\eqref{eq:mass}简单写成$\Ddiff(\C)\nabla^2\C$而漏掉变系数贡献。第一问中热物性为常数且\Ddiff{}不含温度，因此在既定边界下，温度方程与水分方程可分别求解。
 
-\subsection{模型的建立}
-\instruction{控制方程与定解条件占位（用 \T、\C、\t、\rpos、\R、\cp、\kcond、\Ddiff、\hconv、\hmass、\Tinf、\Cinf 等宏）。}
+\subsection{初始条件与边界条件}
+均匀初始状态为
+\begin{equation}
+\T(\rpos,0)=301.15~\mathrm{K},\qquad \C(\rpos,0)=2.55~\mathrm{kg/kg}.
+\end{equation}
+轴心对称性给出
+\begin{equation}
+\left.\frac{\partial\T}{\partial\rpos}\right|_{\rpos=0}=0,\qquad
+\left.\frac{\partial\C}{\partial\rpos}\right|_{\rpos=0}=0.
+\end{equation}
+取外法向沿径向增大方向，表面条件为
+\begin{align}
+\kcond\left.\frac{\partial\T}{\partial\rpos}\right|_{\rpos=\R}
+ &=\hconv\bigl[\Tinf(\t)-\T(\R,\t)\bigr],\label{eq:bcT}\\
+-\Ddiff\bigl(\C(\R,\t)\bigr)
+\left.\frac{\partial\C}{\partial\rpos}\right|_{\rpos=\R}
+ &=\hmass\bigl[\C(\R,\t)-\Cinf(\t)\bigr].\label{eq:bcC}
+\end{align}
+式\eqref{eq:bcT}在环境温度高于表面时向药材供热；式\eqref{eq:bcC}在药材表面浓度高于环境参考值时向外失水。两个符号方向分别用加热与干燥极限情形核验。
 
-\subsection{模型的求解}
-\instruction{离散格式、稳定性条件、求解策略占位。}
+设相邻附件时间为$t_j,t_{j+1}$，对环境温度或浓度$g$均采用
+\begin{equation}
+g(\t)=g(t_j)+\frac{\t-t_j}{t_{j+1}-t_j}\bigl[g(t_{j+1})-g(t_j)\bigr],
+\qquad t_j\le\t\le t_{j+1}.
+\end{equation}
 
-\subsection{结果与分析}
-\instruction{结果表/图由 scripts/make\_tables.py、scripts/make\_figs.py 生成，见下方占位（当前为空仓库，故用 \code{IfFileExists} 保护）。}
+\subsection{有限体积空间离散}
+令$\xi=\rpos/\R$。为同时包含轴心、表面并提高近表面分辨率，取
+\begin{equation}
+\xi_i=1-\left(1-\frac{i}{N_r-1}\right)^2,\qquad i=0,\ldots,N_r-1.
+\end{equation}
+相邻节点中点构成内部控制体界面，边界界面分别为0和1。定义
+\begin{equation}
+V_i=\frac{\xi_{i+1/2}^2-\xi_{i-1/2}^2}{2}.
+\end{equation}
+界面输运系数取相邻节点系数的算术平均，内部热通量和水分通量分别写为
+\begin{align}
+F^T_{i+1/2}&=\xi_{i+1/2}k_{i+1/2}
+ \frac{T_{i+1}-T_i}{\xi_{i+1}-\xi_i},\\
+F^C_{i+1/2}&=\xi_{i+1/2}D_{i+1/2}
+ \frac{C_{i+1}-C_i}{\xi_{i+1}-\xi_i}.
+\end{align}
+积分后的半离散系统为
+\begin{equation}
+\frac{dT_i}{d\t}=\frac{F^T_{i+1/2}-F^T_{i-1/2}}{\R^2V_i\rho\cp},
+\qquad
+\frac{dC_i}{d\t}=\frac{F^C_{i+1/2}-F^C_{i-1/2}}{\R^2V_i}.
+\end{equation}
+轴心通量直接取零，表面通量直接代入式\eqref{eq:bcT}、\eqref{eq:bcC}，从而不在轴心计算$1/\rpos$。所有内部界面通量在总量收支中成对抵消。
 
-\begin{table}[htbp]
-  \centering
-  \caption{30 分钟内药材的温度分布}
-  \label{tab:q1-temperature}
-  \IfFileExists{tab/tab1.tex}{%
-    \input{tab/tab1}% 由 scripts/make_tables.py 从 results/result1.xlsx 生成
-  }{%
-    \instruction{表占位：tab/tab1 尚未生成（scripts/make\_tables.py）。}
-  }
-\end{table}
+\subsection{时间积分与结果输出}
+空间离散后得到稀疏的刚性常微分方程组。显式方法受最小网格尺度平方的限制，尤其不适用于表面加密网格；本文采用变阶BDF隐式积分，利用邻接依赖构造稀疏Jacobian。正式计算使用641个内部节点、相对容差$2\times10^{-9}$、绝对容差$2\times10^{-10}$，前1800~s最大内部步长为30~s，实际步长由误差控制器自适应选择。
+
+时间上使用积分器的稠密输出，在每秒提取状态；空间上插值至0、0.1、\ldots、2~cm。内部步长与输出间隔含义不同，输出每秒一次并不意味着采用显式一秒步进。对$\C=0$时的扩散系数采用连续右极限$\Ddiff=0$；计算中不通过裁剪负浓度隐藏求解失败。
+
+\subsection{计算结果及规律分析}
+\input{tab/q1_temp}
+\input{tab/q1_moist}
+表中数值直接从正式结果文件自动提取。1800~s时中心与表面温度分别为\QOneCenterT{}~$^\circ$C和\QOneSurfaceT{}~$^\circ$C，表层先吸收环境热量，中心升温滞后。同期中心含水率为\QOneCenterC{}~kg/kg，表面为\QOneSurfaceC{}~kg/kg：水分扩散的作用范围小于热传导的作用范围，中心仍接近初始状态，因此不能把预热阶段的水分变化在全域统一忽略。
 
 \begin{figure}[htbp]
-  \centering
-  \IfFileExists{figs/q1_temperature.pdf}{%
-    \includegraphics[width=0.75\linewidth]{figs/q1_temperature.pdf}%
-  }{%
-    \instruction{图占位：figs/q1\_temperature.pdf 尚未生成（scripts/make\_figs.py）。}
-  }
-  \caption{30 分钟内药材内部温度分布（图待生成）}
-  \label{fig:q1-temperature}
+\centering
+\includegraphics[width=0.76\linewidth]{fig1-T-profiles.pdf}
+\caption{预热阶段温度的径向分布}\label{fig:T}
 \end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.76\linewidth]{fig1-C-profiles.pdf}
+\caption{预热阶段干基含水率的径向分布}\label{fig:C}
+\end{figure}
+图\ref{fig:T}与图\ref{fig:C}进一步显示，轴心附近径向梯度较小，变化主要从侧表面向内传播。后续干燥过程中扩散系数会随失水继续降低，但这一判断不应直接用于外推本问常数热物性的适用时段。

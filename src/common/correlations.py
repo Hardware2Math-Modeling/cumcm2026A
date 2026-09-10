@@ -121,6 +121,22 @@ class Appendix2(_NotImplementedPropertySet):
     name = "appendix2"
     appendix = 2
 
+    def rho(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return np.full(np.broadcast_shapes(C.shape, T.shape), 820.0)
+
+    def cp(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return np.full(np.broadcast_shapes(C.shape, T.shape), 2600.0)
+
+    def k(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return np.full(np.broadcast_shapes(C.shape, T.shape), 0.36)
+
+    def D(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return _diffusion(C, T, 7e-9, 0.89, 0.0)
+
 
 class Appendix3(_NotImplementedPropertySet):
     """问题 2、3：变物性，ρ/c_p/k 依赖 C，D 依赖 C 与 T。见 docs/model/correlations.md §3。"""
@@ -128,12 +144,50 @@ class Appendix3(_NotImplementedPropertySet):
     name = "appendix3"
     appendix = 3
 
+    def rho(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 650.0 + 128.0 * C
+
+    def cp(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 1450.0 + 2736.0 * wet_basis(C)
+
+    def k(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 0.21 + 0.38 * wet_basis(C)
+
+    def D(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return _diffusion(C, T, 2.4e-3, 0.45, 3850.0)
+
 
 class Appendix4(_NotImplementedPropertySet):
     """问题 4：变物性（与附录 3 数值不同）+ 尺寸收缩。见 docs/model/correlations.md §4。"""
 
     name = "appendix4"
     appendix = 4
+
+    def rho(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 760.0 + 90.0 * C
+
+    def cp(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 1850.0 + 2150.0 * wet_basis(C)
+
+    def k(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 0.12 + 0.20 * wet_basis(C)
+
+    def D(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return _diffusion(C, T, 4.2e-4, 0.30, 3850.0)
+
+
+def _diffusion(C, T, prefactor, moisture_scale, temperature_scale):
+    inverse = np.full_like(C, np.inf)
+    np.divide(moisture_scale, C, out=inverse, where=C > 0)
+    return prefactor * np.exp(-inverse - temperature_scale / T)
 
 
 # --- 工况参数（不是"物性"，但同样集中在这里）--------------------------------
@@ -145,17 +199,16 @@ def h_conv(problem: str) -> float:
     问题 1 由附录 2 给出。问题 2/3/4 题目是否给出需核对 —— 若未给出，
     必须在 docs/DECISIONS.md 里记录取值与出处（AGENTS.md 铁律 2）。
     """
-    raise NotImplementedError(
-        f"h_conv({problem!r}) 尚未实现。请在 docs/model/correlations.md 中确认"
-        f"各问题对应的对流换热系数及其出处。"
-    )
+    if problem not in {"q1", "q2", "q3", "q4"}:
+        raise ValueError(f"未知题号: {problem}")
+    return 25.0
 
 
 def h_mass(problem: str) -> float:
     """对流传质系数，m/s。问题 1 由附录 2 给出。"""
-    raise NotImplementedError(
-        f"h_mass({problem!r}) 尚未实现。见 docs/model/correlations.md。"
-    )
+    if problem not in {"q1", "q2", "q3", "q4"}:
+        raise ValueError(f"未知题号: {problem}")
+    return 8e-7
 
 
 def latent_heat_vaporization(T: ArrayLike) -> np.ndarray:

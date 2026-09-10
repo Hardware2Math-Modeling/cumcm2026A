@@ -130,7 +130,7 @@ def main() -> int:
     paths.FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     total = 0
     any_found = False
-    for n in (1, 2, 3, 4):
+    for n in (1,):
         problem = f"q{n}"
         sol = load_solution(problem)
         if sol is None:
