@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "q": "q1",
+      "sheets": [
+        {
+          "sheet": "温度",
+          "data_rows": 1801,
+          "columns": 22
+        },
+        {
+          "sheet": "水分浓度",
+          "data_rows": 1801,
+          "columns": 22
+        }
+      ],
+      "sha256": "0809ac83b93bf7190e1b57fb9fa809f1f817daa5cc9ee5b83c9bc6ca47d502f8"
+    },
+    {
+      "q": "q2",
+      "sheets": [
+        {
+          "sheet": "温度",
+          "data_rows": 205811,
+          "columns": 22
+        },
+        {
+          "sheet": "水分浓度",
+          "data_rows": 205811,
+          "columns": 22
+        }
+      ],
+      "sha256": "f7203ca6725c9aa11245bdd734c99a703cfb0649bdf5f34274dcb8b11cc3a1ca"
+    },
+    {
+      "q": "q3",
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "data_rows": 3432,
+          "columns": 22
+        }
+      ],
+      "sha256": "e81d507019f185b39344f3e0a1ccc19d0e60a371cc6f609d11a5f7c5c18c2fd3"
+    },
+    {
+      "q": "q4",
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "data_rows": 3051,
+          "columns": 22
+        }
+      ],
+      "sha256": "beb7e706165d2315ebb6985f073d0592388b1b25222377a11178dac5d611a125"
+    }
+  ],
+  "q2_q3_common_time_max_C_difference": 0.0
+}

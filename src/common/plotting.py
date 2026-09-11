@@ -157,7 +157,7 @@ def plot_profiles(
         raise ValueError(f"field 只能是 'T' 或 'C'，收到 {field!r}")
 
     label = "温度" if field == "T" else "水分浓度"
-    ylabel = "温度 / °C" if field == "T" else "水分浓度 / (kg·kg⁻¹, 干基)"
+    ylabel = "温度 / °C" if field == "T" else "水分浓度 / (kg/kg, 干基)"
 
     fig, ax = plt.subplots()
     for t_req in times:
@@ -201,7 +201,7 @@ def plot_history(
     """画若干径向位置的时间历程。locations_cm 单位 **cm**（展示单位）。"""
     field = field.upper()
     label = "温度" if field == "T" else "水分浓度"
-    ylabel = "温度 / °C" if field == "T" else "水分浓度 / (kg·kg⁻¹, 干基)"
+    ylabel = "温度 / °C" if field == "T" else "水分浓度 / (kg/kg, 干基)"
 
     t_h = units.s_to_h(sol.t)
     fig, ax = plt.subplots()

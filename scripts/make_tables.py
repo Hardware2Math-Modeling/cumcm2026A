@@ -154,7 +154,10 @@ def legacy_all_tables() -> int:
     for csv in csvs:
         caption, label = TABLES.get(csv.stem, (csv.stem, f"tab:{csv.stem}"))
         df = pd.read_csv(csv)
-        tex = to_booktabs(df, caption, label)
+        time_unit = "s" if csv.stem.startswith("q1_") else "h"
+        df = df.rename(columns={df.columns[0]: f"时间/{time_unit}"})
+        field_unit = "°C" if csv.stem.endswith("temp") else "kg/kg"
+        tex = to_booktabs(df, caption+f"（{field_unit}；距离单位：cm）", label)
         dest = paths.TABLES_DIR / f"{csv.stem}.tex"
         dest.write_text(tex, encoding="utf-8")
         print(f"  {paths.rel(csv)}  ->  {paths.rel(dest)}  ({df.shape[0]} 行 x {df.shape[1]} 列)")
@@ -166,4 +169,5 @@ def legacy_all_tables() -> int:
 
 
 if __name__ == "__main__":
+    legacy_all_tables()
     sys.exit(main())

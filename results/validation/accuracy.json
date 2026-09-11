@@ -1,0 +1,132 @@
+{
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "grid": [
+    {
+      "q": "q1",
+      "n": 641,
+      "seconds": 2.763335099996766,
+      "mass_residual": 1.3932210505100005e-15,
+      "event_s": null
+    },
+    {
+      "q": "q1",
+      "n": 1281,
+      "seconds": 4.138218199994299,
+      "mass_residual": 2.263984207078751e-15,
+      "event_s": null,
+      "delta_T_K": 4.81933341234253e-06,
+      "delta_C": 3.6746559013423052e-06,
+      "delta_event_s": null,
+      "richardson_fine_T_K": 1.6064444707808434e-06,
+      "richardson_fine_C": 1.2248853004474352e-06
+    },
+    {
+      "q": "q1",
+      "n": 2561,
+      "seconds": 7.040263800001412,
+      "mass_residual": 2.960594732333751e-15,
+      "event_s": null,
+      "delta_T_K": 1.3676461776412907e-06,
+      "delta_C": 9.187864269399881e-07,
+      "delta_event_s": null,
+      "richardson_fine_T_K": 4.5588205921376357e-07,
+      "richardson_fine_C": 3.062621423133294e-07
+    },
+    {
+      "q": "q1",
+      "n": 5121,
+      "seconds": 14.152807099999336,
+      "mass_residual": 4.3538157828437514e-15,
+      "event_s": null,
+      "delta_T_K": 2.886004040192347e-07,
+      "delta_C": 2.29720315214621e-07,
+      "delta_event_s": null,
+      "richardson_fine_T_K": 9.620013467307824e-08,
+      "richardson_fine_C": 7.657343840487367e-08
+    },
+    {
+      "q": "q3",
+      "n": 641,
+      "seconds": 32.594010400003754,
+      "mass_residual": 3.8313578889025016e-15,
+      "event_s": 205809.47447165407
+    },
+    {
+      "q": "q3",
+      "n": 1281,
+      "seconds": 56.976491300003545,
+      "mass_residual": 6.269494727295002e-15,
+      "event_s": 205809.68815158718,
+      "delta_T_K": 5.0429376301508455e-06,
+      "delta_C": 2.7659542594093978e-06,
+      "delta_event_s": 0.2136799331055954,
+      "richardson_fine_T_K": 1.6809792100502818e-06,
+      "richardson_fine_C": 9.219847531364659e-07,
+      "richardson_fine_event_s": 0.07122664436853181
+    },
+    {
+      "q": "q3",
+      "n": 2561,
+      "seconds": 153.07480759999453,
+      "mass_residual": 5.224578939412502e-15,
+      "event_s": 205809.7415779295,
+      "delta_T_K": 1.4339185554490541e-06,
+      "delta_C": 6.915407939622753e-07,
+      "delta_event_s": 0.053426342317834496,
+      "richardson_fine_T_K": 4.779728518163514e-07,
+      "richardson_fine_C": 2.305135979874251e-07,
+      "richardson_fine_event_s": 0.0178087807726115
+    },
+    {
+      "q": "q3",
+      "n": 5121,
+      "seconds": 321.4510042999973,
+      "mass_residual": 4.3538157828437514e-15,
+      "event_s": 205809.7549360308,
+      "delta_T_K": 3.0320643418235704e-07,
+      "delta_C": 1.7284052100663416e-07,
+      "delta_event_s": 0.01335810130694881,
+      "richardson_fine_T_K": 1.0106881139411901e-07,
+      "richardson_fine_C": 5.7613507002211385e-08,
+      "richardson_fine_event_s": 0.004452700435649604
+    }
+  ],
+  "cross_solver": [
+    {
+      "q": "q1",
+      "n": 161,
+      "delta_T_K": 1.5798946151335258e-08,
+      "delta_C": 3.860933794896937e-10,
+      "delta_event_s": null
+    },
+    {
+      "q": "q3",
+      "n": 161,
+      "delta_T_K": 1.5690602594986558e-08,
+      "delta_C": 3.404050374911094e-10,
+      "delta_event_s": -2.0636653061956167e-06
+    }
+  ],
+  "sampling": {
+    "q1": "every second 0--1800 s; all 21 output radii",
+    "q3": "every 60 s 0--3 h; every hour 4--54 h; all 21 radii; continuous event"
+  },
+  "bessel": {
+    "modes_delta_T_K": 1.9530261852196418e-09,
+    "max_error_by_grid_K": {
+      "641": 5.3607008112521726e-06,
+      "1281": 1.5995240687516343e-06,
+      "2561": 3.637018721747154e-07,
+      "5121": 9.699357406134368e-08
+    }
+  },
+  "settings": {
+    "rtol": 2e-11,
+    "atol": 2e-12,
+    "max_step": 60,
+    "align_boundary_knots": true
+  },
+  "note": "Richardson estimates assume the observed second-order asymptotic regime; not physical uncertainty bounds."
+}
