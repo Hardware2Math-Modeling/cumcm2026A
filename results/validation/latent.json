@@ -1,0 +1,224 @@
+{
+  "model_version": "latent-v2",
+  "source_fingerprint": "329c5e246fb439f820e3504839881245953bdc2e6a5cca97a28f41c524256404",
+  "grid": [
+    {
+      "q": "q1",
+      "n": 321,
+      "event_s": null,
+      "wall_time_s": 2.806768700000248,
+      "mass_residual": 1.3932210505100005e-15,
+      "q1_energy_residual": 1.6294311874378253e-13
+    },
+    {
+      "q": "q1",
+      "n": 641,
+      "event_s": null,
+      "wall_time_s": 3.5643472999945516,
+      "mass_residual": 1.3932210505100005e-15,
+      "q1_energy_residual": 1.8861069541659547e-13,
+      "delta_T_K": 1.940707744552128e-05,
+      "delta_C": 2.629402366949307e-06,
+      "delta_event_s": null
+    },
+    {
+      "q": "q1",
+      "n": 1281,
+      "event_s": null,
+      "wall_time_s": 5.648918499995489,
+      "mass_residual": 1.9156789444512508e-15,
+      "q1_energy_residual": 8.866887883385279e-14,
+      "delta_T_K": 4.435251639733906e-06,
+      "delta_C": 6.573366380102641e-07,
+      "delta_event_s": null
+    },
+    {
+      "q": "q1",
+      "n": 2561,
+      "event_s": null,
+      "wall_time_s": 8.935721799993189,
+      "mass_residual": 3.483052626275001e-15,
+      "q1_energy_residual": 3.781342772083275e-14,
+      "delta_T_K": 1.2395373687468236e-06,
+      "delta_C": 1.6418230464054773e-07,
+      "delta_event_s": null
+    },
+    {
+      "q": "q3",
+      "n": 321,
+      "event_s": 169183.24227561057,
+      "wall_time_s": 36.338185999993584,
+      "mass_residual": 2.786442101020001e-15,
+      "q1_energy_residual": null
+    },
+    {
+      "q": "q3",
+      "n": 641,
+      "event_s": 169186.22504793835,
+      "wall_time_s": 51.06596659999923,
+      "mass_residual": 3.134747363647501e-15,
+      "q1_energy_residual": null,
+      "delta_T_K": 5.1650837804118055e-05,
+      "delta_C": 8.70584111310746e-06,
+      "delta_event_s": 2.9827723277849145
+    },
+    {
+      "q": "q3",
+      "n": 1281,
+      "event_s": 169187.05695716027,
+      "wall_time_s": 115.9230966999894,
+      "mass_residual": 3.483052626275001e-15,
+      "q1_energy_residual": null,
+      "delta_T_K": 1.4445136287122295e-05,
+      "delta_C": 2.146199277602845e-06,
+      "delta_event_s": 0.831909221917158
+    },
+    {
+      "q": "q3",
+      "n": 2561,
+      "event_s": 169187.28619849775,
+      "wall_time_s": 343.76406699999643,
+      "mass_residual": 3.308899994961251e-15,
+      "q1_energy_residual": null,
+      "delta_T_K": 3.852381951219286e-06,
+      "delta_C": 6.139000281596418e-07,
+      "delta_event_s": 0.22924133748165332
+    },
+    {
+      "q": "q4",
+      "n": 321,
+      "event_s": 158527.50719154623,
+      "wall_time_s": 55.97472040000139,
+      "mass_residual": 4.179663151530001e-15,
+      "q1_energy_residual": null
+    },
+    {
+      "q": "q4",
+      "n": 641,
+      "event_s": 158529.16858590773,
+      "wall_time_s": 80.80428860000393,
+      "mass_residual": 3.134747363647501e-15,
+      "q1_energy_residual": null,
+      "delta_T_K": 0.00011417051769058162,
+      "delta_C": 0.0025906452649980816,
+      "delta_event_s": 1.6613943614938762
+    },
+    {
+      "q": "q4",
+      "n": 1281,
+      "event_s": 158529.63226651362,
+      "wall_time_s": 132.552234399991,
+      "mass_residual": 5.0504263080987515e-15,
+      "q1_energy_residual": null,
+      "delta_T_K": 2.8534667819712922e-05,
+      "delta_C": 0.002197457464038037,
+      "delta_event_s": 0.4636806058988441
+    },
+    {
+      "q": "q4",
+      "n": 2561,
+      "event_s": 158529.75934872148,
+      "wall_time_s": 296.3273285000032,
+      "mass_residual": 3.8313578889025016e-15,
+      "q1_energy_residual": null,
+      "delta_T_K": 7.143227492178994e-06,
+      "delta_C": 0.0018846992737879785,
+      "delta_event_s": 0.12708220785134472
+    }
+  ],
+  "time": [
+    {
+      "q": "q1",
+      "n": 81,
+      "delta_T_K": 6.09945800533751e-08,
+      "delta_C": 1.3876046978111845e-09,
+      "delta_event_s": null
+    },
+    {
+      "q": "q3",
+      "n": 81,
+      "delta_T_K": 3.265671466579079e-08,
+      "delta_C": 6.789830919728956e-10,
+      "delta_event_s": 8.819624781608582e-07
+    },
+    {
+      "q": "q4",
+      "n": 81,
+      "delta_T_K": 4.465931624508812e-08,
+      "delta_C": 3.0799442995999016e-09,
+      "delta_event_s": 0.001963646849617362
+    }
+  ],
+  "sensitivity": [
+    {
+      "q": "q3",
+      "case": "55C_20RH",
+      "event_h": 54.04263754034038,
+      "base_h": 46.992417612050964,
+      "delta_h": 7.050219928289419
+    },
+    {
+      "q": "q3",
+      "case": "60C_40RH",
+      "event_h": 48.110230095991504,
+      "base_h": 46.992417612050964,
+      "delta_h": 1.1178124839405388
+    },
+    {
+      "q": "q3",
+      "case": "Lewis_one",
+      "event_h": 47.027923564611264,
+      "base_h": 46.992417612050964,
+      "delta_h": 0.03550595256030242
+    },
+    {
+      "q": "q4",
+      "case": "55C_20RH",
+      "event_h": 50.43758727967588,
+      "base_h": 44.03382437563559,
+      "delta_h": 6.403762904040292
+    },
+    {
+      "q": "q4",
+      "case": "60C_40RH",
+      "event_h": 46.17528035791046,
+      "base_h": 44.03382437563559,
+      "delta_h": 2.141455982274872
+    },
+    {
+      "q": "q4",
+      "case": "Lewis_one",
+      "event_h": 44.08494535744597,
+      "base_h": 44.03382437563559,
+      "delta_h": 0.05112098181038163
+    }
+  ],
+  "ablation": [
+    {
+      "q": "q3",
+      "case": "no_latent",
+      "event_h": 42.412196675452314,
+      "base_h": 46.992417612050964
+    },
+    {
+      "q": "q4",
+      "case": "no_latent",
+      "event_h": 37.67785804279639,
+      "base_h": 44.03382437563559
+    },
+    {
+      "q": "q4",
+      "case": "fixed_radius_same_appendix4",
+      "event_h": 98.19018795341732,
+      "base_h": 44.03382437563559
+    }
+  ],
+  "settings": {
+    "rtol": 2e-10,
+    "atol": 2e-11,
+    "max_step": 60.0,
+    "align_boundary_knots": true
+  },
+  "production_n": 1281,
+  "sampling": "Q1 every 10 s at all 21 output radii; Q3/Q4 every 60 s through 3 h and hourly from 4 to 39 h, plus continuous termination event; Q4 material grids compared by interpolation."
+}

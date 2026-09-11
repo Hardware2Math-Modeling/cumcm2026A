@@ -7,8 +7,9 @@ from scipy.integrate import solve_ivp
 from scipy.sparse import coo_matrix, lil_matrix
 
 from .boundary import Boundary
-from .correlations import h_conv, h_mass
+from .correlations import h_conv, h_mass, latent_heat_vaporization
 from .solution import Solution
+from .psychrometrics import gas_evaporation_capacity, LEWIS_NUMBER
 
 
 def outward_flux(value_surface, value_ambient, coefficient):
@@ -25,14 +26,35 @@ def grid_weights(n):
 
 
 class RadialModel:
-    def __init__(self, spec, n=161, boundary=None, fixed_radius=False):
+    def __init__(self, spec, n=161, boundary=None, fixed_radius=False, latent_heat=True):
         self.spec = spec
         self.n = n
         self.xi, self.faces, self.weights = grid_weights(n)
-        self.boundary = boundary or Boundary.from_attachments()
+        self.boundary = boundary or Boundary.for_problem(spec.name)
         self.moving = spec.uses_shrinkage and not fixed_radius
         self.h_conv = h_conv(spec.name)
         self.h_mass = h_mass(spec.name)
+        self.latent_heat = latent_heat
+        self.moisture_boundary = "supply_gas"
+        self.lewis = LEWIS_NUMBER
+        self.equilibrium_C = 0.0
+        self.rho_d0 = float(spec.properties.rho(spec.initial.C, spec.initial.T)) / (1 + spec.initial.C)
+
+    def dry_density(self, t):
+        return self.rho_d0 * (self.spec.geometry.radius0 / self.radius(t))**2
+
+    def surface_fluxes(self, t, T_s, C_s):
+        T_amb, C_amb = self.boundary.ambient(t)
+        if self.moisture_boundary == "legacy_effective":
+            moisture = outward_flux(C_s, C_amb, self.h_mass)
+        else:
+            supply = self.dry_density(t) * self.h_mass * (C_s-self.equilibrium_C)
+            gas = gas_evaporation_capacity(T_s, C_amb, self.h_conv, self.lewis)
+            # 物理互补边界，允许气相凝结；绝不裁剪数值状态T或C。
+            moisture = np.minimum(supply, gas) / self.dry_density(t)
+        convective = self.h_conv * (T_amb - T_s)
+        latent = self.dry_density(t) * moisture * latent_heat_vaporization(T_s) if self.latent_heat else 0.0
+        return moisture, convective, latent
 
     def radius(self, t):
         return self.boundary.radius(t) if self.moving else self.spec.geometry.radius0
@@ -47,7 +69,6 @@ class RadialModel:
         T, C = y[:n], y[n:2*n]
         p = self.spec.properties
         R = self.radius(t)
-        T_amb, C_amb = self.boundary.ambient(t)
         k = p.k(C, T)
         D = p.D(C, T)
         capacity = p.rho(C, T) * p.cp(C, T)
@@ -55,8 +76,9 @@ class RadialModel:
         qT, qC = np.zeros(n+1), np.zeros(n+1)
         qT[1:-1] = self.faces[1:-1] * (k[1:]+k[:-1])/2 * np.diff(T)/np.diff(self.xi)
         qC[1:-1] = self.faces[1:-1] * (D[1:]+D[:-1])/2 * np.diff(C)/np.diff(self.xi)
-        qT[-1] = -R * outward_flux(T[-1], T_amb, self.h_conv)
-        qC[-1] = -R * outward_flux(C[-1], C_amb, self.h_mass)
+        moisture, convective, latent = self.surface_fluxes(t, T[-1], C[-1])
+        qT[-1] = R * (convective - latent)
+        qC[-1] = -R * moisture
         dT = np.diff(qT) / (R*R*self.weights*capacity)
         dC = np.diff(qC) / (R*R*self.weights)
         loss_rate = -qC[-1] / (R*R)
@@ -74,6 +96,7 @@ class RadialModel:
             s[i+n, [j+n for j in near]] = 1
         s[2*n, 2*n-1] = 1
         s[2*n+1, n-1] = 1
+        s[2*n+1, 2*n-1] = 1
         return s.tocsr()
 
     def jacobian(self, t, y):
@@ -100,10 +123,14 @@ class RadialModel:
                             rows.append(row)
                             cols.append(j)
                             data.append(difference[row]/steps[j])
-        R = self.radius(t)
-        rows.extend([2*n, 2*n+1])
-        cols.extend([2*n-1, n-1])
-        data.extend([self.h_mass/R, -R*self.h_conv])
+        for j in (n-1, 2*n-1):
+            perturbed = y.copy()
+            perturbed[j] += steps[j]
+            difference = self.rhs(t, perturbed) - baseline
+            for row in (2*n, 2*n+1):
+                rows.append(row)
+                cols.append(j)
+                data.append(difference[row] / steps[j])
         return coo_matrix((data,(rows,cols)),shape=(2*n+2,2*n+2)).tocsc()
 
 
@@ -112,8 +139,11 @@ def solve_radial(spec, **opts):
     n = int(opts.get("n_internal", 321))
     if n < 3:
         raise ValueError("至少需要三个空间节点")
-    boundary = opts.get("boundary") or Boundary.from_attachments()
-    model = RadialModel(spec, n, boundary, opts.get("fixed_radius", False))
+    boundary = opts.get("boundary") or Boundary.for_problem(spec.name)
+    model = RadialModel(spec, n, boundary, opts.get("fixed_radius", False), opts.get("latent_heat", True))
+    model.moisture_boundary = opts.get("moisture_boundary", "supply_gas")
+    model.lewis = opts.get("lewis", LEWIS_NUMBER)
+    model.equilibrium_C = opts.get("equilibrium_C", 0.0)
     rtol = float(opts.get("rtol", 2e-9))
     atol = float(opts.get("atol", 2e-10))
     max_step = float(opts.get("max_step", 120.0))
@@ -233,4 +263,7 @@ def solve_radial(spec, **opts):
             "event_T": event_state[:n].tolist() if event_state is not None else None,
             "event_R": float(model.radius(event_time)) if event_time is not None else None,
             "internal_xi": model.xi.tolist(), "mesh": "surface_graded_power_2"}
+    meta.update(latent_heat=model.latent_heat, rho_d0_kg_m3=model.rho_d0,
+                min_T_K=float(T.min()), min_C=float(C.min()),
+                boundary_description=getattr(boundary, "description", "attachment effective moisture boundary"))
     return Solution(t, r, T, C, meta)

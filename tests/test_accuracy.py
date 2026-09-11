@@ -19,7 +19,7 @@ class AccuracyTests(unittest.TestCase):
     def test_actual_boundary_heat_converges_to_independent_modes(self):
         times = np.array([60, 100, 300, 900, 1800.0])
         opts = dict(sample_times=times, rtol=2e-11, atol=2e-12,
-                    align_boundary_knots=True)
+                    align_boundary_knots=True, latent_heat=False)
         coarse = solve_radial(Q1, n_internal=81, **opts)
         fine = solve_radial(Q1, n_internal=161, **opts)
         exact = bessel_heat(times, fine.r)

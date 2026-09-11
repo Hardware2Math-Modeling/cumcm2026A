@@ -1,0 +1,35 @@
+{
+  "rows": [
+    {
+      "coarse_n": 321,
+      "fine_n": 641,
+      "material_max_C_difference": 0.0025906452649980816,
+      "at_time_s": 140400.0,
+      "at_xi": 0.999990234375,
+      "surface_distance_m": 1.1718749999989342e-07,
+      "physical_output_max_C_difference": 0.00012227767211984292,
+      "surface_max_C_difference": 1.032971773806679e-05
+    },
+    {
+      "coarse_n": 641,
+      "fine_n": 1281,
+      "material_max_C_difference": 0.002197457464038037,
+      "at_time_s": 140400.0,
+      "at_xi": 0.99999755859375,
+      "surface_distance_m": 2.9296875000639487e-08,
+      "physical_output_max_C_difference": 3.8741172133816004e-05,
+      "surface_max_C_difference": 2.582107573312342e-06
+    },
+    {
+      "coarse_n": 1281,
+      "fine_n": 2561,
+      "material_max_C_difference": 0.0018846992737879785,
+      "at_time_s": 140400.0,
+      "at_xi": 0.9999993896484375,
+      "surface_distance_m": 7.324218750159872e-09,
+      "physical_output_max_C_difference": 9.243953156670703e-06,
+      "surface_max_C_difference": 6.457431551698534e-07
+    }
+  ],
+  "limitation": "Maximum material-field differences occur in an unresolved submicron surface layer. The delivered fixed physical positions and explicit surface value converge separately; no uniform four-decimal field accuracy is claimed."
+}

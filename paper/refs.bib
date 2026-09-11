@@ -1,46 +1,47 @@
-% =============================================================
-% paper/refs.bib —— 参考文献数据库（骨架）
-%
-% 引用格式要求：
-%   - 正式引用请使用真实文献，禁止编造假作者 / 假期刊 / 假卷期 / 假 DOI。
-%   - 下方条目均为「格式模板」，用 BibTeX 原生 @comment 注释掉，不参与编译；
-%     需要引用时把模板复制到 @comment 之外并填入真实信息即可。
-%   - 当前 main.tex 使用 BibTeX + \bibliographystyle{plain}；
-%     若需 GB/T 7714 格式，可换用 biblatex（先 kpsewhich gbt7714.sty 确认安装）。
-% =============================================================
-
-@comment{
-  ---- 期刊文章模板 ----
-  @article{key,
-    author  = {作者姓名},
-    title   = {文章标题},
-    journal = {期刊名},
-    volume  = {},
-    number  = {},
-    pages   = {},
-    year    = {},
-    doi     = {},
-  }
+@misc{problem,
+  author = {{全国大学生数学建模竞赛组委会}},
+  title = {2026年高教社杯全国大学生数学建模竞赛A题：药材的烘干问题及附件1--3},
+  year = {2026},
+  note = {本地题目原件}
 }
-
-@comment{
-  ---- 专著/教材模板 ----
-  @book{key2,
-    author    = {作者姓名},
-    title     = {书名},
-    publisher = {出版社},
-    address   = {},
-    year      = {},
-  }
+@book{fao56,
+  author = {Allen, Richard G. and Pereira, Luis S. and Raes, Dirk and Smith, Martin},
+  title = {Crop Evapotranspiration: Guidelines for Computing Crop Water Requirements},
+  series = {FAO Irrigation and Drainage Paper},
+  number = {56},
+  publisher = {Food and Agriculture Organization of the United Nations},
+  address = {Rome},
+  year = {1998},
+  isbn = {92-5-104219-5},
+  url = {https://www.fao.org/4/x0490e/x0490e00.htm}
 }
-
-@comment{
-  ---- 网络资源模板 ----
-  @misc{key3,
-    author       = {},
-    title        = {},
-    howpublished = {\url{https://...}},
-    year         = {},
-    note         = {访问日期：},
-  }
+@article{ju2016,
+  author = {Ju, Hao-Yu and Zhang, Qian and Mujumdar, A. S. and Fang, Xiao-Ming and Xiao, Hong-Wei and Gao, Zhen-Jiang},
+  title = {Hot-air Drying Kinetics of Yam Slices under Step Change in Relative Humidity},
+  journal = {International Journal of Food Engineering},
+  year = {2016}, volume = {12}, number = {8}, pages = {783--792},
+  doi = {10.1515/ijfe-2015-0340}
+}
+@book{ashrae,
+  author = {{ASHRAE}}, title = {2021 ASHRAE Handbook---Fundamentals, SI Edition},
+  publisher = {ASHRAE}, address = {Atlanta}, year = {2021},
+  note = {Chapter 1: Psychrometrics; Chapter 6: Mass Transfer},
+  url = {https://handbook.ashrae.org/Handbooks/F21/SI/F21_Ch06/F21_Ch06_si.aspx}
+}
+@article{psychrolib,
+  author = {Meyer, D. and Thevenard, D.},
+  title = {PsychroLib: A library of psychrometric functions to calculate thermodynamic properties of air},
+  journal = {Journal of Open Source Software}, year = {2019},
+  volume = {4}, number = {33}, pages = {1137}, doi = {10.21105/joss.01137}
+}
+@article{ju2020,
+  author = {Ju, Hao-Yu and Zhao, Shi-Hao and Mujumdar, Arun S. and Zhao, Hai-Yan and Duan, Xu and Zheng, Zhi-An and Gao, Zhen-Jiang and Xiao, Hong-Wei},
+  title = {Step-down relative humidity convective air drying strategy to enhance drying kinetics, efficiency, and quality of American ginseng root (Panax quinquefolium)},
+  journal = {Drying Technology}, year = {2020}, volume = {38}, number = {7},
+  pages = {903--916}, doi = {10.1080/07373937.2019.1597373}
+}
+@article{njie1999,
+  author = {Njie, D. N.}, title = {Desorption Isotherms of Water in Trifoliate Yam (Dioscorea dumetorum Pax.)},
+  journal = {Drying Technology}, year = {1999}, volume = {17}, number = {6},
+  pages = {1161--1171}, doi = {10.1080/07373939908917601}
 }

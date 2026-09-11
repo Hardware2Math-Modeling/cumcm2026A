@@ -363,8 +363,7 @@ def test_solvers_have_callable_entrypoints():
 
 
 def test_latent_heat_requires_sourced_value():
-    """汽化潜热题目未给出，出处未定前不许实现（AGENTS.md 铁律 2）。"""
+    """FAO56式(3-1)的独立数值点值。"""
     from common import correlations
 
-    with pytest.raises(NotImplementedError, match="出处"):
-        correlations.latent_heat_vaporization(np.array([300.0]))
+    assert float(correlations.latent_heat_vaporization(333.15)) == pytest.approx(2359340.)

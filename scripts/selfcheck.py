@@ -328,14 +328,10 @@ def _():
         assert callable(mod.solve)
 
 
-@check("汽化潜热在出处未定前必须拒绝实现（铁律 2）")
+@check("汽化潜热符合FAO56附录3式(3-1)，温度输入K")
 def _():
-    try:
-        correlations.latent_heat_vaporization(np.array([300.0]))
-    except NotImplementedError as e:
-        assert "出处" in str(e)
-    else:
-        raise AssertionError("不应给出无出处的数值")
+    np.testing.assert_allclose(correlations.latent_heat_vaporization(
+        units.c_to_k(np.array([0., 20., 60.]))), [2501000., 2453780., 2359340.])
 
 
 # --- 汇总 -------------------------------------------------------------------

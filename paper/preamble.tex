@@ -23,13 +23,36 @@
 
 % ---------- 插图 ----------
 \usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{caption}
+\captionsetup{font=small,labelsep=quad}
 \graphicspath{{figs/}}
+\pagestyle{plain}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.15em}
+\setlength{\textfloatsep}{14pt plus 3pt minus 2pt}
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\textfraction}{0.04}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{totalnumber}{5}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}\heiti\zihao{3}\@title\par\end{center}\vspace{0.5em}}
+\makeatother
 
 % ---------- 代码（Python 样式；XeLaTeX 下中文注释可能受限，以实际编译为准） ----------
 \usepackage{listings}
+\setmonofont{Consolas}
+\newfontfamily{\listingsymbol}{Segoe UI Symbol}
+\xeCJKDeclareSubCJKBlock{codesymbols}{"23F8,"26A0,"2713,"2717}
+\xeCJKDeclareSubCJKBlock{variation}{"FE0F}
+\setCJKmonofont[codesymbols=Segoe UI Symbol,variation=Segoe UI Emoji]{FangSong}
+\setCJKmainfont[BoldFont=SimHei,ItalicFont=KaiTi,codesymbols=Segoe UI Symbol,variation=Segoe UI Emoji]{SimSun}
 \lstset{
   language=Python,
-  basicstyle=\ttfamily\small,
+  basicstyle=\ttfamily\footnotesize,
   extendedchars=true,
   showstringspaces=false,
   columns=fullflexible,
@@ -42,6 +65,11 @@
   numbers=left,
   numberstyle=\tiny\color{gray},
   tabsize=4,
+  aboveskip=0.6em,
+  belowskip=0.6em,
+  literate={⚠}{{\listingsymbol ⚠}}1 {✓}{{\listingsymbol ✓}}1
+           {✗}{{\listingsymbol ✗}}1 {⏸}{{\listingsymbol ⏸}}1
+           {️}{{}}0,
 }
 
 % ---------- 数学单位（siunitx v3 语法：\qty{}{} 与 \unit{}，勿用 v2 的 \SI{}{}） ----------
@@ -87,20 +115,46 @@
 \newcommand{\dt}{\ensuremath{\Delta t}}     % 时间步长
 \newcommand{\dr}{\ensuremath{\Delta r}}     % 空间步长
 \newcommand{\Nr}{\ensuremath{N_r}}          % 径向网格节点数
+\newcommand{\rhod}{\ensuremath{\rho_d}}
+\newcommand{\jvap}{\ensuremath{j_v}}
+\newcommand{\Lvap}{\ensuremath{\Delta H_{vap}}}
+\newcommand{\RH}{\ensuremath{\varphi}}
+\newcommand{\Yinf}{\ensuremath{Y_\infty}}
+\newcommand{\Ysat}{\ensuremath{Y_{\mathrm{sat}}}}
+\newcommand{\Yint}{\ensuremath{Y_{\mathrm{int}}}}
+\newcommand{\pair}{\ensuremath{p}}
+\newcommand{\pvap}{\ensuremath{p_v}}
+\newcommand{\psat}{\ensuremath{e_s}}
+\newcommand{\epsratio}{\ensuremath{\varepsilon}}
+\newcommand{\cpm}{\ensuremath{c_{pm}}}
+\newcommand{\Le}{\ensuremath{\mathrm{Le}}}
+\newcommand{\KM}{\ensuremath{K_M}}
+\newcommand{\Ts}{\ensuremath{T_s}}
+\newcommand{\Cs}{\ensuremath{C_s}}
+\newcommand{\rhodzero}{\ensuremath{\rho_{d0}}}
+\newcommand{\jsupply}{\ensuremath{j_s}}
+\newcommand{\jgas}{\ensuremath{j_g}}
+\newcommand{\vmat}{\ensuremath{v}}
+\newcommand{\Mdry}{\ensuremath{M_d}}
+\newcommand{\Mwater}{\ensuremath{M_w}}
+\newcommand{\Cmax}{\ensuremath{M}}
+\newcommand{\tstar}{\ensuremath{t_*}}
+\newcommand{\Vi}{\ensuremath{V_i}}
+\newcommand{\FT}{\ensuremath{F^T}}
+\newcommand{\FC}{\ensuremath{F^C}}
+\newcommand{\Tplateau}{\ensuremath{S}}
+\newcommand{\Bshape}{\ensuremath{B}}
+\newcommand{\taufit}{\ensuremath{\tau}}
+\newcommand{\Tairzero}{\ensuremath{T_{0,\mathrm{air}}}}
+\newcommand{\Tfit}{\ensuremath{T_{\mathrm{fit}}}}
+\newcommand{\Nobs}{\ensuremath{n_{\mathrm{obs}}}}
+\newcommand{\RMSE}{\ensuremath{\mathrm{RMSE}}}
+\newcommand{\CI}{\ensuremath{\mathrm{CI}_{95}}}
 % （\rho、\xi 为 LaTeX 原生，无需定义）
 
 % =============================================================
 % 自定义命令
 % =============================================================
-% \instruction{...}：醒目的 TODO 占位提示（待填内容用）
-\newcommand{\instruction}[1]{%
-  \par\medskip\noindent
-  \fcolorbox{orange!70!black}{orange!10}{%
-    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
-      \textbf{\textcolor{orange!60!black}{【TODO 占位】}}\, #1}}%
-  \par\medskip
-}
-
 % \code{...}：行内代码
 \newcommand{\code}[1]{\texttt{#1}}
 

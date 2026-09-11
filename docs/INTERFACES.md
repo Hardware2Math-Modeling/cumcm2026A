@@ -1,5 +1,21 @@
 # INTERFACES.md —— 模块接口契约
 
+## 2026-09-11 当前潜热模型接口（优先于下方历史说明）
+
+本轮用户要求四问均计入潜热，并比较文献恒温与附件曲线拟合恒温。模型与符号以当前 `docs/NOTATION.md`、`docs/model/numerics.md` 为准。下方早期签名示意中的“待实现/待决”已失效；实际类型使用 `InitialState.T/C`、`Grid.dt/t_end/r`。
+
+- `Boundary.for_problem(problem, temperature_c=60.0, relative_humidity=0.20)`：前14400s读附件1；后三问其后使用设定温度与RH换算出的空气湿含量Y。兼容字段 `C_amb` 存储Y，绝不是药材平衡含水率。
+- `psychrometrics.humidity_ratio(T, relative_humidity, pressure=101325.0)`：K输入，返回kg水/kg干空气。`gas_evaporation_capacity(T_s,Y_amb,h,lewis=.845)` 返回可正可负的kg/(m²s)。
+- `RadialModel.surface_fluxes(t,T_s,C_s)`：返回 `(j_v/rho_d, h*(T_amb-T_s), latent_heat(T_s)*j_v)`。通量j_v由供水和气膜互补条件确定，禁止跨气固基准直接相减。
+- `solve_radial(spec, **opts)` 默认启用潜热与上述边界，正式参数见 `numerical_settings.production_options`。`latent_heat=False`仅供消融或纯热解析验证；`moisture_boundary='legacy_effective'`仅供旧解析测试，不是正式结果。
+- `Solution.meta` 保存连续阈值、首个整步严格合格时刻、质量残差、Q1净热量残差和模型描述。Q4参考r需乘R(t)/R0，表面列单独导出；固定物理位置超出当前药材域留空，这是有物理依据的唯一NaN例外。
+- `scripts/fit_ambient_temperature.py` 生成 `results/validation/ambient_fit.json`；其中 `selected.T_inf_K` 是第二工况常数温度，区间是所选模型下的条件参数区间。
+- `scripts/run_fitted_scenario.py` 将第二工况Q2—4写入 `results/scenarios/fitted_temperature/`，通过同一个 `io_excel.write_result` 校验，不覆盖主方案。
+- `scripts/build_paper_assets.py` 从正式xlsx抽取规则时刻、从求解器事件记录取得非整步终点，生成全部表图及 `paper/tab/all_values.tex`。旧Q1专用宏和旧accuracy报告不再用于当前论文。
+- `scripts/validate_latent.py` 是新模型数值审计入口；旧 `accuracy*.json`、`numerics.json` 仅作无潜热历史记录，不得用作当前模型证据。
+
+本轮仅本地协作，遵照用户要求不推送GitHub、不创建PR。`make` 在本机不可用，使用 `D:/anaconda/Scripts/conda.exe run -p D:/anaconda/envs/26A --no-capture-output python ...` 等价运行。
+
 > **Owner: `@impl`。** 这些签名是**冻结契约**。
 > `@model` 和 `@paper` 依赖它来理解代码；`@impl` 内部的实现可以随便改，**签名不能随便改**。
 > 改签名 = 破坏别人的调用，必须单独 PR + 通知全员。

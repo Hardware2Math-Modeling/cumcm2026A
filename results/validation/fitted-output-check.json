@@ -1,0 +1,43 @@
+{
+  "files": [
+    {
+      "q": "q2",
+      "sheets": [
+        {
+          "sheet": "温度",
+          "data_rows": 225950,
+          "columns": 22
+        },
+        {
+          "sheet": "水分浓度",
+          "data_rows": 225950,
+          "columns": 22
+        }
+      ],
+      "sha256": "cc00dbaf7d69ec3424815b88de605da698840bc4487efe881d075b364b976fb7"
+    },
+    {
+      "q": "q3",
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "data_rows": 3767,
+          "columns": 22
+        }
+      ],
+      "sha256": "4e8db34d1d36c6560a46ed93c0ac94ff9d236b2a1d16abcc9bc3cae57ac9b9f1"
+    },
+    {
+      "q": "q4",
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "data_rows": 3499,
+          "columns": 22
+        }
+      ],
+      "sha256": "c32f73d0cfd4f777144e016dc32b095579041313c4a620d161421cbcbbf6257f"
+    }
+  ],
+  "q2_q3_common_time_max_C_difference": 0.0
+}

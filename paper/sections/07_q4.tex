@@ -1,34 +1,64 @@
-\section{问题四的分析与求解}
+\section{问题四：失水收缩下的移动边界}
+\subsection{半径数据与守恒的材料坐标}
+附件2给出各时刻半径，以分段线性插值构造\R(\t)，不改动原始数据、不用高阶拟合制造半径回升。长度保持不变，取均匀径向收缩速度
+\begin{equation}
+v(\rpos,\t)=\frac{\dot\R}{\R}\rpos,\qquad
+\rhod(\t)=\rhod(0)\left(\frac{\Rzero}{\R(\t)}\right)^2.\label{eq:shrink}
+\end{equation}
+于是$\rhod\pi\R^2\Llen$保持不变，干物质不会因网格缩小凭空消失。水分质量守恒使用对固体材料的导数，
+\begin{equation}
+\frac{\partial\C}{\partial\t}+v\frac{\partial\C}{\partial\rpos}
+=\frac{1}{\rpos}\frac{\partial}{\partial\rpos}
+\left(\rpos\Ddiff\frac{\partial\C}{\partial\rpos}\right).
+\end{equation}
+令$\xi=\rpos/\R(\t)$，对$\widetilde\C(\xi,\t)=\C(\xi\R(\t),\t)$有
+\begin{equation}
+\left.\frac{\partial\C}{\partial\t}\right|_{\rpos}
+=\left.\frac{\partial\widetilde\C}{\partial\t}\right|_\xi
+-\frac{\xi\dot\R}{\R}\frac{\partial\widetilde\C}{\partial\xi},\qquad
+v\frac{\partial\C}{\partial\rpos}
+=\frac{\xi\dot\R}{\R}\frac{\partial\widetilde\C}{\partial\xi}.
+\end{equation}
+两项抵消，得到固定材料域$0<\xi<1$上的方程。下文省去波浪号：
+\begin{align}
+\rho\cp\frac{\partial\T}{\partial\t}
+ &=\frac{1}{\R(\t)^2\xi}\frac{\partial}{\partial\xi}
+ \left(\xi\kcond\frac{\partial\T}{\partial\xi}\right),\label{eq:shrinkT}\\
+\frac{\partial\C}{\partial\t}
+ &=\frac{1}{\R(\t)^2\xi}\frac{\partial}{\partial\xi}
+ \left(\xi\Ddiff\frac{\partial\C}{\partial\xi}\right).\label{eq:shrinkC}
+\end{align}
+温度采用随骨架运动的有效热容量模型，忽略应力功；式\eqref{eq:shrinkT}不应再额外加入一次坐标对流项。仅把固定域扩散方程的半径改小而保留固定\rhod，将不能正确计算单位面积的实际蒸发潜热。
 
-\instruction{本节占位。问题四：引入失水收缩导致的移动边界（附录 4 变物性 + 尺寸变化，半径 \R 随时间变化）。建议坐标变换到固定计算域（如 $\xi = r/R(t)$），该建模决策需记入 docs/DECISIONS.md。由 @model 提供公式、@impl 求解、@paper 排版。}
+表面条件在$\xi=1$处为
+\begin{align}
+-\frac{\rhod\Ddiff}{\R}\frac{\partial\C}{\partial\xi}
+ &=\jvap,\\
+\frac{\kcond}{\R}\frac{\partial\T}{\partial\xi}
+ &=\hconv(\Tinf-\T_s)-\Lvap\jvap.
+\end{align}
+其中\jvap{}仍由式\eqref{eq:limited}确定，内部供水能力中的\rhod{}逐时更新；$\xi=0$仍为零通量。该形式与第一问有限体积离散一致，只需逐时更新\R、\rhod{}和附录4物性。
 
-\subsection{模型的建立}
-\instruction{移动边界控制方程、坐标变换、变物性参数化占位。}
+\subsection{附录4参数与移动区域的输出}
+第四问使用独立的附录4经验式：
+\begin{align}
+\rho&=760+90\C,&
+\cp&=1850+2150\frac{\C}{1+\C},\\
+\kcond&=0.12+0.20\frac{\C}{1+\C},&
+\Ddiff&=4.2\times10^{-4}\exp\left(-\frac{0.30}{\C}\right)
+\exp\left(-\frac{3850}{\T}\right).
+\end{align}
+本问$\rhodzero=(760+90\times2.55)/(1+2.55)$~kg/m$^3$。各式依次采用kg/m$^3$、J/(kg\,K)、W/(m\,K)与m$^2$/s，\T{}必须用K。环境及换热、传质系数沿用前述自主工况，终点仍由全域最大含水率判断。
 
-\subsection{模型的求解}
-\instruction{固定计算域离散、移动边界处理策略占位。}
+每个输出时刻，固定物理位置\rpos{}映射为$\xi=\rpos/\R(\t)$后插值；当$\rpos>\R(\t)$时，该处已经位于药材外部，不能填入表面浓度或虚构药材状态。因此结果表中的相应单元格留空，末列“药材表面”始终取当前$\xi=1$的值。表\ref{tab:q4-moisture}中空白只表示几何域外，内部有效位置均有有限数值。完整工作簿采用同一规则，前20列为0至1.9~cm，最后一列为动态表面。
 
-\subsection{结果与分析}
-\instruction{结果表/图由 scripts 生成。result4.xlsx 仅含水分浓度（工作表名 Sheet1），末列「药材表面」为当时的表面位置（见 AGENTS.md §5）。}
-
-\begin{table}[htbp]
-  \centering
-  \caption{考虑收缩时药材的水分浓度分布}
-  \label{tab:q4-concentration}
-  \IfFileExists{tab/tab6.tex}{%
-    \input{tab/tab6}%
-  }{%
-    \instruction{表占位：tab/tab6（编号待 make\_tables.py 确认）尚未生成。}
-  }
-\end{table}
-
+\subsection{收缩干燥结果}
+考虑收缩与附录4物性后，连续达标时长为\textbf{\QFourEndH{}~h}，此时半径为\QFourEndRadiusCm{}~cm；首个严格合格的60~s输出时刻为\QFourStrictEndH{}~h。按每6~h及终点输出的分布见表\ref{tab:q4-moisture}。
+\input{tab/q4_moist}
 \begin{figure}[htbp]
-  \centering
-  \IfFileExists{figs/q4_concentration.pdf}{%
-    \includegraphics[width=0.75\linewidth]{figs/q4_concentration.pdf}%
-  }{%
-    \instruction{图占位：figs/q4\_concentration.pdf 尚未生成（scripts/make\_figs.py）。}
-  }
-  \caption{考虑收缩时药材内部水分浓度分布（图待生成）}
-  \label{fig:q4-concentration}
+\centering
+\includegraphics[width=0.83\linewidth]{fig4-shrinkage.pdf}
+\caption{给定半径收缩历程及移动边界下的干燥响应}
+\label{fig:q4}
 \end{figure}
+收缩使内部扩散距离缩短，同时提高单位当前体积的干物质量，后者通过式\eqref{eq:bcT}增加给定干基表面通量对应的潜热需求。附录4的扩散与热物性又不同于附录3，因此问题三、四时长差为这些作用的综合结果。本文不将两问的全部差值解释成单独的收缩加速效应。

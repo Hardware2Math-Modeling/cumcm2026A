@@ -17,16 +17,22 @@ from common.units import cm_to_m, k_to_c
 
 
 def main():
-    questions = sys.argv[1:] or ["q1", "q2", "q3", "q4"]
+    fitted = "--fitted" in sys.argv
+    questions = [q for q in sys.argv[1:] if q != "--fitted"] or (["q2", "q3", "q4"] if fitted else ["q1", "q2", "q3", "q4"])
     if any(q not in {"q1", "q2", "q3", "q4"} for q in questions):
         raise ValueError("参数只能是q1/q2/q3/q4")
-    dest = ROOT / "results" / "validation" / "accuracy-output-check.json"
+    results_folder = ROOT / "results"
+    cache_folder = ROOT / "outputs/cache"
+    if fitted:
+        results_folder = results_folder / "scenarios/fitted_temperature"
+        cache_folder = cache_folder / "fitted_temperature"
+    dest = ROOT / "results/validation" / ("fitted-output-check.json" if fitted else "accuracy-output-check.json")
     report = json.loads(dest.read_text(encoding="utf-8")) if dest.exists() else {"files": []}
     report["files"] = [x for x in report["files"] if x["q"] not in questions]
     cached = {}
     for question in questions:
-        path = ROOT / "results" / f"result{question[-1]}.xlsx"
-        with np.load(ROOT / "outputs" / "cache" / f"{question}.npz") as f:
+        path = results_folder / f"result{question[-1]}.xlsx"
+        with np.load(cache_folder / f"{question}.npz") as f:
             t, r, T, C = f["t"], f["r"], f["T"], f["C"]
             meta = json.loads(str(f["meta"]))
         if question in {"q2", "q3"}:
@@ -64,10 +70,13 @@ def main():
         book.close()
         report["files"].append({"q": question, "sheets": sheet_records,
                                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
-        manifest_path = ROOT / "results" / f"{question}_manifest.json"
+        manifest_path = results_folder / f"{question}_manifest.json"
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         manifest["status"] = "computed_and_readback_verified"
-        manifest["readback"] = "results/validation/accuracy-output-check.json"
+        manifest["readback"] = str(dest.relative_to(ROOT))
+        if fitted:
+            manifest["validation"] = "results/validation/fitted_numerics.json"
+            manifest["temperature_source"] = "results/validation/ambient_fit.json"
         manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     if "q2" in cached and "q3" in cached:
         t2, c2 = cached["q2"]

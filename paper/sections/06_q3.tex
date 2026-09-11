@@ -1,34 +1,22 @@
-\section{问题三的分析与求解}
+\section{问题三：全域达标时间}
+\subsection{以最大含水率定义终点}
+问题三沿用问题二的附录3参数、初始状态及整个温湿度历程。题意要求\emph{各处}含水率低于0.15~kg/kg，因此既不能用平均含水率，也不能只检查表面。定义
+\begin{equation}
+\Cmax(\t)=\max_{0\le\rpos\le\Rzero}\C(\rpos,\t),\qquad
+\tstar=\inf\{\t:\Cmax(\t)<0.15\}.\label{eq:event}
+\end{equation}
+用积分器的连续插值定位$\Cmax-0.15$由正向负穿越的零点。对连续单调干燥过程，零点处恰等于阈值，\tstar{}是严格达标时间集合的下确界；实际加工需取其后时刻。程序检查全部内部节点，因而无需预先假定最慢位置一定是中心。
 
-\instruction{本节占位。问题三：长时间干燥（附录 3 变物性，需运行至 2~3 天）。由 @model 提供公式、@impl 求解（注意总计算量与步长选择）、@paper 排版。}
+工作簿按固定60~s网格输出，为同时满足严格不等式与均匀时间列，将积分延续到事件之后的首个60~s整点，并以未舍入结果复核全域严格小于阈值。论文末行展示连续事件时刻，含水率按四位小数显示为0.1500并不表示程序用$\le$替代了题意。
 
-\subsection{模型的建立}
-\instruction{控制方程、边界/初始条件占位（沿用问题二的变物性参数化）。}
-
-\subsection{模型的求解}
-\instruction{长时间步进、计算量评估、步长无关性验证占位。}
-
-\subsection{结果与分析}
-\instruction{结果表/图由 scripts 生成。result3.xlsx 仅含水分浓度（工作表名 Sheet1、时间步长 60 s，见 AGENTS.md §5）。}
-
-\begin{table}[htbp]
-  \centering
-  \caption{长时间干燥下药材的水分浓度分布}
-  \label{tab:q3-concentration}
-  \IfFileExists{tab/tab5.tex}{%
-    \input{tab/tab5}%
-  }{%
-    \instruction{表占位：tab/tab5（编号待 make\_tables.py 确认）尚未生成。}
-  }
-\end{table}
-
+\subsection{结果及干燥速率解释}
+在选定工况下，连续达标时长为\textbf{\QThreeEndH{}~h}，首个严格合格的60~s输出时刻为\QThreeStrictEndH{}~h。题目要求的每6~h分布及结束状态见表\ref{tab:q3-moisture}。
+\input{tab/q3_moist}
+随着干燥推进，表面向外失水而中心依赖内部扩散补给，径向水分差逐渐成为限制环节。附录3中的$\exp(-0.45/\C)$使后期扩散系数随含水率下降而迅速减小；同时蒸发消耗热量，温度通过$\exp(-3850/\T)$进一步影响传质。因此，前几小时的平均下降速率不能线性外推至终点。
 \begin{figure}[htbp]
-  \centering
-  \IfFileExists{figs/q3_concentration.pdf}{%
-    \includegraphics[width=0.75\linewidth]{figs/q3_concentration.pdf}%
-  }{%
-    \instruction{图占位：figs/q3\_concentration.pdf 尚未生成（scripts/make\_figs.py）。}
-  }
-  \caption{长时间干燥下药材内部水分浓度分布（图待生成）}
-  \label{fig:q3-concentration}
+\centering
+\includegraphics[width=0.79\linewidth]{fig3-drying.pdf}
+\caption{全域干燥过程及0.15~kg/kg终点阈值}
+\label{fig:q3}
 \end{figure}
+图\ref{fig:q3}中的最大含水率轨迹用于判断达标，表面轨迹说明仅观察表面会过早判定完成。上述时长是所选温湿工况、有效传质系数及表面通量闭合共同决定的条件性预测，不把题干的“一般持续2--3天”当作拟合目标或强制截止值。

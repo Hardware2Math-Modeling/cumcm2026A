@@ -1,45 +1,74 @@
-\section{问题二的分析与求解}
+\section{问题二：自定温湿度下的全程耦合模型}
+\subsection{选取工况及其文献依据}
+Ju等在山药片热风干燥研究中采用60~$^\circ$C，并设置20\%相对湿度恒定工况以及分段湿度工况\cite{ju2016}。该实验为块根类物料选择烘干温湿度提供可追溯参照，但其样品厚度、风速和材料品种并非本题参数。因此本文自主选择后续恒温干燥工况为
+\begin{equation}
+\Tinf=\EnvTempC{}~^\circ\mathrm{C},\qquad\RH_\infty=\EnvRHPercent{}\%.
+\end{equation}
+这是一组有公开研究依据的可计算工况，并非由该文献证明的本题最优值。题目未给风速、品质目标或能耗价格，故不额外建立缺乏数据支持的品质优化目标。
 
-\instruction{本节占位。问题二：恒温干燥阶段（附录 3 变物性：$\rho$、\cp、\kcond、\Ddiff 均为 \C、\T 的函数）。由 @model 提供公式、@impl 求解、@paper 排版。}
+附件1覆盖前4~h，该区间使用原始烘房温度与空气湿度比，时间点之间线性插值；4~h以后切换为上述恒定温湿度。此处保留整个观测序列，未在1800~s后截断实际已提供的环境数据。温湿度切换时场变量连续，边界通量可改变，数值积分在接点处分段重启。
 
-\subsection{模型的建立}
-\instruction{变物性控制方程、表面对流换热 + 蒸发潜热耦合边界条件占位。}
+\subsection{由附件升温曲线构造第二温度方案}
+为检验环境温度选择的影响，另对附件1的升温数据拟合具有有限渐近值的曲线。初始空气温度固定为附件首行$\Tairzero$，采用
+\begin{equation}
+\Tfit(\t)=\Tplateau-(\Tplateau-\Tairzero)\frac{1+\Bshape}{1+\Bshape\exp(\t/\taufit)},\quad\Tplateau>\Tairzero,\ \Bshape>0,\ \taufit>0.\label{eq:fit}
+\end{equation}
+其中\Tplateau{}为渐近温度，\Bshape{}控制初始形状，\taufit{}为时间尺度；该式严格通过初始温度且单调趋向有限平台。以附件前3~h作为训练段、最后1~h作为留出段，先比较外推误差，再用完整0--4~h数据估计最终参数，避免仅凭全数据拟合优度选择高自由度曲线。该留出段参与候选选择，因而是选模验证集，并非独立于选模的最终测试集。
 
-\subsection{模型的求解}
-\instruction{非线性/变物性的离散与迭代策略占位。}
-
-\subsection{结果与分析}
-\instruction{结果表/图由 scripts 生成。表编号以 scripts/make\_tables.py 输出为准，此处仅占位。}
-
-\begin{table}[htbp]
-  \centering
-  \caption{恒温干燥阶段药材的温度分布}
-  \label{tab:q2-temperature}
-  \IfFileExists{tab/tab3.tex}{%
-    \input{tab/tab3}%
-  }{%
-    \instruction{表占位：tab/tab3（编号待 make\_tables.py 确认）尚未生成。}
-  }
-\end{table}
-
-\begin{table}[htbp]
-  \centering
-  \caption{恒温干燥阶段药材的水分浓度分布}
-  \label{tab:q2-concentration}
-  \IfFileExists{tab/tab4.tex}{%
-    \input{tab/tab4}%
-  }{%
-    \instruction{表占位：tab/tab4（编号待 make\_tables.py 确认）尚未生成。}
-  }
-\end{table}
+四个候选曲线的比较见表\ref{tab:ambient-models}。选中模型的渐近温度为\FitTempC{}~$^\circ$C，形状参数$\Bshape=\FitShapeB$，时间尺度$\taufit=\FitTauS$~s；完整数据均方根误差为\FitRMSE{}~K，前3~h训练后预测最后1~h的误差为\FitHoldoutRMSE{}~K。采用500次、每块5个连续观测点的循环移动块残差重采样，在固定初温与所选函数条件下，平台温度的95\%参数区间为\FitTempLowC{}--\FitTempHighC{}~$^\circ$C；它反映条件参数不确定性，不能当作未来烘房必然保持该温度的保证。第二方案仍在前4~h使用附件实测边界，之后取拟合渐近温度作为恒定设定值，相对湿度保持文献支持的20\%。
 
 \begin{figure}[htbp]
-  \centering
-  \IfFileExists{figs/q2_concentration.pdf}{%
-    \includegraphics[width=0.75\linewidth]{figs/q2_concentration.pdf}%
-  }{%
-    \instruction{图占位：figs/q2\_concentration.pdf 尚未生成（scripts/make\_figs.py）。}
-  }
-  \caption{恒温干燥阶段药材内部水分浓度分布（图待生成）}
-  \label{fig:q2-concentration}
+\centering
+\includegraphics[width=0.82\linewidth]{fig-ambient-fit.pdf}
+\caption{附件1温度观测、有限平台拟合及最后1~h的留出预测}
+\label{fig:ambient-fit}
 \end{figure}
+此方案回答“由已观测升温曲线外推后续恒温”的建模设想，主方案则回答“按已有干燥研究自主设置工况”；两者使用相同潜热、传质与收缩模型，以便比较温度输入的影响。
+
+\subsection{空气湿度与药材含水率的区分}
+将附件1的环境水分浓度解释为空气湿度比$\Yinf$（kg水/kg干空气），药材\C{}则以干物质为基准，二者不能直接相减。由水汽分压关系\cite{ashrae}，
+\begin{equation}
+\Yinf=0.621945\frac{\RH_\infty \psat(\Tinf)}{\pair-\RH_\infty \psat(\Tinf)},\qquad
+\Ysat=0.621945\frac{\psat(\T_s)}{\pair-\psat(\T_s)},\label{eq:humidity}
+\end{equation}
+其中相对湿度以0至1的比例输入，总压取标准大气压$\pair=101325$~Pa。饱和水汽压采用FAO56公式\cite{fao56}
+\begin{equation}
+\psat(\T)=610.8\exp\left[\frac{17.27(\T-273.15)}{\T-35.85}\right]\quad\mathrm{Pa}.\label{eq:sat}
+\end{equation}
+对应恒温工况的空气湿度比为\EnvC{}~kg/kg。相同相对湿度在不同温度下对应不同湿度比，敏感性试验改变温度时必须重新换算，不能把$\Yinf$固定而仍声称相对湿度不变。
+
+\subsection{由供水与气膜共同约束的表面蒸发}
+题目给出干基内部扩散系数和传质系数，但没有药材吸附等温线。若直接令\jvap{}正比于$(\C_s-\Yinf)$并乘潜热，便把气固质量基准混为一谈，也没有用气相蒸发能力约束冷却。为闭合边界，分别计算内部供水上限与外部气膜能力：
+\begin{align}
+\jsupply&=\rhod\hmass\C_s,\label{eq:supply}\\
+\jgas&=\frac{\hconv}{\cpm}\Le^{-2/3}
+\left[\Ysat(\T_s)-\Yinf\right],\label{eq:gas}\\
+\jvap&=\min(\jsupply,\jgas),\label{eq:limited}
+\end{align}
+其中以每千克干空气为基准的湿空气比热$\cpm=1006+1860\Yinf$~J/(kg\,K)\cite{psychrolib}，Lewis数$\Le=0.845$；气膜关系采用热质传递类比\cite{ashrae}，取低传质率及稀混合物近似，忽略强蒸发吹出对边界层的修正。式\eqref{eq:gas}中$\hconv/\cpm$的单位为kg/(m$^2$\,s)，故所得\jvap{}可直接进入潜热通量。\hmass{}沿用附录2给定的有效供水系数$8\times10^{-7}$~m/s，\hconv{}取25~W/(m$^2$\,K)，用于后续各问时明确视为同一烘房条件的模型设定。
+
+若表面湿润且内部供水充分，气膜能力限制蒸发；若表层逐渐变干，供水上限限制蒸发，避免假定干表面始终有无限饱和水汽供给。当$\Ysat<\Yinf$时，$\jgas<0$，式\eqref{eq:limited}允许冷凝及相应潜热释放。由于缺少吸附等温线，式\eqref{eq:supply}相当于以理想干燥界面估算供水上限，不能解释为已识别出该药材的平衡含水率；这是本文最主要的物理闭合不确定性。
+
+将\jvap{}统一代入式\eqref{eq:bcC}和\eqref{eq:bcT}，两场通过表面蒸发、温度相关扩散及变热物性相互耦合。采用最小值虽使切换点的一阶导数不连续，但通量本身连续；时间积分依靠自适应误差控制处理机制转换。
+
+\subsection{附录3变物性及结果}
+问题二、三在预热与恒温阶段均使用同一套附录3公式，而非在阶段间切换附录2与附录3：
+\begin{align}
+\rho&=650+128\C,&
+\cp&=1450+2736\frac{\C}{1+\C},\\
+\kcond&=0.21+0.38\frac{\C}{1+\C},&
+\Ddiff&=2.4\times10^{-3}\exp\left(-\frac{0.45}{\C}\right)
+\exp\left(-\frac{3850}{\T}\right).\label{eq:appendix3}
+\end{align}
+单位依次为kg/m$^3$、J/(kg\,K)、W/(m\,K)与m$^2$/s。干基\C{}与湿基$\C/(1+\C)$严格区分，Arrhenius指数中的\T{}始终为K。初始参考干物质密度按本问物性取$\rhodzero=(650+128\times2.55)/(1+2.55)$~kg/m$^3$。初始与轴心条件沿用问题一，表面使用实际水分通量控制的热质条件；内部守恒方程仍为式\eqref{eq:heat}、\eqref{eq:mass}。
+
+\input{tab/q2_temp}
+\input{tab/q2_moist}
+题目所需前3~h、每0.5~h分布列于表\ref{tab:q2-temperature}、\ref{tab:q2-moisture}。3~h时中心与表面温度分别为\QTwoCenterT{}~$^\circ$C、\QTwoSurfaceT{}~$^\circ$C，含水率分别为\QTwoCenterC{}、\QTwoSurfaceC{}~kg/kg。第一问与第二问在相同早期边界下仍可得到不同状态，原因是两问按照题意使用了不同经验物性。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.81\linewidth]{fig2-history.pdf}
+\caption{全程变物性模型在前3~h的温度和含水率响应}
+\label{fig:q2}
+\end{figure}
+完整\texttt{result2.xlsx}保存每1~s、每0.1~cm的温度与含水率，覆盖前3~h并继续至全域达标后的首个整秒。全过程结果与问题三共用同一物理模型，避免由不同初值或不同边界导致两问不一致。

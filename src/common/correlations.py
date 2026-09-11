@@ -212,16 +212,12 @@ def h_mass(problem: str) -> float:
 
 
 def latent_heat_vaporization(T: ArrayLike) -> np.ndarray:
-    """水的汽化潜热，J/kg。
+    """FAO56 Annex3式(3-1)，输入K、输出J/kg。
 
-    ⚠️ 题目**未给出**该参数。必须有明确出处（docs/DECISIONS.md D-003）。
-    出处未确定前不要实现本函数 —— 不要填一个"大概"的值进来。
+    Allen et al. (1998), https://www.fao.org/4/x0490e/x0490e0k.htm
     """
-    raise NotImplementedError(
-        "汽化潜热题目未给出，出处待定（docs/DECISIONS.md D-003）。\n"
-        "确定出处后：写清取自哪本手册/哪个来源、对应什么温度，再实现本函数。\n"
-        "AGENTS.md 铁律 2：任何数字必须有出处，不许编造。"
-    )
+    units.assert_kelvin(T, where="latent_heat_vaporization")
+    return 1e6 * (2.501 - 0.002361 * units.k_to_c(np.asarray(T, dtype=float)))
 
 
 def _at(where: str) -> str:

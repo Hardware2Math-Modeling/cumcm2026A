@@ -1,0 +1,17 @@
+\section{支撑材料与复现说明}
+\subsection{文件用途与运行方法}
+支撑材料包为\texttt{cumcm2026A\_support.zip}。主要文件包括：\texttt{src/}下的物性、空气湿度、边界、有限体积求解及导出模块；\texttt{scripts/}下的求解、验证和图表生成入口；\texttt{tests/}下的核验程序；\texttt{results/result1.xlsx}至\texttt{result4.xlsx}、数值摘要和验证报告；\texttt{paper/}下的论文源文件、自动生成表格与矢量插图；\texttt{docs/model/}下的模型规格和文献依据。具体清单随支撑包附带，原始题目附件按目录\texttt{problem/}读取。
+
+本次使用Python、NumPy、SciPy、pandas、openpyxl和Matplotlib完成求解与结果输出，以XeLaTeX编译中文论文。已配置环境时，在项目根目录执行：
+\begin{lstlisting}[language={},numbers=none]
+conda run -n 26A python scripts/run_pipeline.py
+\end{lstlisting}
+该入口依次生成主方案、附件拟合方案、验证报告、论文表图、源码附录、PDF与支撑包。单独计算四问可执行\texttt{python run\_all.py}；单独编译论文使用\texttt{latexmk -xelatex}，输出目录指定为\texttt{paper/build}。
+所有数值先以SI单位计算，写出时再换算；论文表格从结果工作簿或同一次计算的连续终点记录读取，摘要和正文关键数字通过自动生成的宏引用。原始题目数据不修改，失败的积分和格式校验会中止计算。
+
+\subsection{AI辅助使用说明}
+本解题过程使用AI辅助核对题面与格式、检索文献、推导和审查模型、编写Python程序及组织LaTeX正文。论文中数值由本地程序实际运行得到，文献按可核验来源列示；AI生成的数值建议不直接作为结果。此次生成不包含参赛身份、学校、签名或任何提交操作。
+
+\subsection{完整源程序}
+以下源程序从项目实际文件直接载入；相同代码也以可运行的文本文件提供。论文排版中的自动换行不改变支撑包内的文件内容。
+\input{source_listings}

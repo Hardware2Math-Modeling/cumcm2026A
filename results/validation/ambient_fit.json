@@ -1,0 +1,801 @@
+{
+  "source": {
+    "path": "problem\\附件\\附件1.xlsx",
+    "sha256": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+    "temperature_column": "温度",
+    "input_temperature_unit": "degC",
+    "fit_temperature_unit": "K",
+    "fit_time_unit": "s",
+    "sample_count": 241,
+    "time_range_s": [
+      0.0,
+      14400.0
+    ],
+    "initial_temperature_K": 301.15
+  },
+  "validation_protocol": {
+    "training_range_s": [
+      0,
+      10800
+    ],
+    "training_count": 181,
+    "holdout_range_s": [
+      10860.0,
+      14400
+    ],
+    "holdout_count": 60,
+    "selection_rule": "minimum last-hour holdout RMSE across four predeclared monotone asymptotic candidates, followed by refit on all data",
+    "warning": "The holdout selects the candidate and is not an untouched final test set; parameter intervals condition on the selected model."
+  },
+  "candidates": {
+    "exponential_free": {
+      "formula": "T(t)=S-A*exp(-t/tau)",
+      "parameter_count": 3,
+      "initial_temperature_fixed": false,
+      "parameters": {
+        "S_K": 323.3032774385799,
+        "A_K": 23.285168198667584,
+        "tau_s": 1776.1829003589316
+      },
+      "T_asymptote_C": 50.15327743857995,
+      "full_fit": {
+        "sample_count": 241,
+        "rmse_K": 0.265754301815833,
+        "mae_K": 0.20919956863917408,
+        "max_abs_error_K": 1.1318907600876287,
+        "mean_observed_minus_fitted_K": 4.245566553919271e-15,
+        "sse_K2": 17.020709093002626,
+        "aicc": -632.6369760560175,
+        "lag1_residual_correlation": 0.7219523761221708,
+        "durbin_watson": 0.536448005472824
+      },
+      "holdout": {
+        "sample_count": 60,
+        "rmse_K": 0.29209984114772913,
+        "mae_K": 0.24898841346735973,
+        "max_abs_error_K": 0.5023055551017706,
+        "mean_observed_minus_fitted_K": -0.24898841346735973,
+        "sse_K2": 5.119339031911716,
+        "aicc": -141.25058218146538,
+        "lag1_residual_correlation": -0.059609993031548694,
+        "durbin_watson": 0.5630728804018146
+      },
+      "training_fit": {
+        "sample_count": 181,
+        "rmse_K": 0.2741867998535918,
+        "mae_K": 0.21869042311967746,
+        "max_abs_error_K": 1.0437720065810936,
+        "mean_observed_minus_fitted_K": 1.8797584728804772e-11,
+        "sse_K2": 13.607290619725603,
+        "aicc": -462.2727333793961,
+        "lag1_residual_correlation": 0.7627993945170302,
+        "durbin_watson": 0.45704622271592066
+      },
+      "training_parameters": {
+        "S_K": 323.4199639140343,
+        "A_K": 23.313735920615454,
+        "tau_s": 1807.990226209926
+      },
+      "training_covariance": [
+        [
+          0.0011852871007402097,
+          0.00014075530238026279,
+          0.35048580018928577
+        ],
+        [
+          0.00014075530238026268,
+          0.0095231027859723,
+          -0.6956645540114459
+        ],
+        [
+          0.35048580018928577,
+          -0.6956645540114457,
+          221.8804128305734
+        ]
+      ],
+      "parameter_bounds": [
+        [
+          301.15,
+          0,
+          1
+        ],
+        [
+          501.15,
+          300,
+          144000
+        ]
+      ],
+      "uncertainty": {
+        "parameter_order": [
+          "S_K",
+          "A_K",
+          "tau_s"
+        ],
+        "covariance": [
+          [
+            0.0005804629314266049,
+            4.31218580142086e-05,
+            0.1733284774627884
+          ],
+          [
+            4.31218580142086e-05,
+            0.009042143573049116,
+            -0.6763560682001654
+          ],
+          [
+            0.1733284774627884,
+            -0.6763560682001654,
+            160.53875316695007
+          ]
+        ],
+        "parameter_correlation": [
+          [
+            1.0,
+            0.018822379287810782,
+            0.5677965298010138
+          ],
+          [
+            0.018822379287810782,
+            0.9999999999999998,
+            -0.561370709352651
+          ],
+          [
+            0.5677965298010138,
+            -0.561370709352651,
+            1.0
+          ]
+        ],
+        "standard_errors": {
+          "S_K": 0.024092798331173674,
+          "A_K": 0.09509018652336905,
+          "tau_s": 12.670388832508262
+        },
+        "conditional_95pct_intervals": {
+          "S_K": [
+            323.2558150708728,
+            323.35073980628704
+          ],
+          "A_K": [
+            23.09784228757699,
+            23.472494109758177
+          ],
+          "tau_s": [
+            1751.2224683869279,
+            1801.1433323309354
+          ]
+        },
+        "S_95pct_C": [
+          50.105815070872836,
+          50.20073980628706
+        ],
+        "assumptions": "Local nonlinear least-squares covariance; independent constant-variance residuals; candidate and fixed T0 treated as known; not a future-temperature prediction interval."
+      }
+    },
+    "exponential_fixed_initial": {
+      "formula": "T(t)=S-(S-T0)*exp(-t/tau)",
+      "parameter_count": 2,
+      "initial_temperature_fixed": true,
+      "parameters": {
+        "S_K": 323.36210323471585,
+        "tau_s": 1877.4954372246489
+      },
+      "T_asymptote_C": 50.21210323471587,
+      "full_fit": {
+        "sample_count": 241,
+        "rmse_K": 0.3359475553500359,
+        "mae_K": 0.2645626215445451,
+        "max_abs_error_K": 0.9563865572627606,
+        "mean_observed_minus_fitted_K": -0.037738047578307836,
+        "sse_K2": 27.199443146905367,
+        "aicc": -521.7152841701143,
+        "lag1_residual_correlation": 0.8323168223639883,
+        "durbin_watson": 0.33112584012727597
+      },
+      "holdout": {
+        "sample_count": 60,
+        "rmse_K": 0.3718736064515793,
+        "mae_K": 0.3388841470617346,
+        "max_abs_error_K": 0.5978518797350034,
+        "mean_observed_minus_fitted_K": -0.3388841470617346,
+        "sse_K2": 8.297398750518244,
+        "aicc": -114.49362368977394,
+        "lag1_residual_correlation": -0.05517210510306258,
+        "durbin_watson": 0.3474302528150641
+      },
+      "training_fit": {
+        "sample_count": 181,
+        "rmse_K": 0.34887768026147425,
+        "mae_K": 0.2837514406270323,
+        "max_abs_error_K": 0.8867960473481844,
+        "mean_observed_minus_fitted_K": -0.04505539834263368,
+        "sse_K2": 22.03053007701757,
+        "aicc": -377.1308577244429,
+        "lag1_residual_correlation": 0.8589264487147505,
+        "durbin_watson": 0.2774142998064171
+      },
+      "training_parameters": {
+        "S_K": 323.51972314962444,
+        "tau_s": 1914.0895510895873
+      },
+      "training_covariance": [
+        [
+          0.0018818891804346823,
+          0.46857380543755744
+        ],
+        [
+          0.4685738054375575,
+          229.76174215466682
+        ]
+      ],
+      "parameter_bounds": [
+        [
+          301.15,
+          1
+        ],
+        [
+          501.15,
+          144000
+        ]
+      ],
+      "uncertainty": {
+        "parameter_order": [
+          "S_K",
+          "tau_s"
+        ],
+        "covariance": [
+          [
+            0.0009183011921082213,
+            0.23162860985039904
+          ],
+          [
+            0.23162860985039904,
+            162.36567100635398
+          ]
+        ],
+        "parameter_correlation": [
+          [
+            0.9999999999999999,
+            0.5998636155653709
+          ],
+          [
+            0.5998636155653709,
+            1.0
+          ]
+        ],
+        "standard_errors": {
+          "S_K": 0.030303484817892173,
+          "tau_s": 12.742278878063923
+        },
+        "conditional_95pct_intervals": {
+          "S_K": [
+            323.30240720583646,
+            323.42179926359523
+          ],
+          "tau_s": [
+            1852.3939199415674,
+            1902.5969545077303
+          ]
+        },
+        "S_95pct_C": [
+          50.15240720583648,
+          50.271799263595256
+        ],
+        "assumptions": "Local nonlinear least-squares covariance; independent constant-variance residuals; candidate and fixed T0 treated as known; not a future-temperature prediction interval."
+      }
+    },
+    "logistic_fixed_initial": {
+      "formula": "T(t)=S-(S-T0)*(1+B)/(1+B*exp(t/tau))",
+      "parameter_count": 3,
+      "initial_temperature_fixed": true,
+      "parameters": {
+        "S_K": 323.15822110038613,
+        "B_dimensionless": 1.3430001453026552,
+        "tau_s": 1369.1833639776837
+      },
+      "T_asymptote_C": 50.00822110038615,
+      "full_fit": {
+        "sample_count": 241,
+        "rmse_K": 0.13663683817101366,
+        "mae_K": 0.11760210084217733,
+        "max_abs_error_K": 0.25420597000857015,
+        "mean_observed_minus_fitted_K": 0.00015304133335880635,
+        "sse_K2": 4.499379756434598,
+        "aicc": -953.285362303531,
+        "lag1_residual_correlation": 0.010082697969154755,
+        "durbin_watson": 1.9743633526253839
+      },
+      "holdout": {
+        "sample_count": 60,
+        "rmse_K": 0.15296891186253198,
+        "mae_K": 0.1359086535962329,
+        "max_abs_error_K": 0.255124342068882,
+        "mean_observed_minus_fitted_K": -0.014553636445830876,
+        "sse_K2": 1.4039692797844243,
+        "aicc": -218.87389681262582,
+        "lag1_residual_correlation": -0.06357330854759763,
+        "durbin_watson": 2.0527905158458863
+      },
+      "training_fit": {
+        "sample_count": 181,
+        "rmse_K": 0.13090231805561706,
+        "mae_K": 0.1117357716097699,
+        "max_abs_error_K": 0.25057321496746,
+        "mean_observed_minus_fitted_K": 6.98517931493134e-05,
+        "sse_K2": 3.101510453892441,
+        "aicc": -729.9204177195554,
+        "lag1_residual_correlation": 0.026588767366594202,
+        "durbin_watson": 1.9349781072268943
+      },
+      "training_parameters": {
+        "S_K": 323.1652842902065,
+        "B_dimensionless": 1.353656073159343,
+        "tau_s": 1372.5153384702216
+      },
+      "training_covariance": [
+        [
+          0.00027293097327675374,
+          0.00042005769687516206,
+          0.1302996581925102
+        ],
+        [
+          0.00042005769687516206,
+          0.002608864461429872,
+          0.6159038529900135
+        ],
+        [
+          0.1302996581925102,
+          0.6159038529900136,
+          157.7783970615521
+        ]
+      ],
+      "parameter_bounds": [
+        [
+          301.15,
+          0.001,
+          100
+        ],
+        [
+          501.15,
+          1000,
+          144000
+        ]
+      ],
+      "uncertainty": {
+        "parameter_order": [
+          "S_K",
+          "B_dimensionless",
+          "tau_s"
+        ],
+        "covariance": [
+          [
+            0.00015431050168678156,
+            0.00023962486521031991,
+            0.07464102810093
+          ],
+          [
+            0.00023962486521031991,
+            0.002451897292334593,
+            0.5602007318649925
+          ],
+          [
+            0.07464102810093,
+            0.5602007318649925,
+            139.2840054092428
+          ]
+        ],
+        "parameter_correlation": [
+          [
+            0.9999999999999998,
+            0.3895677553185342,
+            0.5091306556265671
+          ],
+          [
+            0.3895677553185342,
+            1.0,
+            0.9586099029388654
+          ],
+          [
+            0.5091306556265671,
+            0.9586099029388654,
+            1.0
+          ]
+        ],
+        "standard_errors": {
+          "S_K": 0.012422177815776973,
+          "B_dimensionless": 0.04951663652081584,
+          "tau_s": 11.801864488683252
+        },
+        "conditional_95pct_intervals": {
+          "S_K": [
+            323.13374963953254,
+            323.1826925612397
+          ],
+          "B_dimensionless": [
+            1.2454532859522,
+            1.4405470046531104
+          ],
+          "tau_s": [
+            1345.9339089209623,
+            1392.4328190344052
+          ]
+        },
+        "S_95pct_C": [
+          49.98374963953256,
+          50.03269256123974
+        ],
+        "assumptions": "Local nonlinear least-squares covariance; independent constant-variance residuals; candidate and fixed T0 treated as known; not a future-temperature prediction interval."
+      }
+    },
+    "weibull_fixed_initial": {
+      "formula": "T(t)=S-(S-T0)*exp(-(t/tau)**beta)",
+      "parameter_count": 3,
+      "initial_temperature_fixed": true,
+      "parameters": {
+        "S_K": 323.1664002599528,
+        "tau_s": 1884.0646019721853,
+        "beta_dimensionless": 1.1502892994769407
+      },
+      "T_asymptote_C": 50.01640025995283,
+      "full_fit": {
+        "sample_count": 241,
+        "rmse_K": 0.1441934441207992,
+        "mae_K": 0.12368383895289084,
+        "max_abs_error_K": 0.32860894502641713,
+        "mean_observed_minus_fitted_K": 0.004530363646821262,
+        "sse_K2": 5.010811587907749,
+        "aicc": -927.33970231571,
+        "lag1_residual_correlation": 0.10770619565575701,
+        "durbin_watson": 1.779094367847587
+      },
+      "holdout": {
+        "sample_count": 60,
+        "rmse_K": 0.1556603098323714,
+        "mae_K": 0.13697094847619648,
+        "max_abs_error_K": 0.27239373125513566,
+        "mean_observed_minus_fitted_K": -0.03225887276705824,
+        "sse_K2": 1.4538079234265915,
+        "aicc": -216.7809262126029,
+        "lag1_residual_correlation": -0.06346131269712973,
+        "durbin_watson": 1.9824168237191413
+      },
+      "training_fit": {
+        "sample_count": 181,
+        "rmse_K": 0.1407800007135269,
+        "mae_K": 0.11959680323575418,
+        "max_abs_error_K": 0.32092125643441705,
+        "mean_observed_minus_fitted_K": 0.005681144015464141,
+        "sse_K2": 3.587240556763015,
+        "aicc": -703.5859994152854,
+        "lag1_residual_correlation": 0.1545195250631011,
+        "durbin_watson": 1.681365415072175
+      },
+      "training_parameters": {
+        "S_K": 323.18220265130793,
+        "tau_s": 1886.7870644663296,
+        "beta_dimensionless": 1.1480297197052807
+      },
+      "training_covariance": [
+        [
+          0.0003245181532148529,
+          0.05641090880466363,
+          -4.724717621021692e-05
+        ],
+        [
+          0.05641090880466363,
+          27.889868602259565,
+          -0.0032038175318122165
+        ],
+        [
+          -4.724717621021691e-05,
+          -0.003203817531812217,
+          2.661142870067504e-05
+        ]
+      ],
+      "parameter_bounds": [
+        [
+          301.15,
+          1,
+          0.25
+        ],
+        [
+          501.15,
+          144000,
+          3
+        ]
+      ],
+      "uncertainty": {
+        "parameter_order": [
+          "S_K",
+          "tau_s",
+          "beta_dimensionless"
+        ],
+        "covariance": [
+          [
+            0.00017398457375793116,
+            0.03020438977321827,
+            -2.5960067869132036e-05
+          ],
+          [
+            0.03020438977321827,
+            24.09274179547359,
+            0.0007213098783456543
+          ],
+          [
+            -2.596006786913203e-05,
+            0.0007213098783456543,
+            2.4655326028266034e-05
+          ]
+        ],
+        "parameter_correlation": [
+          [
+            1.0,
+            0.46652141166080546,
+            -0.3963647979804375
+          ],
+          [
+            0.46652141166080546,
+            1.0000000000000002,
+            0.029595343968581978
+          ],
+          [
+            -0.3963647979804374,
+            0.029595343968581978,
+            1.0
+          ]
+        ],
+        "standard_errors": {
+          "S_K": 0.013190321215115694,
+          "tau_s": 4.908435778888585,
+          "beta_dimensionless": 0.004965412976607891
+        },
+        "conditional_95pct_intervals": {
+          "S_K": [
+            323.1404155707905,
+            323.19238494911514
+          ],
+          "tau_s": [
+            1874.395074148891,
+            1893.7341297954797
+          ],
+          "beta_dimensionless": [
+            1.1405075276265348,
+            1.1600710713273465
+          ]
+        },
+        "S_95pct_C": [
+          49.9904155707905,
+          50.04238494911516
+        ],
+        "assumptions": "Local nonlinear least-squares covariance; independent constant-variance residuals; candidate and fixed T0 treated as known; not a future-temperature prediction interval."
+      }
+    }
+  },
+  "selected_model": "logistic_fixed_initial",
+  "selected": {
+    "model": "logistic_fixed_initial",
+    "T_inf_K": 323.15822110038613,
+    "T_inf_ci95_K": [
+      323.1353394487901,
+      323.1815785826874
+    ],
+    "rmse_K": 0.13663683817101366,
+    "holdout_rmse_K": 0.15296891186253198,
+    "interval_method": "500-replicate circular moving-block residual bootstrap, block length 5 observations; conditional on selected model and fixed T0",
+    "formula": "T(t)=S-(S-T0)*(1+B)/(1+B*exp(t/tau))",
+    "parameters": {
+      "S_K": 323.15822110038613,
+      "B_dimensionless": 1.3430001453026552,
+      "tau_s": 1369.1833639776837
+    }
+  },
+  "selected_formula": "T(t)=S-(S-T0)*(1+B)/(1+B*exp(t/tau))",
+  "selected_parameters": {
+    "S_K": 323.15822110038613,
+    "B_dimensionless": 1.3430001453026552,
+    "tau_s": 1369.1833639776837
+  },
+  "recommended_temperature_K": 323.15822110038613,
+  "recommended_temperature_C": 50.00822110038615,
+  "recommended_relative_humidity": 0.2,
+  "relative_humidity_source": "Ju et al. 2016, doi:10.1515/ijfe-2015-0340; this script does not estimate RH",
+  "full_fit_rmse_K": 0.13663683817101366,
+  "holdout_rmse_K": 0.15296891186253198,
+  "covariance_uncertainty": {
+    "parameter_order": [
+      "S_K",
+      "B_dimensionless",
+      "tau_s"
+    ],
+    "covariance": [
+      [
+        0.00015431050168678156,
+        0.00023962486521031991,
+        0.07464102810093
+      ],
+      [
+        0.00023962486521031991,
+        0.002451897292334593,
+        0.5602007318649925
+      ],
+      [
+        0.07464102810093,
+        0.5602007318649925,
+        139.2840054092428
+      ]
+    ],
+    "parameter_correlation": [
+      [
+        0.9999999999999998,
+        0.3895677553185342,
+        0.5091306556265671
+      ],
+      [
+        0.3895677553185342,
+        1.0,
+        0.9586099029388654
+      ],
+      [
+        0.5091306556265671,
+        0.9586099029388654,
+        1.0
+      ]
+    ],
+    "standard_errors": {
+      "S_K": 0.012422177815776973,
+      "B_dimensionless": 0.04951663652081584,
+      "tau_s": 11.801864488683252
+    },
+    "conditional_95pct_intervals": {
+      "S_K": [
+        323.13374963953254,
+        323.1826925612397
+      ],
+      "B_dimensionless": [
+        1.2454532859522,
+        1.4405470046531104
+      ],
+      "tau_s": [
+        1345.9339089209623,
+        1392.4328190344052
+      ]
+    },
+    "S_95pct_C": [
+      49.98374963953256,
+      50.03269256123974
+    ],
+    "assumptions": "Local nonlinear least-squares covariance; independent constant-variance residuals; candidate and fixed T0 treated as known; not a future-temperature prediction interval."
+  },
+  "bootstrap_iid": {
+    "method": "iid centered residual bootstrap",
+    "replicates_requested": 500,
+    "replicates_successful": 500,
+    "seed": 20260911,
+    "block_length_observations": 1,
+    "block_duration_s": 60.0,
+    "S_95pct_K": [
+      323.1343616150541,
+      323.18071439585884
+    ],
+    "S_95pct_C": [
+      49.98436161505413,
+      50.030714395858865
+    ],
+    "S_standard_deviation_K": 0.011784199476695168,
+    "failures": [],
+    "interpretation": "Conditional parameter uncertainty with measured T0 fixed. Model choice, sensor bias, future controller changes and model-form error are not included."
+  },
+  "bootstrap_block5": {
+    "method": "circular moving-block residual bootstrap",
+    "replicates_requested": 500,
+    "replicates_successful": 500,
+    "seed": 20260912,
+    "block_length_observations": 5,
+    "block_duration_s": 300.0,
+    "S_95pct_K": [
+      323.1353394487901,
+      323.1815785826874
+    ],
+    "S_95pct_C": [
+      49.985339448790114,
+      50.031578582687416
+    ],
+    "S_standard_deviation_K": 0.012207831036610743,
+    "failures": [],
+    "interpretation": "Conditional parameter uncertainty with measured T0 fixed. Model choice, sensor bias, future controller changes and model-form error are not included."
+  },
+  "recommended_temperature_95pct_K": [
+    323.1353394487901,
+    323.1815785826874
+  ],
+  "recommended_temperature_95pct_C": [
+    49.985339448790114,
+    50.031578582687416
+  ],
+  "identifiability": {
+    "window_fits": [
+      {
+        "fit_end_s": 7200.0,
+        "sample_count": 121,
+        "parameters": {
+          "S_K": 323.1638760465203,
+          "B_dimensionless": 1.34428100755107,
+          "tau_s": 1370.0911910426607
+        },
+        "S_C": 50.013876046520295,
+        "S_standard_error_K": 0.0301269967735993
+      },
+      {
+        "fit_end_s": 9000.0,
+        "sample_count": 151,
+        "parameters": {
+          "S_K": 323.1404870461135,
+          "B_dimensionless": 1.3199990589722417,
+          "tau_s": 1361.6440613947686
+        },
+        "S_C": 49.990487046113515,
+        "S_standard_error_K": 0.0203813181969649
+      },
+      {
+        "fit_end_s": 10800.0,
+        "sample_count": 181,
+        "parameters": {
+          "S_K": 323.16528428329946,
+          "B_dimensionless": 1.353656110282605,
+          "tau_s": 1372.5153421367925
+        },
+        "S_C": 50.01528428329948,
+        "S_standard_error_K": 0.01652063367660199
+      },
+      {
+        "fit_end_s": 12600.0,
+        "sample_count": 211,
+        "parameters": {
+          "S_K": 323.15682179375546,
+          "B_dimensionless": 1.3408653540919413,
+          "tau_s": 1368.5151271780414
+        },
+        "S_C": 50.00682179375548,
+        "S_standard_error_K": 0.013985726180183001
+      },
+      {
+        "fit_end_s": 14400.0,
+        "sample_count": 241,
+        "parameters": {
+          "S_K": 323.15822110038613,
+          "B_dimensionless": 1.3430001453026552,
+          "tau_s": 1369.1833639776837
+        },
+        "S_C": 50.00822110038615,
+        "S_standard_error_K": 0.012422177815776973
+      }
+    ],
+    "scaled_distance_to_parameter_bounds": {
+      "S_K": 0.11004110550193076,
+      "B_dimensionless": 0.0013420014873041426,
+      "tau_s": 0.008819898290324417
+    },
+    "asymptote_minus_fitted_4h_K": 0.001039208466522723,
+    "last_hour_observed_mean_K": 323.14566666666667,
+    "last_hour_observed_mean_C": 49.99566666666669,
+    "last_hour_observed_slope_K_per_s": 6.362878577380873e-06,
+    "last_hour_observed_slope_95pct_K_per_s": [
+      -3.21072720301305e-05,
+      4.483302918489225e-05
+    ],
+    "description": "A late-record plateau, finite covariance and stability across truncated windows support a locally identifiable asymptote under the fitted model; none guarantees the unobserved long-term controller setting."
+  },
+  "decision_note": "The drying comparison should use this fitted constant only after the measured 4 h record, with literature RH 0.20 held independently; humidity is not fitted by this script.",
+  "limitations": [
+    "The record covers only 4 hours and does not prove indefinite asymptotic behavior.",
+    "Confidence intervals quantify conditional parameter uncertainty, not future observed temperature or material-model uncertainty.",
+    "Fixed T0 treats the first reading as known; thermometer calibration error and uncertainty in T0 are excluded.",
+    "The fitted approximately 50 C setpoint is an independent design comparison, not a claim of optimal medicinal quality.",
+    "Neither material moisture diffusivity nor shrinkage is reidentified from temperature data."
+  ],
+  "software": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "reproduction": "D:/anaconda/Scripts/conda.exe run -p D:/anaconda/envs/26A --no-capture-output python scripts/fit_ambient_temperature.py --bootstrap 500"
+}

@@ -25,7 +25,7 @@ from common import export, io_excel, paths, problem_spec  # noqa: E402
 from common.numerical_settings import production_options
 
 
-def run(problem: str) -> int:
+def run(problem: str, *, boundary=None) -> int:
     spec = problem_spec.get(problem)
     print("=" * 72)
     print(spec.describe())
@@ -40,7 +40,10 @@ def run(problem: str) -> int:
         return 1
 
     try:
-        sol = solver.solve(spec, **production_options(problem))
+        options = production_options(problem)
+        if boundary is not None:
+            options["boundary"] = boundary
+        sol = solver.solve(spec, **options)
     except NotImplementedError as e:
         print()
         print(f"⏸  {spec.name} 的求解器尚未实现。这不是故障，是框架的预期状态。")
@@ -61,6 +64,8 @@ def run(problem: str) -> int:
     sol.meta.setdefault("wall_time_s", round(wall, 3))
     print(f"  求解完成，耗时 {wall:.2f} s")
     print("  " + export.summarize(sol, spec))
+    if sol.meta.get("event_time_s") is not None and sol.meta["max_C_final_internal"] >= spec.extra.get("target_C", 0.15):
+        raise RuntimeError("下一输出时刻未严格低于阈值，拒绝误标达标结果")
     print("  正在流式写入结果文件……", flush=True)
 
     # 2) 交付物
@@ -93,8 +98,8 @@ def run(problem: str) -> int:
         if problem == "q4":
             inputs.append(paths.ROOT / "problem" / "附件" / "附件2.xlsx")
         manifest = {
-            "question_id": problem, "model_version": "effective-radial-v1",
-            "numerical_version": "accuracy-v2", "status": "computed",
+            "question_id": problem, "model_version": "latent-v2",
+            "numerical_version": "latent-validated-v1", "status": "computed",
             "run_command": f"python scripts/run_{problem}.py",
             "parameters": production_options(problem), "python": platform.python_version(),
             "packages": {"numpy": np.__version__, "scipy": scipy.__version__},
@@ -102,13 +107,15 @@ def run(problem: str) -> int:
                              for p in inputs},
             "event_time_s": sol.meta["event_time_s"],
             "mass_balance_relative": sol.meta["mass_balance_relative"],
-            "validation": ("results/validation/accuracy-q4.json" if problem == "q4"
-                           else "results/validation/accuracy.json"),
+            "validation": "results/validation/latent.json",
             "submission_file": str(dest.relative_to(paths.ROOT)),
             "submission_sha256": hashlib.sha256(dest.read_bytes()).hexdigest(),
-            "limitations": ["Pure convective thermal boundary; no latent heat",
-                            "Effective moisture Robin boundary",
-                            "Ambient conditions held at last observation after 4 h"],
+            "boundary_description": sol.meta["boundary_description"],
+            "latent_heat": sol.meta["latent_heat"],
+            "source_hashes": {str(p.relative_to(paths.ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                              for p in sorted((paths.ROOT / "src").rglob("*.py"))},
+            "limitations": ["One-dimensional radial model; end effects omitted",
+                            "Prescribed empirical heat capacity and shrinkage"],
         }
         (paths.RESULTS_DIR / f"{problem}_manifest.json").write_text(
             json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
