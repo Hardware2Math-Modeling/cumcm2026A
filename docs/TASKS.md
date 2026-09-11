@@ -64,9 +64,13 @@
       四问共用 `src/common/radial.py` 更少重复；细分只会增加转发层。若确需细分，属重构而非补功能。
 - [ ] 网格**收敛阶**的显式拟合测试 —— 目前只有加密差值表（`tab/q1_validation`），未拟合观测阶
 - [ ] `src/common/plotting.py` 无任何测试覆盖
-- [ ] `results/q*_manifest.json` 目前**不可由 `scripts/_runner.py` 复现**：入库的 manifest 写的是
-      `status="computed_and_readback_verified"` 与 4 项 packages，而脚本只写 `status="computed"`
-      与 numpy/scipy 2 项。需让脚本与入库产物对齐，否则「独立目录复算一致」这一 claim 不成立于 manifest。
+- [ ] ⚠️ **manifest 有生成顺序陷阱**：`results/q*_manifest.json` 不是一次写成的。`_runner.py` 只写
+      `status="computed"` 与 numpy/scipy 两项；随后 `verify_accuracy_outputs.py` 改写为
+      `computed_and_readback_verified`，`verify_accuracy_reproduction.py` 再补 `portability_test`、
+      `code_hashes` 与 pandas/openpyxl。**只跑 `make qN` 或 `run_all.py` 会把 manifest 降级回
+      `computed`**，丢掉复现证据。任何改了 `src/**` 的重跑都必须把验证链跑完
+      （见 `results/validation/accuracy-methods.md` §环境、复现与交接），否则 manifest 里的
+      `code_hashes` 与当前代码不符 —— 这是静默失效，符合铁律 10 该报出来的情形。
 
 ---
 
