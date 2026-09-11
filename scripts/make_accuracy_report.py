@@ -112,7 +112,10 @@ def main():
         ax.legend(fontsize=9)
     fig.tight_layout()
     (ROOT / "paper" / "figs").mkdir(parents=True, exist_ok=True)
-    fig.savefig(ROOT / "paper" / "figs" / "fig1-accuracy.pdf")
+    # 与 src/common/plotting.py 的 _save() 保持一致：去掉 PDF 的 /CreationDate，
+    # 否则 paper/figs/*.pdf 每次重跑字节都不同（交付物字节漂移）。见 main 的 76dad24。
+    fig.savefig(ROOT / "paper" / "figs" / "fig1-accuracy.pdf",
+                metadata={"CreationDate": None, "ModDate": None})
     fig.savefig(ROOT / "outputs" / "cache" / "fig1-accuracy.png", dpi=160)
     plt.close(fig)
     print("Accuracy report and figure generated.")
