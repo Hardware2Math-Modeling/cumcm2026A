@@ -22,6 +22,9 @@ setup()
 from common import io_excel, paths, plotting, units  # noqa: E402
 from common.solution import Solution  # noqa: E402
 
+#: 要出图的问题号。四问都要出，漏一个就会让对应论文小节引用到不存在的图。
+PROBLEMS: tuple[int, ...] = (1, 2, 3, 4)
+
 
 def load_solution(problem: str) -> Solution | None:
     """把 results/resultN.xlsx 读回成 Solution（SI 单位）。
@@ -32,10 +35,16 @@ def load_solution(problem: str) -> Solution | None:
     if not path.exists():
         return None
 
+    # 工作表名以模板实测为准（AGENTS.md 铁律 3）：result1/2 是「温度」+「水分浓度」，
+    # result3/4 是 Sheet1。此处曾写死 io_excel.SHEET_MOISTURE，
+    # 导致问题 3/4 永远被"跳过"、一张图都出不来。
+    layout = io_excel.layout(problem)
+    sheet_of = {field: name for name, field in layout.sheets}
+
     sheets = pd.read_excel(path, sheet_name=None)
-    df_c = sheets.get(io_excel.SHEET_MOISTURE)
+    df_c = sheets.get(sheet_of.get("C"))
     if df_c is None:
-        print(f"  !! {paths.rel(path)} 里没有「{io_excel.SHEET_MOISTURE}」工作表，跳过")
+        print(f"  !! {paths.rel(path)} 里没有「{sheet_of.get('C')}」工作表，跳过")
         return None
 
     # 时间列：按模板表头判断单位（h 还是 s）
@@ -50,9 +59,28 @@ def load_solution(problem: str) -> Solution | None:
         return None
 
     C = df_c[cols].to_numpy(dtype=float)
+    r_cm = np.asarray(r_cm, dtype=float)
+
+    # 问题 4 的固定物理位置会随失水收缩落到域外，导出层按 R(t) 掩码成 NaN
+    # （AGENTS.md §5：域外留空）。有效时段过短的位置（如 1.9 cm：只在最初几分钟
+    # 位于域内）画出来是一条近乎空的曲线，反而误导读者，故按覆盖率阈值剔除并报告。
+    MIN_COVERAGE = 0.5
+    coverage = np.mean(np.isfinite(C), axis=0)
+    keep = [i for i in range(len(cols)) if coverage[i] >= MIN_COVERAGE]
+    if not keep:
+        print(f"  !! {paths.rel(path)} 的浓度列有效覆盖率全部低于 {MIN_COVERAGE:.0%}，跳过")
+        return None
+    if len(keep) != len(cols):
+        dropped = [(cols[i], f"{coverage[i]:.0%}") for i in range(len(cols)) if i not in keep]
+        print(f"    · 剔除有效时段过短的位置列 {dropped}（问题 4 收缩所致）")
+        cols = [cols[i] for i in keep]
+        r_cm = r_cm[keep]
+        C = C[:, keep]
+
     r = units.cm_to_m(r_cm)
 
-    df_t = sheets.get(io_excel.SHEET_TEMPERATURE)
+    t_sheet = sheet_of.get("T")
+    df_t = sheets.get(t_sheet) if t_sheet else None
     if df_t is not None:
         T = units.c_to_k(df_t[cols].to_numpy(dtype=float))
     else:
@@ -130,7 +158,7 @@ def main() -> int:
     paths.FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     total = 0
     any_found = False
-    for n in (1, 2, 3, 4):
+    for n in PROBLEMS:
         problem = f"q{n}"
         sol = load_solution(problem)
         if sol is None:

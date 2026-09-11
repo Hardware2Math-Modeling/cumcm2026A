@@ -31,6 +31,8 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
+from openpyxl import Workbook
+from openpyxl.cell import WriteOnlyCell
 
 from . import paths
 
@@ -211,9 +213,20 @@ def write_result(problem: str, sheets: dict[str, pd.DataFrame]) -> paths.Path:
 
     dest = paths.result_path(problem)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with pd.ExcelWriter(dest, engine="openpyxl") as writer:
-        for name, df in rounded.items():
-            df.to_excel(writer, sheet_name=name, index=False)
+    # 全过程result2可能有数百万单元格，流式写入避免openpyxl常规模式内存膨胀。
+    wb = Workbook(write_only=True)
+    for name, df in rounded.items():
+        ws = wb.create_sheet(name)
+        ws.freeze_panes = "B2"
+        ws.append(list(df.columns))
+        for row in df.itertuples(index=False, name=None):
+            cells = []
+            for value in row:
+                cell = WriteOnlyCell(ws, value=None if pd.isna(value) else float(value))
+                cell.number_format = "0.0000"
+                cells.append(cell)
+            ws.append(cells)
+    wb.save(dest)
     return dest
 
 
@@ -262,7 +275,21 @@ def _validate(problem: str, sheets: dict[str, pd.DataFrame], lay: ResultLayout) 
                 )
 
         vals = df.iloc[:, 1:].to_numpy(dtype=float) if df.shape[1] > 1 else np.empty((0, 0))
-        if vals.size and not np.all(np.isfinite(vals)):
+        if lay.problem == "q4" and vals.size and np.all(np.isfinite(t)):
+            # 用户确认：只允许实际药材域外留空；半径不信任调用方，直接核对附件2。
+            radius_data = read_attachment(2)
+            rt = radius_data.iloc[:, 0].to_numpy(float)
+            rr = radius_data.iloc[:, 1].to_numpy(float)
+            if t.min() < rt[0] or t.max() > rt[-1]:
+                errors.append("第四问输出时间超出附件2覆盖范围")
+            R_cm = np.interp(t, rt, rr)
+            outside = np.zeros_like(vals, dtype=bool)
+            outside[:, :-1] = np.arange(20)[None, :]*0.1 > R_cm[:, None]+1e-12
+            if np.any(~np.isfinite(vals[~outside])):
+                errors.append("第四问药材内部或表面含NaN/Inf；仅域外允许留空")
+            if np.any(~np.isnan(vals[outside])):
+                errors.append("第四问域外位置必须留空，不能填入虚构药材值")
+        elif vals.size and not np.all(np.isfinite(vals)):
             bad = [c for c in df.columns[1:] if not _finite(df[c])]
             errors.append(f"工作表「{name}」以下列含 NaN/Inf：{bad}")
 

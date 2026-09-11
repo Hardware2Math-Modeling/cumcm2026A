@@ -56,6 +56,7 @@ import matplotlib  # noqa: E402
 # 必须在 import pyplot 之前设置，否则在无头环境（CI / 服务器）会失败
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np
 
 from . import units  # noqa: E402
 from .solution import Solution  # noqa: E402
@@ -88,7 +89,7 @@ def apply_style() -> None:
             "font.size": 9,
             "axes.labelsize": 10,
             "axes.titlesize": 10,
-            "legend.fontsize": 8,
+            "legend.fontsize": 9,
             "xtick.labelsize": 9,
             "ytick.labelsize": 9,
             "figure.figsize": _FIGSIZE,
@@ -115,6 +116,21 @@ def _out_path(out: str | Path) -> Path:
         p = paths.FIGURES_DIR / p.name
     p.parent.mkdir(parents=True, exist_ok=True)
     return p
+
+
+def _save(fig, out: str | Path) -> Path:
+    """保存为矢量 PDF，且**字节可复现**。
+
+    matplotlib 默认把当前时间写进 PDF 的 /CreationDate，于是每次重跑
+    paper/figs/*.pdf 的字节都不同（实测文件大小完全一致、图形内容一致，
+    唯一差别就是那个时间戳）。这些 PDF 是**要入库的交付物**，字节漂移会让
+    git status 永远脏、也让 code review 分不清图到底有没有真的变。
+    故显式去掉时间戳字段（metadata 值为 None 表示不写该字段）。
+    """
+    dest = _out_path(out)
+    fig.savefig(dest, metadata={"CreationDate": None, "ModDate": None})
+    plt.close(fig)
+    return dest
 
 
 def _cjk_warning() -> str | None:
@@ -181,9 +197,7 @@ def plot_profiles(
     ax.set_ylabel(ylabel)
     ax.set_title(title or f"{label}的径向分布")
     ax.legend()
-    fig.savefig(_out_path(out))
-    plt.close(fig)
-    return _out_path(out)
+    return _save(fig, out)
 
 
 # --- 图 2：若干位置的时间历程 -------------------------------------------------
@@ -213,9 +227,7 @@ def plot_history(
     ax.set_ylabel(ylabel)
     ax.set_title(title or f"{label}的时间历程")
     ax.legend()
-    fig.savefig(_out_path(out))
-    plt.close(fig)
-    return _out_path(out)
+    return _save(fig, out)
 
 
 # --- 图 3：网格收敛性（log-log）---------------------------------------------
@@ -257,9 +269,7 @@ def plot_grid_convergence(
     ax.set_ylabel("误差 E(h)")
     ax.set_title(title)
     ax.legend()
-    fig.savefig(_out_path(out))
-    plt.close(fig)
-    return _out_path(out)
+    return _save(fig, out)
 
 
 def check_fonts(verbose: bool = True) -> bool:

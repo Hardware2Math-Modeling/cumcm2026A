@@ -13,7 +13,6 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
 import pandas as pd
 
@@ -81,29 +80,126 @@ TABLES: dict[str, tuple[str, str]] = {
     "q4_moist": ("考虑收缩的药材烘干过程的水分浓度", "tab:q4-moisture"),
 }
 
+#: csv 名 -> 时间列单位。题目表 1/表 2 用秒，表 3~表 6 用小时。
+#: 必须写进表头 —— 否则「时间」一列是秒还是小时无法判读。
+TIME_UNIT: dict[str, str] = {
+    "q1_temp": "s",
+    "q1_moist": "s",
+    "q2_temp": "h",
+    "q2_moist": "h",
+    "q3_moist": "h",
+    "q4_moist": "h",
+}
+
+#: csv 名 -> 表内数值单位（温度 °C、含水率 kg/kg）。距离列一律 cm。
+VALUE_UNIT: dict[str, str] = {
+    "q1_temp": "°C",
+    "q2_temp": "°C",
+    "q1_moist": "kg/kg",
+    "q2_moist": "kg/kg",
+    "q3_moist": "kg/kg",
+    "q4_moist": "kg/kg",
+}
+
 
 def main() -> int:
+    # 本次用户只要求第一问论文：数值表直接从正式xlsx读取，不从手抄CSV拼装。
+    import json
+    source = paths.RESULTS_DIR / "result1.xlsx"
+    sheets = pd.read_excel(source, sheet_name=None)
+    paths.TABLES_DIR.mkdir(parents=True, exist_ok=True)
+    times = [100,300,600,900,1200,1500,1800]
+    for sheet,key,unit in (("温度","q1_temp","°C"),("水分浓度","q1_moist","kg/kg")):
+        df=sheets[sheet].set_index(sheets[sheet].columns[0])
+        df.columns=[str(c) for c in df.columns]
+        chosen=df.loc[times,["0","0.5","1","1.5","2"]].copy()
+        chosen.index.name="时间/s"
+        chosen=chosen.reset_index()
+        caption,label=TABLES[key]
+        text=to_booktabs(chosen,caption+f"（{unit}；距离单位：cm）",label)
+        (paths.TABLES_DIR/f"{key}.tex").write_text(text,encoding="utf-8")
+    report=json.loads((paths.RESULTS_DIR/"validation/numerics.json").read_text(encoding="utf-8"))
+    grid=[x for x in report["grid"] if x["q"]=="q1"]
+    rows=[]
+    for g in grid:
+        rows.append([g["n"], "--" if "delta_T_K" not in g else f'{g["delta_T_K"]:.2e}',
+                     "--" if "delta_C" not in g else f'{g["delta_C"]:.2e}'])
+    frame=pd.DataFrame(rows,columns=["节点数",r"相邻加密温度差/K",r"相邻加密含水率差"])
+    # 科学计数法列须保留字符串，避免四位小数把误差显示成0。
+    tex=to_booktabs(frame,"空间网格加密验证（七个指定时刻、21个输出位置的最大差）","tab:validation")
+    for g in grid[1:]:
+        for key in ("delta_T_K","delta_C"):
+            tex=tex.replace(f'{g[key]:.4f}',f'{g[key]:.2e}',1)
+    (paths.TABLES_DIR/"q1_validation.tex").write_text(tex,encoding="utf-8")
+    summary=json.loads((paths.RESULTS_DIR/"q1_summary.json").read_text(encoding="utf-8"))
+    temperature=sheets["温度"].set_index(sheets["温度"].columns[0])
+    moisture=sheets["水分浓度"].set_index(sheets["水分浓度"].columns[0])
+    scalars={"QOneCenterT":f'{temperature.loc[1800,"0"]:.4f}',
+             "QOneSurfaceT":f'{temperature.loc[1800,"2"]:.4f}',
+             "QOneCenterC":f'{moisture.loc[1800,"0"]:.4f}',
+             "QOneSurfaceC":f'{moisture.loc[1800,"2"]:.4f}',
+             "QOneMassError":f'{summary["mass_balance_relative"]:.2e}',
+             "QOneEnergyError":f'{summary["q1_energy_balance_relative"]:.2e}'}
+    temporal=next(x for x in report["time"] if x["q"]=="q1")
+    scalars["QOneTimeErrorT"]=f'{temporal["delta_T_K"]:.2e}'
+    scalars["QOneTimeErrorC"]=f'{temporal["delta_C"]:.2e}'
+    (paths.TABLES_DIR/"q1_values.tex").write_text("\n".join(
+        "\\newcommand{\\"+k+"}{"+v+"}" for k,v in scalars.items())+"\n",encoding="utf-8")
+    # 符号表从唯一真源解析生成，不手工复制一套定义。
+    notation=(paths.ROOT/"docs/NOTATION.md").read_text(encoding="utf-8")
+    section=notation.split("## 0.",1)[1].split("## 1.",1)[0]
+    symbol_rows=[]
+    for line in section.splitlines():
+        fields=[x.strip() for x in line.strip().strip("|").split("|")]
+        if len(fields)==4 and fields[0].startswith("$") and fields[0] not in {r"$\xi$",r"$R_0$",r"$w$",r"$\theta$"}:
+            symbol_rows.append(fields[0]+" & "+fields[3]+r" \\")
+    # ⚠️ 必须用 tabular 而不是 longtable：longtable **即便没有 \caption 也会步进
+    # table 计数器**（已实测：同样的文档，有 longtable 时下一张表编成"表 2"，
+    # 没有时编成"表 1"）。符号表若吃掉表 1，题目要求的表 1（30 分钟内药材的
+    # 温度）就会被编成表 2、表 2 变表 3，与题面表格编号全部错位。
+    # 符号表本身很短，不需要 longtable 的跨页能力。
+    (paths.TABLES_DIR/"notation.tex").write_text(
+        "\n".join([r"\begin{center}", r"\begin{tabular}{ll}", r"\toprule 符号 & 含义 \\ \midrule",
+                   *symbol_rows, r"\bottomrule", r"\end{tabular}", r"\end{center}"]) + "\n",
+        encoding="utf-8")
+    print("已从result1.xlsx及验证报告生成第一问表格、数值宏、符号表。")
+    # 第二~四问的展示表由 results/tables/*.csv 生成。q1 的两张已由上面
+    # 从 result1.xlsx 直接选中题目指定的 7 时刻 x 5 位置，这里跳过以免被覆盖。
+    tables_from_csvs(skip={"q1_temp", "q1_moist"})
+    return 0
+
+
+def tables_from_csvs(skip: set[str] | None = None) -> int:
+    """把 results/tables/*.csv 逐个转成 paper/tab/*.tex，返回生成个数。
+
+    `skip` 里的名字不生成 —— 它们已由 `main()` 用更严格的列筛选写过。
+    时间列与数值列的单位都写进表头/表题：题目表 1/表 2 用秒，表 3~表 6 用小时。
+    """
+    skip = skip or set()
     src_dir = paths.RESULTS_TABLES
     csvs = sorted(src_dir.glob("*.csv")) if src_dir.exists() else []
     if not csvs:
         print(f"⚠️ {paths.rel(src_dir)} 下没有 csv。先跑 make q1..q4。")
-        print("   本步骤不需要求解器已实现 —— 求解器就绪后会自动产出。")
         return 0
 
     paths.TABLES_DIR.mkdir(parents=True, exist_ok=True)
     made = 0
     for csv in csvs:
-        caption, label = TABLES.get(csv.stem, (csv.stem, f"tab:{csv.stem}"))
+        if csv.stem in skip:
+            continue
         df = pd.read_csv(csv)
-        tex = to_booktabs(df, caption, label)
+        df = df.rename(columns={df.columns[0]: f"时间/{TIME_UNIT.get(csv.stem, 's')}"})
+        caption, label = TABLES.get(csv.stem, (csv.stem, f"tab:{csv.stem}"))
+        if csv.stem in VALUE_UNIT:
+            caption = f"{caption}（{VALUE_UNIT[csv.stem]}；距离单位：cm）"
         dest = paths.TABLES_DIR / f"{csv.stem}.tex"
-        dest.write_text(tex, encoding="utf-8")
+        dest.write_text(to_booktabs(df, caption, label), encoding="utf-8")
         print(f"  {paths.rel(csv)}  ->  {paths.rel(dest)}  ({df.shape[0]} 行 x {df.shape[1]} 列)")
         made += 1
 
-    print(f"\n生成 {made} 个表格片段。论文里用 \\input{{tab/<name>}} 引入。")
+    print(f"\n由 csv 生成 {made} 个表格片段。论文里用 \\input{{tab/<name>}} 引入。")
     print("⚠️ 不要把表格内容手抄进 paper/sections/ —— 数字只有一处来源。")
-    return 0
+    return made
 
 
 if __name__ == "__main__":

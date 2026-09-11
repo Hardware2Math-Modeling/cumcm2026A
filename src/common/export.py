@@ -55,10 +55,17 @@ def result_sheets(sol: Solution, spec: ProblemSpec) -> dict[str, pd.DataFrame]:
     for sheet_name, field in lay.sheets:
         df = pd.DataFrame({TIME_HEADER: sol.t})  # 单位：秒（模板如此）
 
-        if field == "T":
-            vals = units.k_to_c(_extract(sol.T, sol.r, target_cm))
+        values = sol.T if field == "T" else sol.C
+        if spec.uses_shrinkage and sol.meta.get("coordinate") == "material":
+            vals = np.empty((len(sol.t), len(target_cm)))
+            for i, R in enumerate(sol.meta["R"]):
+                physical_r = sol.r / spec.geometry.radius0 * R
+                vals[i] = np.interp(units.cm_to_m(target_cm), physical_r, values[i],
+                                    right=np.nan)
         else:
-            vals = _extract(sol.C, sol.r, target_cm)
+            vals = _extract(values, sol.r, target_cm)
+        if field == "T":
+            vals = units.k_to_c(vals)
 
         for j, head in enumerate(headers):
             if has_surface_col and head == SURFACE_HEADER:
@@ -104,18 +111,32 @@ def table_rows(
     返回的 DataFrame 索引单位由 `TABLE_TIME_UNIT` 决定（q1 秒，q2~q4 小时）。
     """
     field = field.upper()
-    idx = _sample_rows(sol.t, np.asarray(times_s, dtype=float))
+    times_s = np.asarray(times_s, dtype=float)
+    if np.any(times_s < sol.t[0]) or np.any(times_s > sol.t[-1]):
+        raise ValueError("展示时间超出求解结果，不允许最近邻冒充")
 
     cols: dict[str, np.ndarray] = {}
-    r_cm = units.m_to_cm(sol.r)
     for d in distances_cm:
-        j = int(np.argmin(np.abs(r_cm - d)))
-        vals = units.k_to_c(sol.T[idx, j]) if field == "T" else sol.C[idx, j]
-        cols[f"{d:g}"] = np.asarray(vals)
-
+        cols[f"{d:g}"] = []
     if include_surface:
-        s = units.k_to_c(sol.T[idx, -1]) if field == "T" else sol.C[idx, -1]
-        cols[SURFACE_HEADER] = np.asarray(s)
+        cols[SURFACE_HEADER] = []
+    values = sol.T if field == "T" else sol.C
+    for t in times_s:
+        event_time = sol.meta.get("event_time_s")
+        if event_time is not None and abs(t-event_time) < 1e-6:
+            vals = np.asarray(sol.meta[f"event_{field}"])
+            R = sol.meta["event_R"]
+            r = np.asarray(sol.meta["internal_xi"])*R
+        else:
+            vals = np.asarray([np.interp(t, sol.t, values[:,j]) for j in range(sol.n_r)])
+            R = np.interp(t, sol.t, sol.meta["R"]) if spec.uses_shrinkage else spec.geometry.radius0
+            r = sol.r/spec.geometry.radius0*R
+        if field == "T":
+            vals = units.k_to_c(vals)
+        for d in distances_cm:
+            cols[f"{d:g}"].append(np.interp(units.cm_to_m(d), r, vals, right=np.nan))
+        if include_surface:
+            cols[SURFACE_HEADER].append(vals[-1])
 
     index = np.asarray(times_s, dtype=float)
     if TABLE_TIME_UNIT.get(spec.name, "s") == "h":

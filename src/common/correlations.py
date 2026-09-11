@@ -3,9 +3,9 @@
 铁律（AGENTS.md 铁律 5）：ρ、c_p、k、D 一律通过本模块获取。
 在 src/q*/ 里直接写常数（如 0.36）属于严重错误。
 
-⚠️ 当前状态：**接口已冻结，实现待填**。
-   公式请从 problem/A题.pdf 的附录逐字抄录到 docs/model/correlations.md，
-   再由 @impl 实现于此。本文件不预先填入任何公式，防止与原文不一致。
+所有系数已按 problem/A题.pdf 附录 2/3/4 逐条核对，核验记录见
+docs/model/correlations_verified.md（附录 2/3/4 各自的公式与量纲结论）。
+改公式前先改那份核验记录，再改这里 —— 顺序反了就会失去可追溯性。
 
 接口约定（不要改）：
     - C 一律是**干基**含水率 (kg/kg)。公式里需要湿基 w = C/(1+C) 时，在函数内部换算，
@@ -121,6 +121,22 @@ class Appendix2(_NotImplementedPropertySet):
     name = "appendix2"
     appendix = 2
 
+    def rho(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return np.full(np.broadcast_shapes(C.shape, T.shape), 820.0)
+
+    def cp(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return np.full(np.broadcast_shapes(C.shape, T.shape), 2600.0)
+
+    def k(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return np.full(np.broadcast_shapes(C.shape, T.shape), 0.36)
+
+    def D(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return _diffusion(C, T, 7e-9, 0.89, 0.0)
+
 
 class Appendix3(_NotImplementedPropertySet):
     """问题 2、3：变物性，ρ/c_p/k 依赖 C，D 依赖 C 与 T。见 docs/model/correlations.md §3。"""
@@ -128,12 +144,50 @@ class Appendix3(_NotImplementedPropertySet):
     name = "appendix3"
     appendix = 3
 
+    def rho(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 650.0 + 128.0 * C
+
+    def cp(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 1450.0 + 2736.0 * wet_basis(C)
+
+    def k(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 0.21 + 0.38 * wet_basis(C)
+
+    def D(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return _diffusion(C, T, 2.4e-3, 0.45, 3850.0)
+
 
 class Appendix4(_NotImplementedPropertySet):
     """问题 4：变物性（与附录 3 数值不同）+ 尺寸收缩。见 docs/model/correlations.md §4。"""
 
     name = "appendix4"
     appendix = 4
+
+    def rho(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 760.0 + 90.0 * C
+
+    def cp(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 1850.0 + 2150.0 * wet_basis(C)
+
+    def k(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return 0.12 + 0.20 * wet_basis(C)
+
+    def D(self, C, T):
+        C, T = _prepare(C, T, where=self.name)
+        return _diffusion(C, T, 4.2e-4, 0.30, 3850.0)
+
+
+def _diffusion(C, T, prefactor, moisture_scale, temperature_scale):
+    inverse = np.full_like(C, np.inf)
+    np.divide(moisture_scale, C, out=inverse, where=C > 0)
+    return prefactor * np.exp(-inverse - temperature_scale / T)
 
 
 # --- 工况参数（不是"物性"，但同样集中在这里）--------------------------------
@@ -145,17 +199,16 @@ def h_conv(problem: str) -> float:
     问题 1 由附录 2 给出。问题 2/3/4 题目是否给出需核对 —— 若未给出，
     必须在 docs/DECISIONS.md 里记录取值与出处（AGENTS.md 铁律 2）。
     """
-    raise NotImplementedError(
-        f"h_conv({problem!r}) 尚未实现。请在 docs/model/correlations.md 中确认"
-        f"各问题对应的对流换热系数及其出处。"
-    )
+    if problem not in {"q1", "q2", "q3", "q4"}:
+        raise ValueError(f"未知题号: {problem}")
+    return 25.0
 
 
 def h_mass(problem: str) -> float:
     """对流传质系数，m/s。问题 1 由附录 2 给出。"""
-    raise NotImplementedError(
-        f"h_mass({problem!r}) 尚未实现。见 docs/model/correlations.md。"
-    )
+    if problem not in {"q1", "q2", "q3", "q4"}:
+        raise ValueError(f"未知题号: {problem}")
+    return 8e-7
 
 
 def latent_heat_vaporization(T: ArrayLike) -> np.ndarray:

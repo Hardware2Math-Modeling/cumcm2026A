@@ -82,7 +82,9 @@ paper/build/*
 *.lot
 *.out
 *.run.xml
-*.synctex.gz
+# latexmk 崩溃时会留下 "main.synctex(busy)" 这种无扩展名变体，
+# 只挡 *.synctex.gz 挡不住它 —— 必须用通配。
+*.synctex*
 *.toc
 *.xdv
 *.nav
