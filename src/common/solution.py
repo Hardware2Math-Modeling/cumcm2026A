@@ -89,10 +89,21 @@ class Solution:
         return float(self.t[idx[0]])
 
     def summary(self) -> str:
+        def span(a: np.ndarray, fmt: str) -> str:
+            """min~max，忽略 NaN。
+
+            问题 4 的固定物理位置会随收缩落到域外并被掩码成 NaN，
+            直接用 ndarray.min()/max() 会让整条摘要变成 "nan~nan"。
+            """
+            finite = a[np.isfinite(a)]
+            if finite.size == 0:
+                return "—"
+            return f"{finite.min():{fmt}}~{finite.max():{fmt}}"
+
         return (
             f"Solution({self.n_t} x {self.n_r}) "
             f"t: {self.t[0]:.1f}~{self.t[-1]:.1f} s | "
             f"r: {self.r[0] * 100:.2f}~{self.r[-1] * 100:.2f} cm | "
-            f"T: {self.T.min():.2f}~{self.T.max():.2f} K | "
-            f"C: {self.C.min():.4f}~{self.C.max():.4f} kg/kg"
+            f"T: {span(self.T, '.2f')} K | "
+            f"C: {span(self.C, '.4f')} kg/kg"
         )

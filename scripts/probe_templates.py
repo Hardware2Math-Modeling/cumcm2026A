@@ -21,11 +21,13 @@ def main() -> int:
     print("=" * 72)
     print("交付模板结构探查 —— 以实际文件为准，不要按题目文字描述猜测")
     print("=" * 72)
+    missing: list[str] = []
     for n in (1, 2, 3, 4):
         try:
             print(io_excel.probe_template(f"q{n}"))
         except FileNotFoundError as e:
             print(f"  !! {e}")
+            missing.append(f"q{n}")
         print("-" * 72)
 
     print()
@@ -41,6 +43,14 @@ def main() -> int:
             f"  列名={list(df.columns)}  行数={len(df)}\n"
             f"  时间 {t.min():.0f}~{t.max():.0f} s  步长={step:.0f} s"
         )
+
+    # ⚠️ 必须非 0 退出：本脚本是 CI 里「交付格式校验」那一步（.github/workflows/ci.yml）。
+    # 早先无条件 return 0，导致四个模板全丢失时 CI 依然判「通过」—— 静默失效。
+    if missing:
+        print()
+        print(f"!! 交付模板缺失：{', '.join(missing)}")
+        print("   problem/ 是只读冻结目录，模板缺失说明检出或赛方原件有问题，必须查清。")
+        return 1
     return 0
 
 

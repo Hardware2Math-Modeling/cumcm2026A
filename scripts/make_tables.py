@@ -13,7 +13,6 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
 import pandas as pd
 
@@ -81,11 +80,31 @@ TABLES: dict[str, tuple[str, str]] = {
     "q4_moist": ("考虑收缩的药材烘干过程的水分浓度", "tab:q4-moisture"),
 }
 
+#: csv 名 -> 时间列单位。题目表 1/表 2 用秒，表 3~表 6 用小时。
+#: 必须写进表头 —— 否则「时间」一列是秒还是小时无法判读。
+TIME_UNIT: dict[str, str] = {
+    "q1_temp": "s",
+    "q1_moist": "s",
+    "q2_temp": "h",
+    "q2_moist": "h",
+    "q3_moist": "h",
+    "q4_moist": "h",
+}
+
+#: csv 名 -> 表内数值单位（温度 °C、含水率 kg/kg）。距离列一律 cm。
+VALUE_UNIT: dict[str, str] = {
+    "q1_temp": "°C",
+    "q2_temp": "°C",
+    "q1_moist": "kg/kg",
+    "q2_moist": "kg/kg",
+    "q3_moist": "kg/kg",
+    "q4_moist": "kg/kg",
+}
+
 
 def main() -> int:
     # 本次用户只要求第一问论文：数值表直接从正式xlsx读取，不从手抄CSV拼装。
     import json
-    from common.io_excel import read_attachment
     source = paths.RESULTS_DIR / "result1.xlsx"
     sheets = pd.read_excel(source, sheet_name=None)
     paths.TABLES_DIR.mkdir(parents=True, exist_ok=True)
@@ -138,31 +157,43 @@ def main() -> int:
         r"\begin{longtable}{ll}"+"\n"+r"\toprule 符号 & 含义 \\ \midrule"+"\n"+
         "\n".join(symbol_rows)+"\n"+r"\bottomrule\end{longtable}",encoding="utf-8")
     print("已从result1.xlsx及验证报告生成第一问表格、数值宏、符号表。")
+    # 第二~四问的展示表由 results/tables/*.csv 生成。q1 的两张已由上面
+    # 从 result1.xlsx 直接选中题目指定的 7 时刻 x 5 位置，这里跳过以免被覆盖。
+    tables_from_csvs(skip={"q1_temp", "q1_moist"})
     return 0
 
 
-def legacy_all_tables() -> int:
+def tables_from_csvs(skip: set[str] | None = None) -> int:
+    """把 results/tables/*.csv 逐个转成 paper/tab/*.tex，返回生成个数。
+
+    `skip` 里的名字不生成 —— 它们已由 `main()` 用更严格的列筛选写过。
+    时间列与数值列的单位都写进表头/表题：题目表 1/表 2 用秒，表 3~表 6 用小时。
+    """
+    skip = skip or set()
     src_dir = paths.RESULTS_TABLES
     csvs = sorted(src_dir.glob("*.csv")) if src_dir.exists() else []
     if not csvs:
         print(f"⚠️ {paths.rel(src_dir)} 下没有 csv。先跑 make q1..q4。")
-        print("   本步骤不需要求解器已实现 —— 求解器就绪后会自动产出。")
         return 0
 
     paths.TABLES_DIR.mkdir(parents=True, exist_ok=True)
     made = 0
     for csv in csvs:
-        caption, label = TABLES.get(csv.stem, (csv.stem, f"tab:{csv.stem}"))
+        if csv.stem in skip:
+            continue
         df = pd.read_csv(csv)
-        tex = to_booktabs(df, caption, label)
+        df = df.rename(columns={df.columns[0]: f"时间/{TIME_UNIT.get(csv.stem, 's')}"})
+        caption, label = TABLES.get(csv.stem, (csv.stem, f"tab:{csv.stem}"))
+        if csv.stem in VALUE_UNIT:
+            caption = f"{caption}（{VALUE_UNIT[csv.stem]}；距离单位：cm）"
         dest = paths.TABLES_DIR / f"{csv.stem}.tex"
-        dest.write_text(tex, encoding="utf-8")
+        dest.write_text(to_booktabs(df, caption, label), encoding="utf-8")
         print(f"  {paths.rel(csv)}  ->  {paths.rel(dest)}  ({df.shape[0]} 行 x {df.shape[1]} 列)")
         made += 1
 
-    print(f"\n生成 {made} 个表格片段。论文里用 \\input{{tab/<name>}} 引入。")
+    print(f"\n由 csv 生成 {made} 个表格片段。论文里用 \\input{{tab/<name>}} 引入。")
     print("⚠️ 不要把表格内容手抄进 paper/sections/ —— 数字只有一处来源。")
-    return 0
+    return made
 
 
 if __name__ == "__main__":

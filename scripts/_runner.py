@@ -2,8 +2,10 @@
 
 流程：spec -> solver.solve -> 交付表格 -> 写 xlsx -> 打印摘要
 
-⚠️ 求解器尚未实现（见 src/qN/solver.py）。本文件负责的是**流程与交付**，
-   流程本身是通的：一旦 solver.solve 有实现，`make qN` 立刻能出交付物。
+四问求解器均已实现（src/q1~q4/solver.py 统一转发到 src/common/radial.py，
+物理规格见 docs/model/numerics.md）。本文件负责**流程与交付**：
+求解、写 results/resultN.xlsx（经 io_excel 硬校验）、导出论文展示网格 csv、
+写 qN_summary.json 与 outputs/ 缓存。
 """
 
 from __future__ import annotations
