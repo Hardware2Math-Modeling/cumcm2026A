@@ -1,0 +1,44 @@
+[
+  {
+    "file": "result1.xlsx",
+    "sheet": "温度",
+    "rows": 1800,
+    "columns": 22,
+    "last_time_s": 1800
+  },
+  {
+    "file": "result1.xlsx",
+    "sheet": "水分浓度",
+    "rows": 1800,
+    "columns": 22,
+    "last_time_s": 1800
+  },
+  {
+    "file": "result2.xlsx",
+    "sheet": "温度",
+    "rows": 10800,
+    "columns": 22,
+    "last_time_s": 10800
+  },
+  {
+    "file": "result2.xlsx",
+    "sheet": "水分浓度",
+    "rows": 10800,
+    "columns": 22,
+    "last_time_s": 10800
+  },
+  {
+    "file": "result3.xlsx",
+    "sheet": "水分浓度",
+    "rows": 3449,
+    "columns": 22,
+    "last_time_s": 206906.3987685154
+  },
+  {
+    "file": "result4.xlsx",
+    "sheet": "水分浓度",
+    "rows": 3066,
+    "columns": 22,
+    "last_time_s": 183931.2084621948
+  }
+]
