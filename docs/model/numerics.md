@@ -20,9 +20,10 @@ C_t|xi=(xi D C_xi)_xi/(R² xi)，rho cp T_t|xi=(xi k T_xi)_xi/(R² xi)。
 
 ## 节点中心有限体积
 
-xi_i=i/(N_r-1)，界面xi_{i+1/2}=(xi_i+xi_{i+1})/2，两端界面为0、1。
+xi_i=1-(1-i/(N_r-1))²，i=0..N_r-1（**表面二次加密**，非均匀网格；用于解析干燥后期
+低D区域在表面附近的薄边界层）。界面xi_{i+1/2}=(xi_i+xi_{i+1})/2，两端界面为0、1。
 V_i=(xi_{i+1/2}²-xi_{i-1/2}²)/2。界面k、D取算术平均。
-F^T_{i+1/2}=xi_{i+1/2} k_{i+1/2}(T_{i+1}-T_i)/Delta xi，F^C同理。
+F^T_{i+1/2}=xi_{i+1/2} k_{i+1/2}(T_{i+1}-T_i)/(xi_{i+1}-xi_i)，F^C同理（**步长逐单元不同**）。
 左端F=0；右端F^T=R h(T_inf-T_s)，F^C=-R h_m(C_s-C_inf)。
 dT_i/dt=(F^T_right-F^T_left)/(R² V_i rho_i cp_i)，
 dC_i/dt=(F^C_right-F^C_left)/(R² V_i)。

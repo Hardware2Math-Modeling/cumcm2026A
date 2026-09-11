@@ -10,8 +10,11 @@
 
 1. **内部 SI，边界转换。** 所有函数内部收发的长度都是 m、温度都是 K。转换只发生在 `io_excel` 和 `plotting`。
 2. **参数集是第一类对象。** ρ/c_p/k/D 不通过散装参数传递，而是传一个 `PropertySet` 或 `ProblemSpec`。
-3. **求解器不负责 I/O。** `src/qN/solver.py` 只吃 numpy 数组、只吐 numpy 数组。写 xlsx 是 `scripts/` 的事。
+3. **求解器不负责 I/O。** `src/qN/solver.py` 收一个 `ProblemSpec`、返回一个 `Solution`
+   （实现在 `src/common/radial.py`）。写 xlsx / csv 是 `scripts/_runner.py` 与 `src/common/export.py` 的事。
 4. **未知的实现留 `NotImplementedError`，不要返回假数据。** 见 `AGENTS.md` 铁律 2。
+   当前唯一保留 `NotImplementedError` 的是 `correlations.latent_heat_vaporization()`
+   （汽化潜热题目未给出，见 `docs/DECISIONS.md` D-003），且由测试断言它必须继续抛异常。
 
 ---
 
@@ -289,13 +292,17 @@ src/qN/
 ## 9. `scripts/` 入口契约
 
 ```python
-# scripts/run_q1.py
+# scripts/run_q1.py（薄封装；真正的流程在 scripts/_runner.py）
 def main() -> int:
-    spec = problem_spec.Q1
-    sol = solver.solve(spec)
-    io_excel.write_result("q1", build_sheets(sol, spec))
-    io_excel.write_table_csv(...)
-    return 0
+    return runner.main("q1")
+
+# scripts/_runner.py 的实际流程：
+#   spec = problem_spec.get(problem)          # ProblemSpec
+#   sol  = solver.solve(spec, n_internal=...) # Solution（SI 单位）
+#   sheets = export.result_sheets(sol, spec)  # 注意：不是 build_sheets
+#   dest   = io_excel.write_result(spec.name, sheets)   # 硬校验后才落盘
+#   _write_table_csvs(sol, spec)              # -> results/tables/*.csv
+#   results/<q>_summary.json + outputs/cache/<q>.npz
 ```
 
 **要求**：
