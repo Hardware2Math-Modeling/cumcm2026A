@@ -11,7 +11,19 @@ name: check
 
 on:
   push:
-    branches: [main, model, impl, paper]
+    branches:
+      - main
+      - model
+      - impl
+      - paper
+      - infra
+      # 短特性分支。GitHub 的 branches 过滤器里 `*` **不跨 `/`**，
+      # 所以只写 [main, model, impl, paper] 会让 impl/feat-* 这类分支
+      # （docs/BRANCHING.md §2 规定的标准命名）永远不触发 CI。必须写 `/**`。
+      - 'model/**'
+      - 'impl/**'
+      - 'paper/**'
+      - 'infra/**'
   pull_request:
     branches: [main]
 
@@ -74,12 +86,36 @@ jobs:
       - name: lint
         run: ruff check . && ruff format --check .
 
-      - name: 冒烟测试（框架级，不依赖求解器）
-        run: pytest -q -m "not slow"
+      - name: 框架自检（22 项，不依赖 pytest，任何环境都能跑）
+        run: python scripts/selfcheck.py
+
+      # ⚠️ 这**不是**"冒烟测试"：tests/test_numerics.py 会真的跑 BDF 求解
+      # （含与 Bessel 解析解的对照）。原先的 -m "not slow" 也具有误导性 ——
+      # 仓库里没有任何测试打 slow 标记，该过滤等价于全选。
+      - name: 测试
+        run: pytest -q
 
       # 交付格式校验：模板存在且结构可读
+      # （probe_templates.py 已改为模板缺失时非 0 退出）
       - name: 探查交付模板结构
         run: python scripts/probe_templates.py
+
+      # 论文的生成产物必须入库。干净检出下若缺了它们，正文里的 \geninput
+      # 会全部落到占位分支：PDF 满页 TODO 占位框却依然"编译成功"。
+      # 这正是本次修掉的 bug（paper 任务此前永远出不了可用的 PDF）。
+      - name: 校验论文生成产物已入库
+        run: |
+          missing=0
+          for f in paper/tab/q1_values.tex paper/tab/q1_temp.tex paper/tab/q1_moist.tex \
+                   paper/tab/q1_validation.tex paper/tab/notation.tex \
+                   paper/figs/fig1-T-profiles.pdf paper/figs/fig1-C-profiles.pdf; do
+            if [ ! -f "$f" ]; then echo "!! 缺少 $f"; missing=1; fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo ">> 先跑 make tables figs，并把 paper/tab 与 paper/figs 的产物提交入库"
+            exit 1
+          fi
+          echo "✓ 论文生成产物齐全"
 
   # ---------------------------------------------------------------------------
   paper:
@@ -94,10 +130,18 @@ jobs:
           root_file: paper/main.tex
           latexmk_use_xelatex: true
           work_in_root_file_dir: true
+          # 与 Makefile 的 LATEXMK 保持一致：出错就停，产物进 build/。
+          # 本步骤依赖 paper/tab/*.tex 与 paper/figs/*.pdf **已入库** ——
+          # 缺了它们正文的 \geninput 会落到占位分支，编出来的 PDF 全是 TODO 框。
+          args: -interaction=nonstopmode -halt-on-error -outdir=build
 
       - name: 上传 PDF
         uses: actions/upload-artifact@v4
         with:
           name: paper-pdf
-          path: paper/build/main.pdf
+          # 同时接受两种落点：带 -outdir=build 时是 paper/build/main.pdf，
+          # 若 action 忽略 args 则是 paper/main.pdf。避免因路径猜错而假失败。
+          path: |
+            paper/build/main.pdf
+            paper/main.pdf
           if-no-files-found: error
