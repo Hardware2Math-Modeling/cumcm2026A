@@ -153,9 +153,15 @@ def main() -> int:
         fields=[x.strip() for x in line.strip().strip("|").split("|")]
         if len(fields)==4 and fields[0].startswith("$") and fields[0] not in {r"$\xi$",r"$R_0$",r"$w$",r"$\theta$"}:
             symbol_rows.append(fields[0]+" & "+fields[3]+r" \\")
+    # ⚠️ 必须用 tabular 而不是 longtable：longtable **即便没有 \caption 也会步进
+    # table 计数器**（已实测：同样的文档，有 longtable 时下一张表编成"表 2"，
+    # 没有时编成"表 1"）。符号表若吃掉表 1，题目要求的表 1（30 分钟内药材的
+    # 温度）就会被编成表 2、表 2 变表 3，与题面表格编号全部错位。
+    # 符号表本身很短，不需要 longtable 的跨页能力。
     (paths.TABLES_DIR/"notation.tex").write_text(
-        r"\begin{longtable}{ll}"+"\n"+r"\toprule 符号 & 含义 \\ \midrule"+"\n"+
-        "\n".join(symbol_rows)+"\n"+r"\bottomrule\end{longtable}",encoding="utf-8")
+        "\n".join([r"\begin{center}", r"\begin{tabular}{ll}", r"\toprule 符号 & 含义 \\ \midrule",
+                   *symbol_rows, r"\bottomrule", r"\end{tabular}", r"\end{center}"]) + "\n",
+        encoding="utf-8")
     print("已从result1.xlsx及验证报告生成第一问表格、数值宏、符号表。")
     # 第二~四问的展示表由 results/tables/*.csv 生成。q1 的两张已由上面
     # 从 result1.xlsx 直接选中题目指定的 7 时刻 x 5 位置，这里跳过以免被覆盖。
