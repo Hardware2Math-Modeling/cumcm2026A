@@ -1,46 +1,178 @@
 % =============================================================
-% paper/refs.bib —— 参考文献数据库（骨架）
+% paper/refs.bib —— 参考文献数据库
 %
-% 引用格式要求：
-%   - 正式引用请使用真实文献，禁止编造假作者 / 假期刊 / 假卷期 / 假 DOI。
-%   - 下方条目均为「格式模板」，用 BibTeX 原生 @comment 注释掉，不参与编译；
-%     需要引用时把模板复制到 @comment 之外并填入真实信息即可。
-%   - 当前 main.tex 使用 BibTeX + \bibliographystyle{plain}；
-%     若需 GB/T 7714 格式，可换用 biblatex（先 kpsewhich gbt7714.sty 确认安装）。
+% 引用格式：main.tex 用 \bibliographystyle{gbt7714-numerical}（GB/T 7714 数字顺序制），
+%           正文用 \cite{key}（natbib 的 super 模式，即上标数字）。
+% 纪律（AGENTS.md 铁律 2）：只收录可公开查证的真实文献；作者、卷、期、页码、
+%   DOI 一律照原刊填写，拿不准的字段**留空而不猜**。核对记录见
+%   docs/paper_format.md 的「参考文献核对」一节。
 % =============================================================
 
-@comment{
-  ---- 期刊文章模板 ----
-  @article{key,
-    author  = {作者姓名},
-    title   = {文章标题},
-    journal = {期刊名},
-    volume  = {},
-    number  = {},
-    pages   = {},
-    year    = {},
-    doi     = {},
-  }
+@misc{problem2026,
+  author       = {全国大学生数学建模竞赛组委会},
+  title        = {2026 年高教社杯全国大学生数学建模竞赛 A 题：药材的烘干问题（含附件 1、附件 2 与结果模板附件 3）},
+  howpublished = {竞赛题目原件},
+  year         = {2026},
 }
 
-@comment{
-  ---- 专著/教材模板 ----
-  @book{key2,
-    author    = {作者姓名},
-    title     = {书名},
-    publisher = {出版社},
-    address   = {},
-    year      = {},
-  }
+@misc{format2026,
+  author       = {全国大学生数学建模竞赛组委会},
+  title        = {全国大学生数学建模竞赛论文格式规范（2026 年修订稿）},
+  howpublished = {竞赛文件},
+  year         = {2026},
 }
 
-@comment{
-  ---- 网络资源模板 ----
-  @misc{key3,
-    author       = {},
-    title        = {},
-    howpublished = {\url{https://...}},
-    year         = {},
-    note         = {访问日期：},
-  }
+@misc{aireg2026,
+  author       = {全国大学生数学建模竞赛组委会},
+  title        = {全国大学生数学建模竞赛人工智能工具使用规定（2026 年试行）},
+  howpublished = {竞赛文件},
+  year         = {2026},
+}
+
+@book{crank1975,
+  author    = {Crank, John},
+  title     = {The Mathematics of Diffusion},
+  edition   = {2},
+  publisher = {Oxford University Press},
+  address   = {Oxford},
+  year      = {1975},
+}
+
+@book{incropera2011,
+  author    = {Incropera, Frank P. and DeWitt, David P. and Bergman, Theodore L. and Lavine, Adrienne S.},
+  title     = {Fundamentals of Heat and Mass Transfer},
+  edition   = {7},
+  publisher = {John Wiley and Sons},
+  address   = {Hoboken},
+  year      = {2011},
+}
+
+@book{mujumdar2015,
+  editor    = {Mujumdar, Arun S.},
+  title     = {Handbook of Industrial Drying},
+  edition   = {4},
+  publisher = {CRC Press},
+  address   = {Boca Raton},
+  year      = {2015},
+}
+
+@book{dincer2016,
+  author    = {Dincer, Ibrahim and Zamfirescu, Calin},
+  title     = {Drying Phenomena: Theory and Applications},
+  publisher = {John Wiley and Sons},
+  address   = {Chichester},
+  year      = {2016},
+}
+
+@book{kowalski2003,
+  author    = {Kowalski, Stefan J.},
+  title     = {Thermomechanics of Drying Processes},
+  publisher = {Springer},
+  address   = {Berlin},
+  year      = {2003},
+}
+
+@book{ascher1998,
+  author    = {Ascher, Uri M. and Petzold, Linda R.},
+  title     = {Computer Methods for Ordinary Differential Equations and Differential-Algebraic Equations},
+  publisher = {SIAM},
+  address   = {Philadelphia},
+  year      = {1998},
+}
+
+@book{patankar1980,
+  author    = {Patankar, Suhas V.},
+  title     = {Numerical Heat Transfer and Fluid Flow},
+  publisher = {Hemisphere Publishing Corporation},
+  address   = {Washington, D.C.},
+  year      = {1980},
+}
+
+@book{roache1998,
+  author    = {Roache, Patrick J.},
+  title     = {Verification and Validation in Computational Science and Engineering},
+  publisher = {Hermosa Publishers},
+  address   = {Albuquerque},
+  year      = {1998},
+}
+
+@article{dormand1980,
+  author  = {Dormand, J. R. and Prince, P. J.},
+  title   = {A family of embedded Runge--Kutta formulae},
+  journal = {Journal of Computational and Applied Mathematics},
+  volume  = {6},
+  number  = {1},
+  pages   = {19--26},
+  year    = {1980},
+}
+
+@article{shampine1997,
+  author  = {Shampine, Lawrence F. and Reichelt, Mark W.},
+  title   = {The {MATLAB} {ODE} Suite},
+  journal = {SIAM Journal on Scientific Computing},
+  volume  = {18},
+  number  = {1},
+  pages   = {1--22},
+  year    = {1997},
+}
+
+@misc{scipybdf2026,
+  author       = {{SciPy Developers}},
+  title        = {scipy.integrate.BDF（隐式变阶后向差分积分器）},
+  howpublished = {\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.BDF.html}},
+  year         = {2026},
+  note         = {访问日期：2026-09-11},
+}
+
+@misc{scipyradau2026,
+  author       = {{SciPy Developers}},
+  title        = {scipy.integrate.Radau（五阶 Radau IIA 隐式积分器）},
+  howpublished = {\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.Radau.html}},
+  year         = {2026},
+  note         = {访问日期：2026-09-11},
+}
+
+@misc{scipyivp2026,
+  author       = {{SciPy Developers}},
+  title        = {scipy.integrate.solve\_ivp：常微分方程初值问题求解接口与事件检测},
+  howpublished = {\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html}},
+  year         = {2026},
+  note         = {访问日期：2026-09-11},
+}
+
+@article{review2021,
+  author  = {万芳新 and 李武强 and 罗燕},
+  title   = {中草药干燥加工现状及发展趋势},
+  journal = {南京中医药大学学报},
+  volume  = {37},
+  number  = {5},
+  pages   = {786--792},
+  year    = {2021},
+  doi     = {10.14148/j.issn.1672-0482.2021.0786},
+}
+
+@article{gastrodia2021,
+  author  = {Kang, Chao and Zhang, Yuzhu and Zhang, Fu and others},
+  title   = {Effects of drying variables on the characteristic of the hot air drying for {Gastrodia} elata: Experiments and multi-variable model},
+  journal = {Energy},
+  volume  = {222},
+  pages   = {119982},
+  year    = {2021},
+  doi     = {10.1016/j.energy.2021.119982},
+}
+
+@article{platycodon2020,
+  author  = {廖帮海 and 王云 and 李文菁 and others},
+  title   = {基于 {Weibull} 分布函数的桔梗切片热风干燥特性},
+  journal = {中国农业科技导报},
+  volume  = {22},
+  number  = {8},
+  year    = {2020},
+}
+
+@article{okra2025,
+  title   = {Heat and moisture transport in okra cylinders with shrinkage effects under solar drying: a multiphysics-based simulation approach},
+  journal = {Sustainable Food Technology},
+  year    = {2025},
+  doi     = {10.1039/D4FB00343H},
 }

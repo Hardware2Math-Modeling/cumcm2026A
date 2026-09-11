@@ -1,0 +1,48 @@
+\section{问题一：预热平衡阶段}
+\label{sec:q1}
+
+\subsection{模型的建立}
+
+\subsubsection{控制方程与解耦依据}
+
+问题一的物性由附录 2 给出，全部为常数：$\rho=820$~kg/m$^3$、$\cp=2600$~J/(kg$\cdot$K)、$\kcond=0.36$~W/(m$\cdot$K)，扩散系数只依赖含水率
+\begin{equation}
+\Ddiff(\C)=7\times10^{-9}\exp\!\left(-\frac{0.89}{\C}\right)~\mathrm{m^2/s},
+\qquad \hconv=25~\mathrm{W/(m^2\cdot K)},\qquad \hmass=8\times10^{-7}~\mathrm{m/s}.
+\label{eq:app2}
+\end{equation}
+代入式\eqref{eq:heat}、\eqref{eq:mass} 后，温度方程与水分方程中都不出现对方的未知量：$\Ddiff$ 不含 $\T$，$\rho$、$\cp$、$\kcond$ 不含 $\C$。因此\textbf{本问的两个方程完全解耦}，可以各自独立求解。这一性质使第一问成为检验数值框架的理想算例：温度部分可以与圆柱坐标下带对流边界的 Bessel 级数解析解逐点对照（第~\ref{sec:analytic} 节），水分部分则可以用离散守恒与网格加密检验。
+
+需要注意的是，$\Ddiff$ 随 $\C$ 下降而减小（$\C$ 由 $2.55$ 降到 $1.51$ 时 $e^{-0.89/\C}$ 由 $0.705$ 降到 $0.554$），因此既不能把扩散系数固定为初值，也不能把式\eqref{eq:mass} 简化为 $\Ddiff\nabla^2\C$——那会丢掉变系数项 $\Ddiff'(\C)(\partial_\rpos\C)^2$ 的贡献。
+
+\subsubsection{初始条件与边界条件}
+
+初值与边界条件由式\eqref{eq:initial}、\eqref{eq:axis}、\eqref{eq:robin} 给出，即全场 $301.15$~K 与 $2.55$~kg/kg，轴心径向梯度为零，表面施加对流换热与浓度差传质。环境驱动由附件 1 分段线性插值给出；本问求解时段 $1800$~s 完全落在附件 1 的覆盖范围（$0\sim4$~h）内，故\textbf{不涉及任何外推}，这是四问中输入数据最可靠的一问。
+
+\subsubsection{数值实现与计算量}
+
+空间离散取式\eqref{eq:gradedmesh} 的表面二次加密网格，内部节点数 $\Nr$ 由网格加密研究确定（第~\ref{sec:conv} 节），正式计算取 $\Nr=2561$；时间积分取式\eqref{eq:semi} 的半离散系统与第~\ref{sec:time} 节的 BDF 方法，容差 $2\times10^{-11}$/$2\times10^{-12}$，前 $1800$~s 的最大步长限制为 $30$~s。由于本问只覆盖 $30$~min 且物性为常数，单次求解的墙钟时间在 $10$~s 量级，计算量不构成任何约束。时间上使用积分器的稠密输出在每秒提取状态，空间上插值到 $0,0.1,\ldots,2.0$~cm 的交付网格，按第~\ref{sec:delivery} 节的规则导出。
+
+\subsection{计算结果及规律分析}
+
+按题目表 1、表 2 的格式整理的温度与水分浓度分别见表~\ref{tab:q1-temperature}、表~\ref{tab:q1-moisture}，两表数值均由程序从正式结果文件 \texttt{result1.xlsx} 中自动提取。
+
+\geninput{tab/q1_temp}{表 1 由 \texttt{make tables} 从 \texttt{results/result1.xlsx} 生成。}
+\geninput{tab/q1_moist}{表 2 由 \texttt{make tables} 从 \texttt{results/result1.xlsx} 生成。}
+
+\textbf{温度方面，预热阶段结束时温度场远未平衡。} $1800$~s 时中心与表面温度分别为 \QOneCenterT~$^\circ$C 与 \QOneSurfaceT~$^\circ$C，两者相差 $3.21~^\circ$C；此时环境温度已升到 $41.51~^\circ$C，表面温度仍比环境低 $4.73~^\circ$C，说明热量仍在持续输入、药材尚未进入准稳态。径向剖面上，轴心附近的梯度很小（$0\sim0.5$~cm 内仅相差 $0.20~^\circ$C），温度变化主要发生在 $1$~cm 以外。这一结构与式\eqref{eq:tauT} 的判断一致：$1800$~s 只是 $0.76\,\tau_T$，热量尚未穿透到轴心。因此\textbf{预热平衡阶段的药材内部存在显著的温度梯度}，不能用集总参数模型描述。
+
+\textbf{水分方面，全场平均几乎不变，但表层变化剧烈。} $1800$~s 时轴心含水率仍为 \QOneCenterC~kg/kg（与初值四位小数一致），而表面已降到 \QOneSurfaceC~kg/kg，即\textbf{表面失去了约 $41\%$ 的初始含水率}；$1.5$~cm 处为 $2.3755$~kg/kg，$1.0$~cm 处仍有 $2.5383$~kg/kg。表层与内部的巨大反差正对应式\eqref{eq:tauC} 给出的穿透深度 $\sqrt{\Ddiff t_{\mathrm{end}}}=0.298$~cm：水分只在约 $0.15\Rzero$ 的薄层内发生明显变化。
+
+\textbf{两个过程的空间尺度相差一个数量级，这是本问最重要的结论。} 温度在 $30$~min 内已影响到整个半径（中心也已升温 $5.6~^\circ$C），而水分的变化被限制在表面附近 $15\%$ 的厚度内。因此，以``含水率基本不变''为由忽略传质会让 $1800$~s 的表面含水率产生 $1.04$~kg/kg（约 $41\%$）的误差，而对整个断面施加统一的失水修正又会把轴心的误差放大到同样量级。二者共同说明\textbf{必须保留完整的径向分布}，这也正是题目要求给出二维（时间 $\times$ 半径）结果的原因。
+
+\genfig[0.80\linewidth]{figs/fig-pair-T.pdf}{预热段（问题 1，左）与烘干前期（问题 2，右）温度的径向分布}{fig:q1T}
+\genfig[0.80\linewidth]{figs/fig-pair-C.pdf}{预热段（问题 1，左）与烘干前期（问题 2，右）水分浓度的径向分布}{fig:q1C}
+
+图~\ref{fig:q1T}、图~\ref{fig:q1C} 给出四个时刻的径向剖面。温度剖面随时间是``整体抬升 $+$ 近表面变陡''，始终没有出现内部高于表面的过冲；含水率剖面则是``表面先塌陷、内部保持平台''，且随着时间推移这个塌陷区逐步向内部扩展。这一``由表及里''的传播特征与式\eqref{eq:mass} 的抛物型性质一致：表面边界条件的扰动以扩散方式向内传播，传播深度正比于 $\sqrt{\Ddiff\t}$。
+
+\genfig[0.80\linewidth]{figs/fig-pair-Chistory.pdf}{不同径向位置的水分浓度历程（左：问题 1 的 30~min；右：问题 2 的前 3~h）}{fig:q1Chistory}
+
+图~\ref{fig:q1Chistory} 从时间维度给出同一结论：$r=2.0$~cm 的曲线在 $100$~s 内即开始下降，$r=1.5$~cm 在约 $300$~s 后开始响应，而 $r\le1.0$~cm 的各条曲线在 $1800$~s 内几乎完全平直。这说明\textbf{预热阶段的水分响应有明显的``启动延迟''}，延迟时间随位置向内而增大。
+
+最后需要强调一个容易被忽略的细节：按题目要求所有结果保留四位小数，表层相邻两行（例如 $1700$~s 与 $1800$~s 的表面含水率）在四位小数下可能只差几个单位，但这\textbf{并不意味着物理精度只有四位小数}；四位小数是交付格式，模型的物理预测精度受第~\ref{sec:limitations} 节列出的结构性假设限制。

@@ -1,0 +1,21 @@
+% 本文件由 scripts/make_tables.py 自动生成，请勿手工编辑
+\begin{table}[htbp]
+  \centering
+  \caption{题目给出的三套物性参数集（$w = C/(1+C)$；附录 3/4 的 $D$ 公式中 $T$ 必须用 K）}
+  \label{tab:property-sets}
+  \scriptsize
+  \begin{tabular}{cccc}
+    \toprule
+    物性/参数 & 附录 2（常数物性） & 附录 3（变物性） & 附录 4（变物性 + 收缩） \\
+    \midrule
+    $\rho$ / (kg/m$^3$) & $820$ & $650+128C$ & $760+90C$ \\
+    $c_p$ / (J/(kg$\cdot$K)) & $2600$ & $1450+2736w$ & $1850+2150w$ \\
+    $k$ / (W/(m$\cdot$K)) & $0.36$ & $0.21+0.38w$ & $0.12+0.20w$ \\
+    $D$ / (m$^2$/s) & $7\times10^{-9}e^{-0.89/C}$ & $2.4\times10^{-3}e^{-0.45/C}e^{-3850/T}$ & $4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$ \\
+    $h$ / (W/(m$^2\cdot$K)) & $25$ & $25$（沿用） & $25$（沿用） \\
+    $h_m$ / (m/s) & $8\times10^{-7}$ & $8\times10^{-7}$（沿用） & $8\times10^{-7}$（沿用） \\
+    适用问题 & 问题 1 & 问题 2、3 & 问题 4 \\
+    \bottomrule
+  \end{tabular}
+  \par\smallskip\footnotesize 附录 3/4 未另给 $h$ 与 $h_m$，本文按题目附录 2 的取值沿用，并在模型假设中披露这一取值来源。
+\end{table}

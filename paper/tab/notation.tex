@@ -1,23 +1,41 @@
-\begin{center}
-\begin{tabular}{ll}
-\toprule 符号 & 含义 \\ \midrule
-$T$ & 药材温度 \\
-$C$ & 水分浓度（干基含水率） \\
-$t$ & 时间 \\
-$r$ & 到药材中心的径向距离 \\
-$R$ & 药材半径（问题 4 中随时间变化） \\
-$L$ & 药材长度 \\
-$\rho$ & 密度 \\
-$c_p$ & 定压比热容 \\
-$k$ & 导热系数 \\
-$D$ & 水分扩散系数 \\
-$h$ & 对流换热系数 \\
-$h_m$ & 对流传质系数 \\
-$T_\infty$ & 烘房（环境）温度 \\
-$C_\infty$ & 烘房（环境）水分浓度 \\
-$\Delta t$ & 时间步长 \\
-$\Delta r$ & 空间步长 \\
-$N_r$ & 径向网格节点数 \\
-\bottomrule
-\end{tabular}
-\end{center}
+% 本文件由 scripts/make_tables.py 从 docs/NOTATION.md 自动生成，请勿手工编辑
+\begin{table}[htbp]
+  \centering
+  \caption{符号说明}
+  \label{tab:notation}
+  \scriptsize
+  \begin{tabular}{lll}
+    \toprule
+    符号 & 说明 & 单位 \\
+    \midrule
+    $T$ & 药材温度 & °C（展示）/ K（代码） \\
+    $C$ & 水分浓度（干基含水率） & kg/kg（干基） \\
+    $t$ & 时间 & s（代码）/ h、min（展示） \\
+    $r$ & 到药材中心的径向距离 & cm（展示）/ m（代码） \\
+    $R$ & 药材半径（问题 4 中随时间变化） & cm（展示）/ m（代码） \\
+    $R_0$ & 初始半径 & cm（展示）/ m（代码） \\
+    $L$ & 药材长度 & cm（展示）/ m（代码） \\
+    $\rho$ & 密度 & kg/m$^3$ \\
+    $c_p$ & 定压比热容 & J/(kg$\cdot$K) \\
+    $k$ & 导热系数 & W/(m$\cdot$K) \\
+    $D$ & 水分扩散系数 & m$^2$/s \\
+    $h$ & 对流换热系数 & W/(m$^2\cdot$K) \\
+    $h_m$ & 对流传质系数 & m/s \\
+    $T_\infty$ & 烘房（环境）温度 & °C（展示）/ K（代码） \\
+    $C_\infty$ & 烘房（环境）水分浓度 & kg/kg \\
+    $w$ & 水分质量分数 $= C/(1+C)$ & kg/kg \\
+    $\xi$ & 无量纲径向坐标（问题 4） & — \\
+    $\xi_i$ & 第 $i$ 个节点，$\xi_i = 1-(1-i/(N_r-1))^2$（表面加密） & — \\
+    $\xi_{i\pm1/2}$ & 控制体界面，两端为 $0$ 与 $1$ & — \\
+    $V_i$ & 第 $i$ 个控制体的无量纲体积 $\bigl(\xi_{i+1/2}^2-\xi_{i-1/2}^2\bigr)/2$ & — \\
+    $F^T_{i+1/2}$ & 界面热通量 $\xi_{i+1/2}k_{i+1/2}(T_{i+1}-T_i)/(\xi_{i+1}-\xi_i)$ & K$\cdot$W/(m$\cdot$K) \\
+    $F^C_{i+1/2}$ & 界面水分通量，形式同上（$k \to D$） & kg$\cdot$m/(kg$\cdot$s) \\
+    $\Delta t$ & 时间步长 & s \\
+    $\Delta r$ & 空间步长 & cm \\
+    $N_r$ & 径向网格节点数 & — \\
+    $n$ & 时间层索引 & — \\
+    $i$ & 径向节点索引 & — \\
+    \bottomrule
+  \end{tabular}
+  \par\smallskip\footnotesize 说明：程序内部一律 SI（长度用 m、温度用 K、时间用 s），仅在写入交付文件与绘制插图时换算为 cm、°C、h；结果文件中的距离列以 cm 计、时间列以 s 计。题面出现的汽化潜热与平衡含水率未被本文引入（题目未给出其取值或吸附等温线），故未列入本表。
+\end{table}

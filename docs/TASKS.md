@@ -4,8 +4,8 @@
 > **铁律：只改自己角色标题下的内容。不重排、不格式化、不动别人的段落。**
 > 详见 `docs/BRANCHING.md` §5。
 
-**当前阶段**：`CP1 ✅ · 问题 1 模型定稿 + result1.xlsx 产出` → 四问求解器与结果均已就绪，论文仅第一问
-**下一个冻结点**：CP2 —— 问题 2、3 模型定稿；`result2/3.xlsx` 产出（**结果文件已产出**，待论文相关小节）
+**当前阶段**：`CP3 ✅ · 四问论文合稿完成` —— 正文（摘要→结论）+ 附录（AI 说明/参考文献/源程序）齐备，`paper/build/main.pdf` 可编译；遗留项为正文页数超 30 页（用户已同意不再压缩）
+**下一个冻结点**：论文定稿前的最后核对（页码/引用/图表编号 + 附录源程序与实际代码一致）
 
 ---
 
@@ -77,21 +77,27 @@
 ## @paper
 
 - [x] 填写 `docs/OWNERS.md` 的真实姓名与 GitHub handle
-- [x] `make paper` 跑通，产出 `paper/build/main.pdf`（9 页，无未定义引用）
-- [x] `paper/preamble.tex`：加入 `docs/NOTATION.md` §0 的全部符号宏，以及 `\geninput` / `\qonevalues`
-- [x] `paper/sections/03_notation.tex`：符号表由 `make tables` 从 `docs/NOTATION.md` 生成（**不手抄**）
-- [x] `02_assumptions.tex`：每条假设写清**代价**
-- [x] `01_restate.tex`：问题重述与求解范围
-- [x] **`04_q1.tex`：问题一完整章节**（控制方程、边界、有限体积离散、BDF、表 1/表 2、插图、结果分析）
-- [x] `00_abstract.tex`：含第一问的具体结论数字（由 `\QOne*` 宏引入，不手抄）
-- [x] `08_evaluation.tex`：守恒/解析解核验、空间与时间误差、优缺点与局限
-- [ ] 核对 2026 年官方论文格式规范（`problem/format2026.doc`）：字号、页边距、页码、摘要页、承诺书
-- [ ] **`05_q2.tex` / `06_q3.tex` / `07_q4.tex` 仍是占位**（`\instruction{}` 提示框），
-      且 `main.tex` 尚未 `\input` 它们。表格与插图**已生成**，缺的是正文。
-      ⚠️ 注意：这三节的目标是**同一篇论文**，合稿时应把标题从"问题一…"改成全卷标题。
-- [ ] `paper/refs.bib` 目前是空骨架（0 条目、无人加载）；`main.tex` 用的是手写 `thebibliography`。二选一对齐
-
----
+- [x] `paper/main.tex`：全卷标题、四问正文合稿、摘要页页码从 1 起（`\pagenumbering{arabic}`）
+- [x] `paper/preamble.tex`：补 tikz/enumitem/listings 中文支持、`\geninput`/`\genfig` 安全引入宏、`\detokenize` 防下划线炸数学模式
+- [x] **`sections/00_abstract.tex`：按「短首段 + 一问一段 + 关键词」重写**，段首总领句、段尾给答案、关键结论加粗；数值全部走 `\Q*` 宏（不手抄）
+- [x] **符号说明改为三列（符号 / 说明 / 单位）**，由 `scripts/make_tables.py` 从 `docs/NOTATION.md` 解析生成，不手抄
+- [x] **四问正文全部写完**：`01_background`（背景/重述/技术路线流程图）、`02_analysis`（每问一段分析）、
+      `03_assumptions`（15 条假设 + 代价）、`04_model_base`（统一方程、网格、时间积分、交付映射）、
+      `05_q1`~`08_q4`（每问含「模型的建立 / 模型的求解 / 结果与分析」）、`09_evaluation`（检验）、
+      `10_evaluation`（评价与推广）、`10_conclusion`
+- [x] **问题四材料坐标变换**：完整推导 + 严格相消证明 + 「不得再加对流项」警告（对应 D-013）
+- [x] 新增插图：物性缩放、时空热力图、参数集对照、半径收缩、验证三联图、两问合并剖面图（`scripts/make_figs.py`）
+- [x] 新增验证表：四问网格收敛、时间精度交叉验证、环境外推灵敏度（均由脚本从 `results/` 生成）
+- [x] **附录顺序按规范**：A 人工智能使用说明 → B 参考文献 → C 支撑材料与源程序（18 个源码片段由
+      `scripts/make_code_appendix.py` 直接读仓库文件生成，**不手抄**）
+- [x] `paper/refs.bib`：改为真实文献 20 条，机制统一为 BibTeX + `gbt7714-numerical`（GB/T 7714 数字顺序制）
+- [x] `docs/paper_format.md`：从 `problem/format2026.doc` 提取格式规范要点与本文对照 + 参考文献核对记录
+- [ ] ⚠️ **正文页数超限**：实测正文（摘要 → 结论）约 33 页，超出规范「不超过 30 页」。
+      已做过一轮压缩（行距、图幅、表格字号、删两张汇总表、合并三张重复插图）；
+      用户 2026-09-11 明确表示「页数多就多吧」，故不再继续删内容。
+      **若需合规**，建议按以下顺序删：① 删 `09_evaluation` 的验证表（改述为文字）；
+      ② 合并第 4 章 4.4~4.6 三小节；③ 把问题四 8.1 的推导细节移入附录。
+- [ ] 核对 `problem/format2026.doc` 中「承诺书/编号专用页」的纸质版要求（电子版不放这两页，已确认）
 
 ## 跨线需求（登记，不要自己动手）
 
@@ -101,7 +107,12 @@
 > 格式：`- [ ] @目标角色 需求描述（提出人 @xxx / 日期）`
 > **看到属于自己的条目，做完勾掉并在群里说一声。**
 
-- [ ] @paper 请把 `problem/format2026.doc` 的格式要求提取成 `docs/paper_format.md`（提出人 @impl / 待办）
+- [x] @paper 已提取 `docs/paper_format.md`（含格式条款对照与参考文献核对记录）
+- [ ] @model 请把 `docs/model/q1~q4.md` 里的数值设置（`N_r=641`、`rtol=2e-9`、`max_step=30/120 s`）同步为**正式设置**：
+      `N_r=2561`、`rtol=2e-11`、`atol=2e-12`、`max_step=30/60 s`、附件 1 每个节点重启。
+      论文按 `results/*_summary.json` 与 `results/validation/accuracy*.json` 的正式设置撰写（提出人 @paper / 2026-09-11）
+- [ ] @impl 论文侧新增了三类生成产物，请知悉并纳入 `make` 依赖：`scripts/make_code_appendix.py`（附录源码）、
+      `paper/figs/fig-*.pdf` 与 `fig-pair-*.pdf`（论文专用图）、`paper/tab/{notation,property_sets,validation_grid,validation_time,sensitivity,problem_values}.tex`（提出人 @paper / 2026-09-11）
 - [ ] @model 请确认 `AGENTS.md` §4.3「恒温干燥阶段：对流换热 + 蒸发潜热耦合」与本项目实际采用的
       纯对流闭合（D-002）不一致 —— 宪法文件需**三人同意**才能改（`docs/BRANCHING.md` §5），
       故目前只在 D-002 里记录了差异（提出人 @impl / 2026-09-11）

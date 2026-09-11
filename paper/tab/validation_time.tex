@@ -1,0 +1,18 @@
+% 本文件由 scripts/make_tables.py 自动生成，请勿手工编辑
+\begin{table}[htbp]
+  \centering
+  \caption{时间积分精度交叉验证（同一空间离散下更换时间方法或收紧误差控制）}
+  \label{tab:validation-time}
+  \scriptsize
+  \begin{tabular}{ccccc}
+    \toprule
+    方程与参数集 & 节点数 $N_r$ & 最大温差/K & 最大含水率差/(kg/kg) & 终点时刻差/s \\
+    \midrule
+    问题 1 & 161 & $1.58\times10^{-08}$ & $3.86\times10^{-10}$ & -- \\
+    问题 2、3（同模型） & 161 & $1.57\times10^{-08}$ & $3.40\times10^{-10}$ & $2.064\times10^{-06}$ \\
+    问题 4 & 161 & $1.31\times10^{-08}$ & $4.48\times10^{-10}$ & $5.549\times10^{-04}$ \\
+    问题 2、3（容差与步长收紧对照） & 641 & $1.67\times10^{-06}$ & $5.80\times10^{-09}$ & $5.215\times10^{-05}$ \\
+    \bottomrule
+  \end{tabular}
+  \par\smallskip\footnotesize 前四行是 BDF 与 Radau IIA（五阶）在同一网格上的差异，用于把时间误差与空间误差分离；最后一行为把相对/绝对容差各收紧十倍、最大步长减半后的差异。事件定位精度受积分器容差限制，故终点时刻差比场量差更能反映事件检测的可靠性。
+\end{table}

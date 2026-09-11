@@ -1,11 +1,11 @@
 % =============================================================
 % paper/preamble.tex —— 论文全局宏包、格式、符号宏、自定义命令
-% 唯一真源：docs/NOTATION.md（符号）、docs/OWNERS.md（章节契约）
+% 唯一真源：docs/NOTATION.md（符号）、paper/refs.bib（参考文献）
 % 编译方式：XeLaTeX（latexmk -xelatex），严禁 pdflatex（中文会炸）
 % =============================================================
 
 % ---------- 页面设置（数模论文常规 2.5cm 页边距） ----------
-\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[a4paper,margin=2.3cm,top=2.4cm,bottom=2.4cm]{geometry}
 
 % ---------- 数学 ----------
 \usepackage{amsmath}
@@ -14,28 +14,68 @@
 
 % ---------- 表格（一律 booktabs 三线表，禁用竖线） ----------
 \usepackage{booktabs}
+% 论文含十余张表与十余幅图，统一收紧浮动体间距以控制篇幅
+\setlength{\floatsep}{4pt plus 1pt minus 1pt}
+\setlength{\textfloatsep}{6pt plus 1pt minus 1pt}
+\setlength{\intextsep}{5pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{0pt}
+% 放宽浮动体页面配额：本文含 15 幅图与 17 张表，若限制过严会在页面底部留下大片空白
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.75}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.80}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
 \usepackage{longtable}  % 跨页符号表
 \usepackage{multirow}
+% 假设条目：不依赖 enumitem 的可选参数（曾被 enit@postlabel 的括号陷阱绊住），
+% 直接用零间距自定义环境，保证任何 TeX 发行版下都能编译。
+\newenvironment{assumptionlist}{%
+  \begin{list}{}{\setlength{\leftmargin}{2.4em}\setlength{\labelwidth}{2.0em}%
+    \setlength{\labelsep}{0.4em}\setlength{\itemindent}{0pt}%
+    \setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\topsep}{2pt}}%
+}{\end{list}}
 \usepackage{array}
+\usepackage{graphicx}   % \resizebox 用于超宽表格
 
 % ---------- 颜色（xcolor 需早于 listings 加载） ----------
 \usepackage{xcolor}
 
 % ---------- 插图 ----------
-\usepackage{graphicx}
 \graphicspath{{figs/}}
 
-% ---------- 代码（Python 样式；XeLaTeX 下中文注释可能受限，以实际编译为准） ----------
+% ---------- 流程图与示意图（TikZ；不依赖外部图片文件） ----------
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,backgrounds,calc}
+\tikzset{
+  box/.style={draw, rounded corners=2pt, align=center, font=\small,
+              minimum height=7mm, inner sep=2.4pt, fill=blue!4},
+  data/.style={box, fill=green!8},
+  phys/.style={box, fill=orange!10},
+  num/.style={box, fill=blue!8},
+  deliv/.style={box, fill=purple!8},
+  ver/.style={box, fill=red!7},
+  flow/.style={-{Latex[length=2mm]}, thick},
+  note/.style={font=\scriptsize, align=left, text=black!70},
+}
+
+% ---------- 代码（Python 样式；统一 UTF-8，XeLaTeX 下中文正常） ----------
 \usepackage{listings}
 \lstset{
   language=Python,
-  basicstyle=\ttfamily\small,
+  basicstyle=\ttfamily\scriptsize,
   extendedchars=true,
+  inputencoding=utf8,
   showstringspaces=false,
   columns=fullflexible,
   keepspaces=true,
   frame=single,
+  framexleftmargin=2pt,
   breaklines=true,
+  breakatwhitespace=false,
+  postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
   commentstyle=\color{gray},
   keywordstyle=\color{blue!60!black},
   stringstyle=\color{orange!80!black},
@@ -46,18 +86,22 @@
 
 % ---------- 数学单位（siunitx v3 语法：\qty{}{} 与 \unit{}，勿用 v2 的 \SI{}{}） ----------
 \usepackage{siunitx}
-\sisetup{
-  per-mode=symbol,
-  detect-all,
-}
+\sisetup{per-mode=symbol, detect-all}
 
 % ---------- 算法（algorithm2e；备选 algorithm+algpseudocode，二选一勿同开） ----------
 \usepackage[linesnumbered,ruled]{algorithm2e}
 
+% ---------- 参考文献（GB/T 7714 数字顺序制，中国数模论文通用格式） ----------
+% main.tex 用 \bibliographystyle{gbt7714-numerical} + \bibliography{refs}。
+\usepackage[sort&compress]{natbib}
+\bibliographystyle{gbt7714-numerical}
+\setcitestyle{super,comma}   % 上标数字引用，正文用 \cite{...}
+\renewcommand{\bibfont}{\small}
+
 % ---------- 超链接与交叉引用（hyperref 必须最后加载，cleveref 在其之后） ----------
 \usepackage[hidelinks,bookmarksnumbered=true]{hyperref}
 \hypersetup{
-  pdftitle={2026 年高教社杯全国大学生数学建模竞赛 A 题：药材的烘干问题},
+  pdftitle={圆柱形中药材热风烘干过程的传热-传质耦合模型},
   pdfauthor={},
 }
 \usepackage[nameinlink]{cleveref}
@@ -87,6 +131,7 @@
 \newcommand{\dt}{\ensuremath{\Delta t}}     % 时间步长
 \newcommand{\dr}{\ensuremath{\Delta r}}     % 空间步长
 \newcommand{\Nr}{\ensuremath{N_r}}          % 径向网格节点数
+\newcommand{\tend}{\ensuremath{t_{\mathrm{end}}}}  % 烘干结束时刻
 % （\rho、\xi 为 LaTeX 原生，无需定义）
 
 % =============================================================
@@ -107,30 +152,65 @@
 % \geninput{tab/foo}{补充说明}：安全引入由 scripts 生成的片段。
 % 依据 AGENTS.md 铁律 10「不许静默降级」：片段缺失时**不静默跳过**，
 % 而是打印醒目的占位框，让缺表在 PDF 里一眼可见。
+% \detokenize 把路径中的下划线还原为普通字符 —— 否则"文件缺失"提示本身
+% 会因为 \texttt{tab/foo_bar} 里的下划线进入数学模式而报错（实测踩过）。
 \newcommand{\geninput}[2]{%
   \IfFileExists{#1.tex}{%
     \input{#1}%
   }{%
-    \instruction{【生成产物缺失】未找到 \texttt{#1.tex}。#2
+    \instruction{【生成产物缺失】未找到 \texttt{\detokenize{#1}.tex}。#2
       请先运行 \texttt{make tables}（表格与数值宏）或 \texttt{make figs}（插图）。}%
   }%
 }
 
-% \qonevalues：引入 make tables 生成的 \QOne* 数值宏。
-% 这是正文里唯一允许出现第一问结果数字的地方（AGENTS.md §2：数字只有一处来源）。
-% 缺失时把宏定义成 ??，使 PDF 明显出错而不是编译中断。
-\newcommand{\qonevalues}{%
-  \IfFileExists{tab/q1_values.tex}{%
-    \input{tab/q1_values}%
-  }{%
-    \PackageWarning{paper}{tab/q1_values.tex 缺失，第一问数值宏显示为 ??}%
-    \newcommand{\QOneCenterT}{??}\newcommand{\QOneSurfaceT}{??}%
-    \newcommand{\QOneCenterC}{??}\newcommand{\QOneSurfaceC}{??}%
-    \newcommand{\QOneMassError}{??}\newcommand{\QOneEnergyError}{??}%
-    \newcommand{\QOneTimeErrorT}{??}\newcommand{\QOneTimeErrorC}{??}%
+% \genfig[宽度]{figs/xxx.pdf}{题注}{label}：安全插图（缺文件时打印占位框）
+\newcommand{\genfig}[4][0.48\linewidth]{%
+  \begin{figure}[!ht]
+    \centering
+    \IfFileExists{#2}{%
+      \includegraphics[width=#1]{#2}%
+    }{%
+      \instruction{【插图缺失】未找到 \texttt{\detokenize{#2}}。请先运行 \texttt{make figs}。}%
+    }%
+    \caption{#3}\label{#4}%
+  \end{figure}%
+}
+
+% \genfigwide{...}：整幅宽度（宽图专用）
+\newcommand{\genfigwide}[3]{%
+  \begin{figure}[!ht]
+    \centering
+    \IfFileExists{#1}{%
+      \includegraphics[width=\linewidth]{#1}%
+    }{%
+      \instruction{【插图缺失】未找到 \texttt{#1}。请先运行 \texttt{make figs}。}%
+    }%
+    \caption{#2}\label{#3}%
+  \end{figure}%
+}
+
+% 数值宏：由 make tables 从 results/ 生成，缺失时显示 ?? 而不是编译中断
+\newcommand{\genvalues}[1]{%
+  \IfFileExists{tab/#1.tex}{\input{tab/#1}}{%
+    \PackageWarning{paper}{tab/#1.tex 缺失，对应数值宏显示为 ??}%
   }%
 }
+\newcommand{\qonevalues}{\genvalues{q1_values}}
+\newcommand{\qallvalues}{\genvalues{problem_values}}
 
 % 关键词（若 ctexart 已定义则不覆盖）
 \providecommand{\keywords}[1]{%
   \par\medskip\noindent\textbf{关键词：}#1\par}
+
+% =============================================================
+% 版式：摘要独占一页；正文页码从摘要页起为 1（format2026.doc 第三条）
+% =============================================================
+\setlength{\parskip}{1pt}
+\linespread{0.98}
+\ctexset{
+  section/format = \raggedright\bfseries\zihao{4},
+  subsection/format = \raggedright\bfseries\zihao{-4},
+  subsubsection/format = \raggedright\bfseries\zihao{-4},
+}
+% 参考文献标题用「参考文献」而不是「References」
+\renewcommand{\refname}{参考文献}

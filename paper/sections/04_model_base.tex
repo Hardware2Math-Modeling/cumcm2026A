@@ -1,0 +1,197 @@
+\section{统一模型基础：控制方程与数值方法}
+\label{sec:modelbase}
+
+本节给出四问共用的模型基础（控制方程、定解条件、物性闭合）与数值方法（空间离散、时间积分、交付映射）；各问的物性代入与结果讨论放在第~\ref{sec:q1}$\sim$第~\ref{sec:q4} 节。符号含义与单位见表~\ref{tab:notation}。
+
+\geninput{tab/notation}{符号表由 \texttt{make tables} 从 \texttt{docs/NOTATION.md} 生成。}
+
+\subsection{柱坐标下的守恒方程}
+\label{sec:governing}
+
+取圆柱的轴线为 $z$ 轴，$\rpos$ 为到药材中心的径向距离。由假设 A1、A2，温度与含水率只是 $(\rpos,\t)$ 的函数，故只需考虑单位轴向长度上的径向守恒。在 $[\rpos,\rpos+\mathrm{d}\rpos]$ 的环形控制体内对单位长度药材做能量收支：导入与导出的热量之差等于控制体内显热的变化率，得\cite{crank1975,incropera2011}
+
+\begin{equation}
+\rho\cp\frac{\partial \T}{\partial \t}
+=\frac{1}{\rpos}\frac{\partial}{\partial \rpos}\left(\rpos\kcond\frac{\partial \T}{\partial \rpos}\right),
+\qquad 0<\rpos<\R(\t),\quad \t>0 .
+\label{eq:heat}
+\end{equation}
+
+对同一控制体做水分收支。按假设 A8，干基含水率 $\C$ 定义为该处水质量与干物质质量之比，故单位体积内的水质量为 $\rho_d\C$（$\rho_d$ 为干物质表观密度），水分通量为 $-\rho_d\Ddiff\,\partial_\rpos\C$。在固定域内 $\rho_d$ 为常数、可从两端约去，得
+
+\begin{equation}
+\frac{\partial \C}{\partial \t}
+=\frac{1}{\rpos}\frac{\partial}{\partial \rpos}\left(\rpos\Ddiff\frac{\partial \C}{\partial \rpos}\right).
+\label{eq:mass}
+\end{equation}
+
+式\eqref{eq:mass} 中的 $\rho_d$ 已被约去，因此\textbf{不需要知道干物质密度的具体取值}——这是按干基定义含水率带来的便利，也是本文不把经验公式给出的含湿表观密度 $\rho$ 当作水质量权重的理由（假设 A8）。$\rho$ 只出现在式\eqref{eq:heat} 的热容量 $\rho\cp$ 中，其物理含义是``单位体积湿药材的等效显热容量''。
+
+两个方程的耦合路径在四问中并不相同：附录 2 下 $\Ddiff$ 只依赖 $\C$、而 $\rho\cp\kcond$ 为常数，故式\eqref{eq:heat} 与式\eqref{eq:mass} 可以分别求解；附录 3/4 下 $\rho,\cp,\kcond$ 依赖 $\C$、$\Ddiff$ 依赖 $(\C,\T)$，于是 $\T\to\Ddiff$ 与 $\C\to(\rho,\cp,\kcond)$ 形成\textbf{双向弱耦合}的非线性抛物系统，必须联立求解。
+
+\subsection{定解条件}
+
+\textbf{初始条件}为题目给定的均匀状态：
+
+\begin{equation}
+\T(\rpos,0)=301.15~\mathrm{K}\ (=28~^\circ\mathrm{C}),
+\qquad
+\C(\rpos,0)=2.55~\mathrm{kg/kg}\ (\text{干基}),
+\qquad 0\le \rpos\le \Rzero .
+\label{eq:initial}
+\end{equation}
+
+\textbf{轴心条件}由对称性给出，即温度与含水率的径向梯度为零：
+
+\begin{equation}
+\left.\frac{\partial \T}{\partial \rpos}\right|_{\rpos=0}=0,
+\qquad
+\left.\frac{\partial \C}{\partial \rpos}\right|_{\rpos=0}=0 .
+\label{eq:axis}
+\end{equation}
+
+\textbf{表面条件}包含对流换热与浓度差驱动的传质两部分。取外法向为径向增大方向，则
+
+\begin{equation}
+\kcond\left.\frac{\partial \T}{\partial \rpos}\right|_{\rpos=\R}
+=\hconv\left[\Tinf(\t)-\T(\R,\t)\right],
+\qquad
+\Ddiff\left.\frac{\partial \C}{\partial \rpos}\right|_{\rpos=\R}
+=-\hmass\left[\C(\R,\t)-\Cinf(\t)\right].
+\label{eq:robin}
+\end{equation}
+
+式\eqref{eq:robin} 是 Robin（第三类）边界条件：环境温度高于表面时向药材供热，表面含水率高于环境参考值时水分向外逸出。两个符号方向可分别用``加热''与``干燥''极限情形核验：当 $\Tinf>{\T}_s$ 时由式\eqref{eq:heat} 得到内部温度上升，当 ${\C}_s>\Cinf$ 时式\eqref{eq:mass} 使表面含水率下降。式\eqref{eq:robin} 中\textbf{不含蒸发潜热项}（假设 A5），故热边界与质边界不直接耦合，二者只通过物性 $\rho(\C),\cp(\C),\kcond(\C),\Ddiff(\C,\T)$ 间接耦合。
+
+\textbf{环境驱动}由附件 1 分段线性插值给出（假设 B1）。设相邻测量时刻为 $t_j,t_{j+1}$，对所有驱动量 $g$ 取
+
+\begin{equation}
+g(\t)=g(t_j)+\frac{\t-t_j}{t_{j+1}-t_j}\left[g(t_{j+1})-g(t_j)\right],
+\qquad t_j\le\t\le t_{j+1}.
+\label{eq:interp}
+\end{equation}
+
+问题 2/3/4 的求解时段远长于附件 1 的覆盖时长（$4$~h），$t>14400$~s 之后按假设 B2 取末值保持：$\Tinf=323.315$~K、$\Cinf=0.04986$~kg/kg。
+
+\subsection{三套物性公式集}
+\label{sec:propertysets}
+
+题目在三个附录中给出三套\textbf{不可混用}的经验公式（附录 2 用于问题 1，附录 3 用于问题 2、3，附录 4 用于问题 4），汇总于表~\ref{tab:property-sets}。
+
+\geninput{tab/property_sets}{物性参数表由 \texttt{make tables} 生成。}
+
+使用这三套公式有两个易错点：一是 $\rho$ 的公式用\textbf{干基}含水率 $\C$，而 $\cp$、$\kcond$ 的公式用\textbf{湿基}质量分数 $\wfrac=\C/(1+\C)$，两者不可互换；二是附录 3/4 的 $\Ddiff$ 含因子 $e^{-3850/\T}$，$\T$ 必须用\textbf{开尔文}（把 $50~^\circ$C 当作 $50$ 代入会得到离谱却``看似合理''的结果，故程序在读取物性时强制校验单位）。此外附录 3/4 未另给 $\hconv$ 与 $\hmass$，本文沿用附录 2 的取值并已在假设中披露（假设 A7）。
+
+为直观看出``变物性''到底变了多少（经验公式的整理与量纲核对方式见文献~\cite{mujumdar2015}），图~\ref{fig:propscaling} 给出三套物性随含水率与温度的变化。可以看到：$\rho$ 的变化幅度不到 $50\%$（附录 3 由 $976$ 降到 $657$~kg/m$^3$），$\cp$ 与 $\kcond$ 的变化幅度与之相当；而 $\Ddiff$ 在 $\C$ 由 $2.55$ 降到 $0.15$ 的过程中跨越约 $7$ 倍，在两套公式与温度的共同作用下可跨越两个数量级以上，且在对数坐标下近似为直线（即 $e^{-k/\C}$ 的主导作用）。这说明\textbf{扩散系数是四问中最敏感、也最需要非线性处理的一个物性}。
+
+\genfig[0.80\linewidth]{figs/fig-prop-scaling.pdf}{三套物性参数集的量级与变化幅度。左上为密度、右上为比热容、左下为扩散系数随含水率的变化（含温度影响）、右下为扩散系数随温度的变化}{fig:propscaling}
+
+\subsection{空间离散：节点中心有限体积}
+\label{sec:mesh}
+
+式\eqref{eq:heat}、\eqref{eq:mass} 在轴心处含 $1/\rpos$ 的坐标奇性，且干燥后期在表面附近会出现很陡的含水率梯度（第~\ref{sec:q2analysis} 节分析）。为此本文采用\textbf{节点中心有限体积法}\cite{patankar1980}配合\textbf{表面二次加密网格}：以无量纲坐标 $\xi$ 表示节点位置，取
+
+\begin{equation}
+\xi_i=1-\left(1-\frac{i}{\Nr-1}\right)^2,
+\qquad i=0,1,\ldots,\Nr-1,
+\label{eq:gradedmesh}
+\end{equation}
+即 $\xi\in[0,1]$ 上从轴心到表面逐渐加密的网格（$\xi_i$ 为节点，$\xi_0=0$ 对应轴心，$\xi_{\Nr-1}=1$ 对应表面）。相邻节点中点构成控制体界面 $\xi_{i\pm1/2}$，两端界面分别取 $0$ 与 $1$；第 $i$ 个控制体的无量纲体积为
+
+\begin{equation}
+V_i=\frac{\xi_{i+1/2}^2-\xi_{i-1/2}^2}{2},
+\qquad \sum_{i=0}^{\Nr-1}V_i=\frac12 .
+\label{eq:cellvolume}
+\end{equation}
+
+把式\eqref{eq:heat}、\eqref{eq:mass} 在每个控制体上积分，时间导数留在原处、空间通量用界面值之差表示，得到半离散系统。定义界面通量
+
+\begin{equation}
+F^T_{i+1/2}=\xi_{i+1/2}\,{\kcond}_{i+1/2}\frac{{\T}_{i+1}-{\T}_i}{\xi_{i+1}-\xi_i},
+\qquad
+F^C_{i+1/2}=\xi_{i+1/2}\,{\Ddiff}_{i+1/2}\frac{{\C}_{i+1}-{\C}_i}{\xi_{i+1}-\xi_i},
+\label{eq:flux}
+\end{equation}
+其中界面物性取相邻节点值的\textbf{算术平均}，例如 ${\kcond}_{i+1/2}=({\kcond}_i+{\kcond}_{i+1})/2$。于是
+
+\begin{equation}
+\frac{\mathrm{d}{\T}_i}{\mathrm{d}\t}
+=\frac{F^T_{i+1/2}-F^T_{i-1/2}}{{\R}^2V_i\,\rho_i{\cp}_i},
+\qquad
+\frac{\mathrm{d}{\C}_i}{\mathrm{d}\t}
+=\frac{F^C_{i+1/2}-F^C_{i-1/2}}{{\R}^2V_i}.
+\label{eq:semi}
+\end{equation}
+
+轴心处的奇性通过``轴心控制体的左界面通量为零''自然处理：取 $F^T_{-1/2}=F^C_{-1/2}=0$ 后，轴心控制体自动得到 $4\Ddiff({\C}_1-{\C}_0)/\dr_0^2$ 形式，计算中始终不出现 $1/\rpos$。表面处的右界面通量直接代入式\eqref{eq:robin}，即 $F^T_{\Nr-1/2}=-\R\hconv({\T}_s-\Tinf)$、$F^C_{\Nr-1/2}=-\R\hmass({\C}_s-\Cinf)$。这样处理有两个好处：一是\textbf{离散格式本身是守恒的}——所有内部界面通量在总体收支中成对抵消，质量与能量的收支误差只来自界面物性近似与时间积分；二是边界条件以``面通量''而非``节点方程''的形式进入，符号方向不易写错。
+
+取 $\Nr=2561$ 时表面最小单元的无量纲宽度约 $2.4\times10^{-6}$（物理宽度约 $0.05~\mu$m）。需要如此细的表面单元，是因为干燥后期的含水率在表面 $0.1$~cm 内就可能下降一个量级（第~\ref{sec:q2analysis} 节）。图~\ref{fig:mesh} 给出几何与网格示意。
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[scale=0.95]
+    % 左：圆柱几何
+    \begin{scope}[xshift=0cm]
+      \draw[thick] (0,0) ellipse (0.85 and 0.3);
+      \draw[thick] (-0.85,0) -- (-0.85,2.6);
+      \draw[thick] (0.85,0) -- (0.85,2.6);
+      \draw[thick] (0,2.6) ellipse (0.85 and 0.3);
+      \draw[dashed] (0,0) -- (0,2.6);
+      \draw[->,thick] (0,1.3) -- (0.85,1.3) node[midway,above,font=\small]{$\rpos$};
+      \draw[<->,thick] (0.85,0.15) -- (0.85,2.45);
+      \node[right,font=\small] at (0.9,1.3) {$\Llen=25$~cm};
+      \node[below,font=\small] at (0,-0.35) {半径 $\Rzero=2$~cm};
+      \node[font=\small,align=center] at (0,-0.95) {圆柱药材：温度与含水率\\只沿半径方向变化（一维轴对称）};
+      % 热风箭头
+      \foreach \y in {0.4,1.0,1.6,2.2} {
+        \draw[->,blue!60!black] (1.6,\y) -- (1.0,\y);
+        \draw[->,blue!60!black] (-1.6,\y) -- (-1.0,\y);
+      }
+      \node[blue!60!black,font=\scriptsize] at (1.85,2.35) {热风};
+    \end{scope}
+    % 右：网格与通量
+    \begin{scope}[xshift=4.6cm]
+      \draw[thick] (0,0) -- (3.4,0);
+      \draw[thick] (0,0.85) -- (3.4,0.85);
+      \node[left,font=\small] at (0,0.42) {轴心};
+      \node[right,font=\small] at (3.4,0.42) {表面};
+      \foreach \x/\lab in {0.15/{\xi_0},0.75/{\xi_1},1.5/{\xi_2},2.4/{\xi_{i}},3.0/{\xi_{\Nr-1}}} {
+        \draw[gray] (\x,0) -- (\x,0.85);
+      }
+      \foreach \x in {1.1,1.95,2.7} {
+        \draw[gray,dashed] (\x,0) -- (\x,0.85);
+      }
+      \node[font=\scriptsize,gray] at (1.1,0.95) {$\xi_{i-1/2}$};
+      \node[font=\scriptsize,gray] at (1.95,0.95) {$\xi_{i+1/2}$};
+      \draw[<->] (1.1,-0.15) -- (1.95,-0.15) node[midway,below,font=\scriptsize]{控制体 $V_i$};
+      \draw[->,thick,red!70!black] (3.4,0.42) -- (4.0,0.42)
+        node[right,font=\scriptsize,align=left]{表面通量\\$-\R\hmass({\C}_s-\Cinf)$};
+      \node[font=\small,align=center] at (1.7,-0.75) {表面二次加密网格\\$\xi_i=1-(1-i/(\Nr-1))^2$};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{几何、坐标系与有限体积网格示意。左：圆柱药材与径向坐标；右：节点中心控制体、界面位置与表面通量}
+  \label{fig:mesh}
+\end{figure}
+
+\subsection{时间积分：变阶隐式自适应方法}
+\label{sec:time}
+
+式\eqref{eq:semi} 是一个\textbf{刚性}常微分方程组：由表面加密网格的最小单元宽度可估出显式格式的稳定性上界约为 $10^{-8}$~s 量级，而题目要求的求解时长是 $1.8\times10^3\sim2.6\times10^5$~s，两者相差十余个数量级，显式推进完全不可行。因此本文采用\textbf{变阶变步长的后向差分公式（BDF）}\cite{ascher1998,scipybdf2026}做隐式时间积分，由误差控制器自动选择步长，物性在每次右端求值时按当前状态重新计算，非线性代数方程由积分器内部的 Newton 迭代求解（即不滞后、不外推、不做算子分裂）。
+
+针对变物性带来的强非线性，右端函数的 Jacobian 采用\textbf{稀疏数值差分}：由于 $V_i$ 权重与界面通量只涉及相邻节点，Jacobian 是带状稀疏矩阵，且因为热容量 $\rho_i{\cp}_i$ 依赖 ${\C}_i$，温度行对含水率列也存在耦合块，不能省略。边界条件直接在通量层面实现（第~\ref{sec:mesh} 节），故无需为边界另外处理 Jacobian。
+
+两组数值参数需要特别说明。第一，时间积分的相对与绝对容差取 $2\times10^{-11}$ 与 $2\times10^{-12}$，并在附件 1 的每个测量节点处\textbf{分段重启积分器}（见式\eqref{eq:interp} 的折点），以免一个自适应步长跨越插值的不可微点。第二，积分器的内部步长与交付文件的输出步长\textbf{含义不同}：交付步长 $1$~s 或 $60$~s 只是采样间隔，内部步长由误差控制器决定（前 $4$~h 限制不超过 $30$~s，之后不超过 $60$~s），因此``输出每秒一次''并不意味着采用了一秒的显式步进。
+
+\subsection{交付层：内部解到题目网格的映射}
+\label{sec:delivery}
+
+题目对四个结果文件的网格有明确要求：时间列以\textbf{秒}为单位，距离列为 $0,0.1,\ldots,2.0$~cm 共 21 列；问题 3、4 的时间步长为 $60$~s；问题 4 的末列不是固定的 $2$~cm 而是文字``药材表面''，即\textbf{当时}的表面位置；所有数值保留四位小数。映射规则如下：
+
+\begin{enumerate}
+  \item 求解状态保存在内部网格上，导出时按线性插值把每一时刻的场值映射到 $21$ 个交付位置；
+  \item 问题 4 中，交付位置是\textbf{固定物理位置}，而内部网格随材料收缩，故导出时逐行按当时的半径重建物理位置后再插值；
+  \item 问题 4 中落在当时药材之外的交付位置\textbf{留空}，不填任何数值（不构造``虚构药材值''）；
+  \item 问题 3、4 的最后一行取``首个严格合格''的 $60$~s 采样点，使交付文件只含等间隔行；精确的判据时刻单独报告（第~\ref{sec:q3result} 节）。
+\end{enumerate}
+
+导出前程序会硬校验工作表名、列结构、时间步长与数值有效性（不允许出现负含水率或非有限值），校验不通过则直接报错而不写出文件，以避免``格式错了却看起来跑通了''的静默失效。

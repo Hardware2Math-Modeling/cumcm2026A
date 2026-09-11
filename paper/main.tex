@@ -2,39 +2,53 @@
 % paper/main.tex —— 论文入口（只做结构组装，正文一律在 sections/）
 % 编译：latexmk -xelatex -interaction=nonstopmode -halt-on-error -cd -outdir=build paper/main.tex
 % 注意：正文一个字都不要写在本文件（共享文件，冲突高发）。
+%
+% 版式依据 problem/format2026.doc（2026 年修订稿）：
+%   第三条 摘要页单独一页，页码位于页脚中部、从摘要页起用阿拉伯数字连续编号；
+%   第四条 正文从第 4 页开始、不含目录、不超过 30 页；正文之后是附录（页数不限）。
 % =============================================================
 \documentclass[12pt,a4paper]{ctexart}
 
 \input{preamble}
 
-\title{圆柱药材预热平衡阶段的传热与水分扩散模型\\——2026 年数学建模竞赛 A 题问题一}
+\title{\bfseries 圆柱形中药材热风烘干过程的传热--传质耦合模型\\[2pt]
+       \large ——基于材料坐标移动边界与自适应隐式积分的四问统一求解}
 \author{}
 \date{}
 
 \begin{document}
-% 第一问的结果数字宏（由 make tables 从 results/ 生成；缺失时显示为 ??）
+% 结果数值宏（由 make tables 从 results/ 生成；缺失时显示为 ??）
 \qonevalues
+\qallvalues
+
+% ---- 摘要页：页码从本页开始编号（阿拉伯数字 1） ----
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{plain}
 
 \maketitle
 
-% ---- 摘要页（正文在 sections/00_abstract.tex） ----
+\vspace{-1.2em}
 \begin{abstract}
 \input{sections/00_abstract}
 \end{abstract}
 
 \newpage
 
-% ---- 正文各节 ----
-\input{sections/01_restate}
-\input{sections/02_assumptions}
-\input{sections/03_notation}
-\input{sections/04_q1}
-\input{sections/08_evaluation}
-\input{sections/09_conclusion}
+% ---- 正文（第 4 页起，不含目录） ----
+\input{sections/01_background}
+\input{sections/02_analysis}
+\input{sections/03_assumptions}
+\input{sections/04_model_base}
+\input{sections/05_q1}
+\input{sections/06_q2}
+\input{sections/07_q3}
+\input{sections/08_q4}
+\input{sections/09_evaluation}
+\input{sections/10_conclusion}
 
-% ---- 参考文献（refs.bib 目前为空骨架；正式引用后取消条目注释） ----
-\begin{thebibliography}{1}
-\bibitem{problem} 全国大学生数学建模竞赛组委会. 2026 年高教社杯全国大学生数学建模竞赛 A 题：药材的烘干问题及附件1、附件3[Z]. 用户提供的题目原件, 2026.
-\end{thebibliography}
+% ---- 附录（不受 30 页限制；顺序：AI 使用说明 -> 参考文献 -> 支撑材料 -> 源程序） ----
+\appendix
+\input{sections/11_appendix}
 
 \end{document}

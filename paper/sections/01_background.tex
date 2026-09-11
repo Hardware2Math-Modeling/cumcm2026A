@@ -1,0 +1,66 @@
+\section{问题背景与问题重述}
+
+\subsection{问题背景}
+
+干燥是中药材产地加工与炮制过程中的关键工序之一，直接决定成品的外观、有效成分保留率与贮藏稳定性\cite{review2021}。在各类干燥方式中，热风烘干因设备简单、批量大、温度易于调控而应用最广，其过程通常被划分为\textbf{预热平衡}与\textbf{恒温干燥}两个阶段：前者药材由表及里升温、内部水分开始重新分布，后者表面水分持续被气流带走、内部水分靠扩散不断补充到表面。烘房温度、湿度、风速与装料方式等工艺参数若选取不当，就会出现干燥效率低、能耗高、表面结壳开裂或有效成分降解等问题；而传统的``试错--检测''式试验优化成本高、周期长，难以在工艺窗口内做系统寻优。因此，以传热传质方程为基础用数值方法刻画干燥过程，已成为干燥工艺研究的主流手段\cite{mujumdar2015,dincer2016}。
+
+因此，用数理分析与数值仿真刻画药材内部温度场与水分场的时空演化，并据此确定干燥时长，已成为中药材干燥工艺研究的现实需求。本题即要求对一根圆柱形中药材（长 $25$~cm、半径 $2$~cm）在热风烘房中的干燥过程建模求解。其物理本质是\textbf{圆柱坐标下耦合的传热--传质偏微分方程问题}：热量以对流方式从环境进入药材、靠导热向内部传递；水分在浓度梯度（化学势梯度）驱动下向外扩散、在表面被气流带走；而在问题四中，失水还会引起药材尺寸收缩，使求解域本身随时间变化，问题进一步成为\textbf{移动边界问题}\cite{kowalski2003}。
+
+\subsection{问题重述}
+
+\textbf{问题一（预热平衡阶段）}：药材初始温度 $28~^\circ$C、初始干基含水率 $2.55$~kg/kg，烘房温度（$^\circ$C）与水分浓度（kg/kg）的变化见附件 1，相关参数见附录 2。要求建立预热平衡阶段药材温度与水分浓度变化规律的数学模型，给出 $100$、$300$、$600$、$900$、$1200$、$1500$、$1800$~s 七个时刻、到药材中心距离 $0$、$0.5$、$1$、$1.5$、$2$~cm 五个位置的结果（即题面表 1、表 2），并把 $1800$~s 内每隔 $1$~s、距离每隔 $0.1$~cm 的完整结果保存到 \texttt{result1.xlsx}。
+
+\textbf{问题二（整个烘干过程）}：烘干过程一般持续 $2\sim3$ 天，预热平衡与恒温干燥阶段的参数有所不同；为简化问题，相关经验公式统一采用附录 3。要求建立整个烘干过程温度与水分浓度变化规律的数学模型，给出 $3$~h 内每隔 $0.5$~h、同样五个距离处的结果（表 3、表 4），并把每隔 $1$~s、距离每隔 $0.1$~cm 的完整结果保存到 \texttt{result2.xlsx}。
+
+\textbf{问题三（烘干时长的确定）}：按照烘干要求，药材\textbf{各处}的水分浓度应低于 $0.15$~kg/kg，要求确定烘干所需时间（单位：h），给出每隔 $6$~h、距离每隔 $0.5$~cm 的水分浓度（表 5，最后一行是烘干结束时间），并把每隔 $60$~s、距离每隔 $0.1$~cm 的完整结果保存到 \texttt{result3.xlsx}。
+
+\textbf{问题四（考虑失水收缩）}：实际烘干中木材尺寸会因水分流失而变化，题目要求根据附件 2 给出的半径--时间数据确定烘干时长（经验公式改用附录 4），给出每隔 $6$~h、距离每隔 $0.5$~cm 的水分浓度（表 6，末列是\textbf{当时的药材表面}位置），并把每隔 $60$~s、距离每隔 $0.1$~cm 的完整结果保存到 \texttt{result4.xlsx}。
+
+四问的几何、初值与求解时段可以概括为：四问共用同一套守恒方程与同一个圆柱几何，差别集中在\textbf{物性参数集}（附录 2$\to$3$\to$4）、\textbf{求解时段}（$30$~min $\to$ $2\sim3$ 天）、\textbf{是否引入终点判据}与\textbf{是否考虑尺寸收缩}四个方面。这决定了本文的技术路线：先建立一套统一的传热--传质模型与数值框架，再针对每一问补充各自的物性与几何设定，从而使四问的结果彼此可比、误差来源可分离。
+
+
+\subsection{技术路线}
+
+本文的技术路线如图~\ref{fig:workflow} 所示，分为数据、物理、数值、结果与验证五个层次。数据层把附件 1、附件 2 解析为环境条件与半径的时间序列，并做单位归一化；物理层建立统一的柱坐标守恒方程、边界条件与三套物性闭合，按每一问的设定做特化；数值层把方程在半离散化后交给自适应隐式积分器，其中问题三、四额外挂接终点事件；结果层把内部解按题目指定网格导出为四个结果文件与六张展示表；验证层通过守恒审计、网格与时间加密、解析解对照与灵敏度分析给出结果的可信度边界，并把发现的限制反馈到模型评价一节。
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[node distance=4.2mm and 6mm]
+    % 第 1 行：数据层
+    \node[data] (att1) {附件 1\\$T_\infty(t),\,C_\infty(t)$};
+    \node[data, right=of att1] (att2) {附件 2\\$R(t)$};
+    \node[data, right=of att2] (app) {附录 2/3/4\\三套物性公式};
+    \node[data, right=of app] (spec) {题面条件\\几何、初值、判据};
+    % 第 2 行：物理层
+    \node[phys, below=8mm of att1] (gov) {柱坐标守恒方程\\$\rho c_p{\T}_\t=(r\kcond{\T}_r)_r/r$\\${\C}_\t=(r\Ddiff{\C}_r)_r/r$};
+    \node[phys, right=of gov] (bc) {边界条件\\轴心对称\\表面 Robin 换热/传质};
+    \node[phys, right=of bc] (close) {物性闭合\\$\rho,\cp,\kcond,\Ddiff(C,\T)$};
+    \node[phys, right=of close] (move) {问题 4 附加\\材料坐标 $\xi=r/\R(t)$};
+    % 第 3 行：数值层
+    \node[num, below=8mm of gov] (mesh) {节点中心有限体积\\表面二次加密网格};
+    \node[num, right=of mesh] (ode) {半离散刚性 ODE\\稀疏 Jacobian};
+    \node[num, right=of ode] (bdf) {变阶 BDF\\自适应步长};
+    \node[num, right=of bdf] (event) {问题 3/4\\终点事件检测};
+    % 第 4 行：结果层
+    \node[deliv, below=8mm of mesh] (xlsx) {交付文件\\\texttt{result1$\sim$4.xlsx}};
+    \node[deliv, right=of xlsx] (tab) {论文表 1$\sim$表 6\\展示网格};
+    \node[deliv, right=of tab] (fig) {插图\\剖面、历程、时空场};
+    \node[deliv, right=of fig] (ans) {答案\\问题 3、4 的烘干时长};
+    % 第 5 行：验证层
+    \node[ver, below=8mm of xlsx] (cons) {守恒审计\\质量/瞬时热收支};
+    \node[ver, right=of cons] (conv) {网格与时间加密\\Richardson 估计};
+    \node[ver, right=of conv] (ana) {Bessel 解析解\\与 Radau 交叉验证};
+    \node[ver, right=of ana] (sens) {灵敏度\\环境外推扰动};
+
+    \foreach \a/\b in {att1/gov, att2/gov, app/close, spec/bc, spec/event,
+                       gov/mesh, bc/mesh, close/ode, move/event,
+                       mesh/xlsx, ode/tab, bdf/fig, event/ans,
+                       xlsx/cons, tab/conv, ans/ana, fig/sens}
+      \draw[flow] (\a) -- (\b);
+    \draw[flow, dashed] (sens.west) -- ++(-1.2,0) |- (gov.east);
+    \node[note, below=1.5mm of sens, text width=52mm]
+      {虚线：验证发现的结构性限制反馈到模型评价与改进方向};
+  \end{tikzpicture}
+  \caption{四问统一求解的技术路线}
+  \label{fig:workflow}
+\end{figure}
