@@ -43,6 +43,10 @@
 
 ## @impl
 
+- [x] 四问数值精度改进：2561节点、边界时间节点分段积分、5121节点参考、Bessel/Radau交叉验证；四个xlsx全单元格回读、独立目录完整复算一致；22项selfcheck与11项数值测试通过。本机无make/pytest/ruff，按规则采用selfcheck及unittest替代，未宣称lint通过（2026-09-11）。
+      → 2026-09-11 已 rebase 到 main 并解冲突（PR #2）：精度改动落在 `src/common/numerical_settings.py`、
+      `src/common/radial.py`；`scripts/make_tables.py` 的 tabular 修复与 `src/common/plotting.py` 的
+      PDF 无时间戳修复均保留 main 侧版本。
 - [x] 填写 `docs/OWNERS.md` 的真实姓名与 GitHub handle
 - [x] `make setup` 建好 conda 环境，`make doctor` 全绿
 - [x] `scripts/parse_attachments.py`：附件 1/2 解析 → `data/processed/*.csv`
@@ -60,6 +64,9 @@
       四问共用 `src/common/radial.py` 更少重复；细分只会增加转发层。若确需细分，属重构而非补功能。
 - [ ] 网格**收敛阶**的显式拟合测试 —— 目前只有加密差值表（`tab/q1_validation`），未拟合观测阶
 - [ ] `src/common/plotting.py` 无任何测试覆盖
+- [ ] `results/q*_manifest.json` 目前**不可由 `scripts/_runner.py` 复现**：入库的 manifest 写的是
+      `status="computed_and_readback_verified"` 与 4 项 packages，而脚本只写 `status="computed"`
+      与 numpy/scipy 2 项。需让脚本与入库产物对齐，否则「独立目录复算一致」这一 claim 不成立于 manifest。
 
 ---
 
@@ -83,6 +90,9 @@
 ---
 
 ## 跨线需求（登记，不要自己动手）
+
+- [ ] @model 请将 `results/validation/accuracy-methods.md` 的已验证数值设置同步至 `docs/model/numerics.md`；物理方程和边界插值保持原模型（@impl / 2026-09-11）。
+- [ ] @paper 请依 `results/validation/accuracy-methods.md` 更新第一问正文中的641节点、时间容差及验证段落；生成表图由编程端重建（@impl / 2026-09-11）。
 
 > 格式：`- [ ] @目标角色 需求描述（提出人 @xxx / 日期）`
 > **看到属于自己的条目，做完勾掉并在群里说一声。**

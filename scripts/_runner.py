@@ -14,13 +14,17 @@ import sys
 import time
 import traceback
 import json
+import hashlib
+import platform
 import numpy as np
+import scipy
 
 from _bootstrap import setup
 
 setup()
 
 from common import export, io_excel, paths, problem_spec  # noqa: E402
+from common.numerical_settings import production_options
 
 
 def run(problem: str) -> int:
@@ -38,7 +42,7 @@ def run(problem: str) -> int:
         return 1
 
     try:
-        sol = solver.solve(spec, n_internal=641)
+        sol = solver.solve(spec, **production_options(problem))
     except NotImplementedError as e:
         print()
         print(f"⏸  {spec.name} 的求解器尚未实现。这不是故障，是框架的预期状态。")
@@ -83,6 +87,33 @@ def run(problem: str) -> int:
     paths.OUTPUTS_CACHE.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(paths.OUTPUTS_CACHE / f"{problem}.npz", t=sol.t, r=sol.r,
                         T=sol.T,C=sol.C,meta=json.dumps(sol.meta))
+
+    if problem in {"q1", "q2", "q3", "q4"}:
+        inputs = [paths.ROOT / "problem" / "A题.pdf",
+                  paths.ROOT / "problem" / "附件" / "附件1.xlsx",
+                  paths.ROOT / "problem" / "附件" / "附件3" / f"result{problem[-1]}.xlsx"]
+        if problem == "q4":
+            inputs.append(paths.ROOT / "problem" / "附件" / "附件2.xlsx")
+        manifest = {
+            "question_id": problem, "model_version": "effective-radial-v1",
+            "numerical_version": "accuracy-v2", "status": "computed",
+            "run_command": f"python scripts/run_{problem}.py",
+            "parameters": production_options(problem), "python": platform.python_version(),
+            "packages": {"numpy": np.__version__, "scipy": scipy.__version__},
+            "input_hashes": {str(p.relative_to(paths.ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                             for p in inputs},
+            "event_time_s": sol.meta["event_time_s"],
+            "mass_balance_relative": sol.meta["mass_balance_relative"],
+            "validation": ("results/validation/accuracy-q4.json" if problem == "q4"
+                           else "results/validation/accuracy.json"),
+            "submission_file": str(dest.relative_to(paths.ROOT)),
+            "submission_sha256": hashlib.sha256(dest.read_bytes()).hexdigest(),
+            "limitations": ["Pure convective thermal boundary; no latent heat",
+                            "Effective moisture Robin boundary",
+                            "Ambient conditions held at last observation after 4 h"],
+        }
+        (paths.RESULTS_DIR / f"{problem}_manifest.json").write_text(
+            json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
 
     print()
     print("  提示：别忘了 make tables figs，以及更新 docs/TASKS.md")

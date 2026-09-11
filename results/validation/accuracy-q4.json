@@ -1,0 +1,50 @@
+{
+  "settings": {
+    "rtol": 2e-11,
+    "atol": 2e-12,
+    "max_step": 60.0,
+    "align_boundary_knots": true
+  },
+  "grid": [
+    {
+      "n": 641,
+      "event_s": 182967.12053001332,
+      "mass_residual": 4.527968414157502e-15,
+      "seconds": 49.399471800003084
+    },
+    {
+      "n": 1281,
+      "event_s": 182967.12753693963,
+      "mass_residual": 6.269494727295002e-15,
+      "seconds": 72.03300429999945,
+      "delta_T_K": 1.8727159272202698e-06,
+      "delta_C": 1.2656169319225086e-05,
+      "delta_event_s": 0.0070069263165351
+    },
+    {
+      "n": 2561,
+      "event_s": 182967.1292673153,
+      "mass_residual": 3.657205257588751e-15,
+      "seconds": 170.5959237000061,
+      "delta_T_K": 4.663153276851517e-07,
+      "delta_C": 3.1640911100083713e-06,
+      "delta_event_s": 0.0017303756612818688
+    },
+    {
+      "n": 5121,
+      "event_s": 182967.1298863221,
+      "mass_residual": 7.836868409118753e-15,
+      "seconds": 358.24818690000393,
+      "delta_T_K": 1.1703207292157458e-07,
+      "delta_C": 7.910354429263577e-07,
+      "delta_event_s": 0.000619006808847189
+    }
+  ],
+  "sampling": "0--3 h every 60 s, 4--48 h hourly; nested material nodes; continuous event",
+  "cross_solver": {
+    "n": 161,
+    "delta_T_K": 1.3087515071674716e-08,
+    "delta_C": 4.4766723661382457e-10,
+    "delta_event_s": 0.0005549013440031558
+  }
+}
