@@ -118,6 +118,21 @@ def _out_path(out: str | Path) -> Path:
     return p
 
 
+def _save(fig, out: str | Path) -> Path:
+    """保存为矢量 PDF，且**字节可复现**。
+
+    matplotlib 默认把当前时间写进 PDF 的 /CreationDate，于是每次重跑
+    paper/figs/*.pdf 的字节都不同（实测文件大小完全一致、图形内容一致，
+    唯一差别就是那个时间戳）。这些 PDF 是**要入库的交付物**，字节漂移会让
+    git status 永远脏、也让 code review 分不清图到底有没有真的变。
+    故显式去掉时间戳字段（metadata 值为 None 表示不写该字段）。
+    """
+    dest = _out_path(out)
+    fig.savefig(dest, metadata={"CreationDate": None, "ModDate": None})
+    plt.close(fig)
+    return dest
+
+
 def _cjk_warning() -> str | None:
     """若没有任何中文字体可用，返回警告文本（论文里出现豆腐块是致命的）。"""
     from matplotlib import font_manager
@@ -182,9 +197,7 @@ def plot_profiles(
     ax.set_ylabel(ylabel)
     ax.set_title(title or f"{label}的径向分布")
     ax.legend()
-    fig.savefig(_out_path(out))
-    plt.close(fig)
-    return _out_path(out)
+    return _save(fig, out)
 
 
 # --- 图 2：若干位置的时间历程 -------------------------------------------------
@@ -214,9 +227,7 @@ def plot_history(
     ax.set_ylabel(ylabel)
     ax.set_title(title or f"{label}的时间历程")
     ax.legend()
-    fig.savefig(_out_path(out))
-    plt.close(fig)
-    return _out_path(out)
+    return _save(fig, out)
 
 
 # --- 图 3：网格收敛性（log-log）---------------------------------------------
@@ -258,9 +269,7 @@ def plot_grid_convergence(
     ax.set_ylabel("误差 E(h)")
     ax.set_title(title)
     ax.legend()
-    fig.savefig(_out_path(out))
-    plt.close(fig)
-    return _out_path(out)
+    return _save(fig, out)
 
 
 def check_fonts(verbose: bool = True) -> bool:
