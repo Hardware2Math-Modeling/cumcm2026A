@@ -11,24 +11,21 @@
 \subsection{结果与分析}
 \instruction{结果表/图由 scripts 生成。result4.xlsx 仅含水分浓度（工作表名 Sheet1），末列「药材表面」为当时的表面位置（见 AGENTS.md §5）。}
 
-\begin{table}[htbp]
-  \centering
-  \caption{考虑收缩时药材的水分浓度分布}
-  \label{tab:q4-concentration}
-  \IfFileExists{tab/tab6.tex}{%
-    \input{tab/tab6}%
-  }{%
-    \instruction{表占位：tab/tab6（编号待 make\_tables.py 确认）尚未生成。}
-  }
-\end{table}
+% 表格片段本身已是完整的 table 环境，不再套一层（见 05_q2.tex 的说明）。
+% 表 6 的末列是「药材表面」＝当时的表面位置，由 make_tables.py 从 csv 原样带入。
+\IfFileExists{tab/q4_moist.tex}{%
+  \input{tab/q4_moist}%
+}{%
+  \instruction{表占位：tab/q4\_moist（scripts/make\_tables.py 生成）尚未生成。}
+}
 
 \begin{figure}[htbp]
   \centering
-  \IfFileExists{figs/q4_concentration.pdf}{%
-    \includegraphics[width=0.75\linewidth]{figs/q4_concentration.pdf}%
+  \IfFileExists{figs/fig4-C-profiles.pdf}{%
+    \includegraphics[width=0.75\linewidth]{figs/fig4-C-profiles.pdf}%
   }{%
-    \instruction{图占位：figs/q4\_concentration.pdf 尚未生成（scripts/make\_figs.py）。}
+    \instruction{图占位：figs/fig4-C-profiles.pdf 尚未生成（scripts/make\_figs.py）。}
   }
-  \caption{考虑收缩时药材内部水分浓度分布（图待生成）}
+  \caption{考虑收缩时药材内部水分浓度分布（材料坐标 $\xi=r/R(t)$）}
   \label{fig:q4-concentration}
 \end{figure}

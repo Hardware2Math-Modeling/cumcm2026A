@@ -104,6 +104,33 @@
 % \code{...}：行内代码
 \newcommand{\code}[1]{\texttt{#1}}
 
+% \geninput{tab/foo}{补充说明}：安全引入由 scripts 生成的片段。
+% 依据 AGENTS.md 铁律 10「不许静默降级」：片段缺失时**不静默跳过**，
+% 而是打印醒目的占位框，让缺表在 PDF 里一眼可见。
+\newcommand{\geninput}[2]{%
+  \IfFileExists{#1.tex}{%
+    \input{#1}%
+  }{%
+    \instruction{【生成产物缺失】未找到 \texttt{#1.tex}。#2
+      请先运行 \texttt{make tables}（表格与数值宏）或 \texttt{make figs}（插图）。}%
+  }%
+}
+
+% \qonevalues：引入 make tables 生成的 \QOne* 数值宏。
+% 这是正文里唯一允许出现第一问结果数字的地方（AGENTS.md §2：数字只有一处来源）。
+% 缺失时把宏定义成 ??，使 PDF 明显出错而不是编译中断。
+\newcommand{\qonevalues}{%
+  \IfFileExists{tab/q1_values.tex}{%
+    \input{tab/q1_values}%
+  }{%
+    \PackageWarning{paper}{tab/q1_values.tex 缺失，第一问数值宏显示为 ??}%
+    \newcommand{\QOneCenterT}{??}\newcommand{\QOneSurfaceT}{??}%
+    \newcommand{\QOneCenterC}{??}\newcommand{\QOneSurfaceC}{??}%
+    \newcommand{\QOneMassError}{??}\newcommand{\QOneEnergyError}{??}%
+    \newcommand{\QOneTimeErrorT}{??}\newcommand{\QOneTimeErrorC}{??}%
+  }%
+}
+
 % 关键词（若 ctexart 已定义则不覆盖）
 \providecommand{\keywords}[1]{%
   \par\medskip\noindent\textbf{关键词：}#1\par}

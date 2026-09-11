@@ -76,9 +76,9 @@ F^C_{i+1/2}&=\xi_{i+1/2}D_{i+1/2}
 时间上使用积分器的稠密输出，在每秒提取状态；空间上插值至0、0.1、\ldots、2~cm。内部步长与输出间隔含义不同，输出每秒一次并不意味着采用显式一秒步进。对$\C=0$时的扩散系数采用连续右极限$\Ddiff=0$；计算中不通过裁剪负浓度隐藏求解失败。
 
 \subsection{计算结果及规律分析}
-\input{tab/q1_temp}
-\input{tab/q1_moist}
-表中数值直接从正式结果文件自动提取。1800~s时中心与表面温度分别为\QOneCenterT{}~$^\circ$C和\QOneSurfaceT{}~$^\circ$C，表层先吸收环境热量，中心升温滞后。同期中心含水率为\QOneCenterC{}~kg/kg，表面为\QOneSurfaceC{}~kg/kg：水分扩散的作用范围小于热传导的作用范围，中心仍接近初始状态，因此不能把预热阶段的水分变化在全域统一忽略。
+\geninput{tab/q1_temp}{表 1 由 \texttt{make tables} 从 results/result1.xlsx 生成。}
+\geninput{tab/q1_moist}{表 2 由 \texttt{make tables} 从 results/result1.xlsx 生成。}
+表~\ref{tab:q1-temperature}与表~\ref{tab:q1-moisture}中的数值直接从正式结果文件自动提取。1800~s时中心与表面温度分别为\QOneCenterT{}~$^\circ$C和\QOneSurfaceT{}~$^\circ$C，表层先吸收环境热量，中心升温滞后。同期中心含水率为\QOneCenterC{}~kg/kg，表面为\QOneSurfaceC{}~kg/kg：水分扩散的作用范围小于热传导的作用范围，中心仍接近初始状态，因此不能把预热阶段的水分变化在全域统一忽略。
 
 \begin{figure}[htbp]
 \centering

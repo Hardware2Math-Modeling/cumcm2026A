@@ -11,24 +11,20 @@
 \subsection{结果与分析}
 \instruction{结果表/图由 scripts 生成。result3.xlsx 仅含水分浓度（工作表名 Sheet1、时间步长 60 s，见 AGENTS.md §5）。}
 
-\begin{table}[htbp]
-  \centering
-  \caption{长时间干燥下药材的水分浓度分布}
-  \label{tab:q3-concentration}
-  \IfFileExists{tab/tab5.tex}{%
-    \input{tab/tab5}%
-  }{%
-    \instruction{表占位：tab/tab5（编号待 make\_tables.py 确认）尚未生成。}
-  }
-\end{table}
+% 表格片段本身已是完整的 table 环境，不再套一层（见 05_q2.tex 的说明）。
+\IfFileExists{tab/q3_moist.tex}{%
+  \input{tab/q3_moist}%
+}{%
+  \instruction{表占位：tab/q3\_moist（scripts/make\_tables.py 生成）尚未生成。}
+}
 
 \begin{figure}[htbp]
   \centering
-  \IfFileExists{figs/q3_concentration.pdf}{%
-    \includegraphics[width=0.75\linewidth]{figs/q3_concentration.pdf}%
+  \IfFileExists{figs/fig3-C-profiles.pdf}{%
+    \includegraphics[width=0.75\linewidth]{figs/fig3-C-profiles.pdf}%
   }{%
-    \instruction{图占位：figs/q3\_concentration.pdf 尚未生成（scripts/make\_figs.py）。}
+    \instruction{图占位：figs/fig3-C-profiles.pdf 尚未生成（scripts/make\_figs.py）。}
   }
-  \caption{长时间干燥下药材内部水分浓度分布（图待生成）}
+  \caption{长时间干燥下药材内部水分浓度分布}
   \label{fig:q3-concentration}
 \end{figure}
