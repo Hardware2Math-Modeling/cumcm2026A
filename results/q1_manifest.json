@@ -1,0 +1,68 @@
+{
+  "question_id": "q1",
+  "model_version": "effective-radial-v1",
+  "numerical_version": "accuracy-v2",
+  "status": "computed_and_readback_verified",
+  "run_command": "python scripts/run_q1.py",
+  "parameters": {
+    "n_internal": 2561,
+    "rtol": 2e-11,
+    "atol": 2e-12,
+    "max_step": 60.0,
+    "align_boundary_knots": true
+  },
+  "python": "3.11.15",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.0.5",
+    "openpyxl": "3.1.5"
+  },
+  "input_hashes": {
+    "problem\\A题.pdf": "052d8014bff5727c019b72e44fdffaf5c145ce04050dd938baaf3527db331736",
+    "problem\\附件\\附件1.xlsx": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+    "problem\\附件\\附件3\\result1.xlsx": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4"
+  },
+  "event_time_s": null,
+  "mass_balance_relative": 2.960594732333751e-15,
+  "validation": "results/validation/accuracy.json",
+  "submission_file": "results\\result1.xlsx",
+  "submission_sha256": "0809ac83b93bf7190e1b57fb9fa809f1f817daa5cc9ee5b83c9bc6ca47d502f8",
+  "limitations": [
+    "Pure convective thermal boundary; no latent heat",
+    "Effective moisture Robin boundary",
+    "Ambient conditions held at last observation after 4 h"
+  ],
+  "readback": "results/validation/accuracy-output-check.json",
+  "portability_test": {
+    "status": "passed",
+    "report": "results/validation/accuracy-reproduction.json",
+    "tolerance": 1e-09,
+    "worksheet_xml_identical": true,
+    "scope": "same environment, independent clean directory, full four-question outputs"
+  },
+  "code_hashes": {
+    "src\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\common\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\common\\boundary.py": "6d8a4efd0cbd155a36860fc93eec30bb359042c496691ab0a8de1e24639fcfed",
+    "src\\common\\correlations.py": "6246acffde729ec3d272e0aa6921fc6503e9cc996b45f2ed11c61ba064108ae2",
+    "src\\common\\export.py": "6616fd13975ee8045525f53e0c0d4bacbd1fd43f3058256a751f340fcb08a839",
+    "src\\common\\io_excel.py": "072aa38e270c2cdbaeb36a0e1a277e44380dab7a69de7869a32db20bc3eba48b",
+    "src\\common\\numerical_settings.py": "5e77c41de4438be8e8d18c336413da175eb26f991586e49bf7b77413f883b419",
+    "src\\common\\paths.py": "7aee1657e3a8c8971ea1339a340ca0a17ec9efdaf2b07079f6b5f067098ce92d",
+    "src\\common\\plotting.py": "2293eb4f735beffce6b91765dfd2aef7a18f0364236be911bcb9479a102b42df",
+    "src\\common\\problem_spec.py": "82a00bdc09abced2d51414e5ded28de64ed15d165c0146c205a3be2030574f29",
+    "src\\common\\radial.py": "cf882a1508a663617d6ff787c9d2bcff14585f95861216d438ad88ac57929431",
+    "src\\common\\solution.py": "5c74f3b120d94049a901eba6974a6f2045253b05425a1685b2578469a3f83e08",
+    "src\\common\\units.py": "235a3c264fc04d13b7a33ad9ed16ce909953fbfc7d3a6f92610433e3ee97d697",
+    "src\\q1\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q1\\solver.py": "35637411203685a9107b6a64e80f849896736d39e002bbbbf4720d17d517c4f2",
+    "src\\q2\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q2\\solver.py": "ad5382045167aa560015cd42d3d3172bc451f5486d780f7106c49e59f057d66c",
+    "src\\q3\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q3\\solver.py": "3a22530b11e9ee5ad3b8275592c99dc18c2aa1a0f9a8140b9f135251b24583bc",
+    "src\\q4\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q4\\solver.py": "aea30c796d28519c66ced65c64fc46895d0845f88f6fb3a2f4df8bb5838c9dab",
+    "scripts\\_runner.py": "66dd8c85136854041e564bdfef8f4329b3b2316ecd5ec8ced9e0c24469c3b4f7"
+  }
+}

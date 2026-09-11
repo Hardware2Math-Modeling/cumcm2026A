@@ -117,6 +117,10 @@ def solve_radial(spec, **opts):
     rtol = float(opts.get("rtol", 2e-9))
     atol = float(opts.get("atol", 2e-10))
     max_step = float(opts.get("max_step", 120.0))
+    method = opts.get("method", "BDF")
+    if method not in {"BDF", "Radau"}:
+        raise ValueError("刚性积分方法必须为BDF或Radau")
+    align_boundary_knots = bool(opts.get("align_boundary_knots", False))
     horizon = float(opts.get("t_end", spec.grid.t_end))
     target = spec.extra.get("target_C", 0.15)
     seek_end = opts.get("seek_end", spec.name != "q1")
@@ -128,17 +132,32 @@ def solve_radial(spec, **opts):
     event.terminal = True
     # 在4小时边界外推接点重启，避免跳过敏感性算例的参数跳变。
     split = boundary.ambient_t[-1]
-    edges = [0.0] + ([split] if horizon > split else []) + [horizon]
+    knots = boundary.ambient_t if align_boundary_knots else np.array([split])
+    if align_boundary_knots and model.moving:
+        knots = np.unique(np.r_[knots, boundary.radius_t])
+    edges = [0.0] + [float(x) for x in knots if 0 < x < horizon] + [horizon]
     pieces = []
     y0 = model.initial()
     event_time = None
+
+    def starting_step(t0, t1, state, step_limit):
+        if not align_boundary_knots:
+            return None
+        # 默认启动估计含显式试探；极细表面单元会使其越过C=0。
+        # 限制初始试探为局部浓度变化时间尺度的1%，不裁剪状态。
+        rate = model.rhs(t0, state)[n:2*n]
+        active = np.abs(rate) > 0
+        scale = np.min(state[n:2*n][active] / np.abs(rate[active])) if active.any() else 1.0
+        return min(1.0, step_limit, t1-t0, 0.01*scale)
+
     for a, b in zip(edges[:-1], edges[1:]):
         step = min(max_step, 30.0) if a < split else max_step
-        result = solve_ivp(model.rhs, (a,b), y0, method="BDF", rtol=rtol, atol=atol,
+        result = solve_ivp(model.rhs, (a,b), y0, method=method, rtol=rtol, atol=atol,
                            max_step=step, jac=model.jacobian, dense_output=True,
+                           first_step=starting_step(a, b, y0, step),
                            events=event if seek_end else None)
         if not result.success:
-            raise RuntimeError(f"{spec.name} BDF失败: {result.message}")
+            raise RuntimeError(f"{spec.name} {method}失败: {result.message}")
         pieces.append(result)
         y0 = result.y[:, -1]
         if seek_end and result.t_events[0].size:
@@ -147,8 +166,9 @@ def solve_radial(spec, **opts):
             output_end = (np.floor(event_time/spec.grid.dt)+1)*spec.grid.dt
             if output_end > horizon:
                 raise ValueError("终点后的首个输出时刻超出可计算范围")
-            tail = solve_ivp(model.rhs, (event_time, output_end), y0, method="BDF",
+            tail = solve_ivp(model.rhs, (event_time, output_end), y0, method=method,
                              rtol=rtol, atol=atol, max_step=step,
+                             first_step=starting_step(event_time, output_end, y0, step),
                              jac=model.jacobian, dense_output=True)
             if not tail.success:
                 raise RuntimeError(tail.message)
@@ -197,7 +217,7 @@ def solve_radial(spec, **opts):
         raise RuntimeError("非有限值或负浓度；拒绝写出")
     final_raw = pieces[-1].y[:, -1]
     event_state = pieces[-2].y[:, -1] if event_time is not None else None
-    meta = {"n_internal": n, "dt_internal": f"adaptive BDF, max_step={max_step}s",
+    meta = {"n_internal": n, "dt_internal": f"adaptive {method}, max_step={max_step}s",
             "theta": None, "rtol": rtol, "atol": atol,
             "n_iterations": sum(x.nfev for x in pieces),
             "residual": max_mass_residual, "mass_balance_relative": max_mass_residual,
@@ -205,7 +225,8 @@ def solve_radial(spec, **opts):
             "wall_time_s": time.perf_counter()-start, "event_time_s": event_time,
             "first_output_below_s": horizon if seek_end else None,
             "coordinate": "material" if model.moving else "physical",
-            "R": radii.tolist(), "method": "nodal finite volume + BDF",
+            "R": radii.tolist(), "method": f"nodal finite volume + {method}",
+            "align_boundary_knots": align_boundary_knots,
             "max_C_final_internal": float(np.max(final_raw[n:2*n])),
             "radial_C_monotone_final": bool(np.all(np.diff(final_raw[n:2*n]) <= 1e-9)),
             "event_C": event_state[n:2*n].tolist() if event_state is not None else None,

@@ -55,6 +55,7 @@ profile_default/
 # 数值求解的中间缓存（.npz/.h5/.pkl）、运行日志
 outputs/cache/
 outputs/logs/
+outputs/accuracy*/
 *.log
 # 附件解析后的中间清洗结果，随时可由 data/raw 重建
 data/interim/
