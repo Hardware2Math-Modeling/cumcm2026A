@@ -195,6 +195,12 @@ Free for organizations" —— 反过来，私有仓库要 GitHub Team（约 $4/
 >
 > **恢复**：`git revert "$(git log --format=%H --grep='赛期内暂停 CI 自动触发' -1)"`（或按 ci.yml 里注释还原 `on:` 块）；
 > 也可以只手动跑一次：Actions → `check` → Run workflow。
+>
+> **⚠️ 恢复前先修这一步**：暂停前 `main` 上最后 3 次 `check` **全部为红**，且都停在
+> `安装 conda 环境`（`mamba-org/setup-micromamba` 按 `environment.yml` 建环境失败）——
+> 后面的 `lint`、自检、`pytest`、产物校验**一步都没跑到**（`build-paper` 一直是绿的）。
+> 即：暂停期间失去的红绿信号，本身并非"代码有问题"的信号。恢复 CI 之前，先让这一步能过
+> （本地等价物：`make doctor`，以及 `conda env update -f environment.yml --prune`）。
 
 ### 4.3 赛期内唯一靠得住的是三条约定
 
