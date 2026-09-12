@@ -1,0 +1,2020 @@
+﻿[
+    {
+        "container":  [
+                          "Nature Methods"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 2020,
+                                                 2,
+                                                 3
+                                             ]
+                                         ]
+                      },
+        "issue":  "3",
+        "DOI":  "10.1038/s41592-019-0686-2",
+        "author":  [
+                       {
+                           "given":  "Pauli",
+                           "family":  "Virtanen",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0002-0300-3333",
+                           "authenticated-orcid":  false,
+                           "given":  "Ralf",
+                           "family":  "Gommers",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Travis E.",
+                           "family":  "Oliphant",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0003-4806-3601",
+                           "authenticated-orcid":  false,
+                           "given":  "Matt",
+                           "family":  "Haberland",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0003-2364-6157",
+                           "authenticated-orcid":  false,
+                           "given":  "Tyler",
+                           "family":  "Reddy",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "David",
+                           "family":  "Cournapeau",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Evgeni",
+                           "family":  "Burovski",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Pearu",
+                           "family":  "Peterson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Warren",
+                           "family":  "Weckesser",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Jonathan",
+                           "family":  "Bright",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0001-9276-1891",
+                           "authenticated-orcid":  false,
+                           "given":  "Stéfan J.",
+                           "family":  "van der Walt",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Matthew",
+                           "family":  "Brett",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Joshua",
+                           "family":  "Wilson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0002-5263-5070",
+                           "authenticated-orcid":  false,
+                           "given":  "K. Jarrod",
+                           "family":  "Millman",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Nikolay",
+                           "family":  "Mayorov",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0002-4548-3558",
+                           "authenticated-orcid":  false,
+                           "given":  "Andrew R. J.",
+                           "family":  "Nelson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Eric",
+                           "family":  "Jones",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Robert",
+                           "family":  "Kern",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Eric",
+                           "family":  "Larson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "C J",
+                           "family":  "Carey",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "İlhan",
+                           "family":  "Polat",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Yu",
+                           "family":  "Feng",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Eric W.",
+                           "family":  "Moore",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Jake",
+                           "family":  "VanderPlas",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0002-5540-4825",
+                           "authenticated-orcid":  false,
+                           "given":  "Denis",
+                           "family":  "Laxalde",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Josef",
+                           "family":  "Perktold",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Robert",
+                           "family":  "Cimrman",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Ian",
+                           "family":  "Henriksen",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "E. A.",
+                           "family":  "Quintero",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Charles R.",
+                           "family":  "Harris",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Anne M.",
+                           "family":  "Archibald",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0003-3632-8529",
+                           "authenticated-orcid":  false,
+                           "given":  "Antônio H.",
+                           "family":  "Ribeiro",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Fabian",
+                           "family":  "Pedregosa",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "ORCID":  "https://orcid.org/0000-0002-2382-8308",
+                           "authenticated-orcid":  false,
+                           "given":  "Paul",
+                           "family":  "van Mulbregt",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "name":  "SciPy 1.0 Contributors",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Aditya",
+                           "family":  "Vijaykumar",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Alessandro Pietro",
+                           "family":  "Bardelli",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Alex",
+                           "family":  "Rothberg",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Andreas",
+                           "family":  "Hilboll",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Andreas",
+                           "family":  "Kloeckner",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Anthony",
+                           "family":  "Scopatz",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Antony",
+                           "family":  "Lee",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Ariel",
+                           "family":  "Rokem",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "C. Nathan",
+                           "family":  "Woods",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Chad",
+                           "family":  "Fulton",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Charles",
+                           "family":  "Masson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Christian",
+                           "family":  "Häggström",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Clark",
+                           "family":  "Fitzgerald",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "David A.",
+                           "family":  "Nicholson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "David R.",
+                           "family":  "Hagen",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Dmitrii V.",
+                           "family":  "Pasechnik",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Emanuele",
+                           "family":  "Olivetti",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Eric",
+                           "family":  "Martin",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Eric",
+                           "family":  "Wieser",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Fabrice",
+                           "family":  "Silva",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Felix",
+                           "family":  "Lenders",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Florian",
+                           "family":  "Wilhelm",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "G.",
+                           "family":  "Young",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Gavin A.",
+                           "family":  "Price",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Gert-Ludwig",
+                           "family":  "Ingold",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Gregory E.",
+                           "family":  "Allen",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Gregory R.",
+                           "family":  "Lee",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Hervé",
+                           "family":  "Audren",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Irvin",
+                           "family":  "Probst",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Jörg P.",
+                           "family":  "Dietrich",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Jacob",
+                           "family":  "Silterra",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "James T",
+                           "family":  "Webber",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Janko",
+                           "family":  "Slavič",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Joel",
+                           "family":  "Nothman",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Johannes",
+                           "family":  "Buchner",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Johannes",
+                           "family":  "Kulick",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Johannes L.",
+                           "family":  "Schönberger",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "José Vinícius",
+                           "family":  "de Miranda Cardoso",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Joscha",
+                           "family":  "Reimer",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Joseph",
+                           "family":  "Harrington",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Juan Luis Cano",
+                           "family":  "Rodríguez",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Juan",
+                           "family":  "Nunez-Iglesias",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Justin",
+                           "family":  "Kuczynski",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Kevin",
+                           "family":  "Tritz",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Martin",
+                           "family":  "Thoma",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Matthew",
+                           "family":  "Newville",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Matthias",
+                           "family":  "Kümmerer",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Maximilian",
+                           "family":  "Bolingbroke",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Michael",
+                           "family":  "Tartre",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Mikhail",
+                           "family":  "Pak",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Nathaniel J.",
+                           "family":  "Smith",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Nikolai",
+                           "family":  "Nowaczyk",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Nikolay",
+                           "family":  "Shebanov",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Oleksandr",
+                           "family":  "Pavlyk",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Per A.",
+                           "family":  "Brodtkorb",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Perry",
+                           "family":  "Lee",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Robert T.",
+                           "family":  "McGibbon",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Roman",
+                           "family":  "Feldbauer",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Sam",
+                           "family":  "Lewis",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Sam",
+                           "family":  "Tygier",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Scott",
+                           "family":  "Sievert",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Sebastiano",
+                           "family":  "Vigna",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Stefan",
+                           "family":  "Peterson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Surhud",
+                           "family":  "More",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Tadeusz",
+                           "family":  "Pudlik",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Takuya",
+                           "family":  "Oshima",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Thomas J.",
+                           "family":  "Pingel",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Thomas P.",
+                           "family":  "Robitaille",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Thomas",
+                           "family":  "Spura",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Thouis R.",
+                           "family":  "Jones",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Tim",
+                           "family":  "Cera",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Tim",
+                           "family":  "Leslie",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Tiziano",
+                           "family":  "Zito",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Tom",
+                           "family":  "Krauss",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Utkarsh",
+                           "family":  "Upadhyay",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Yaroslav O.",
+                           "family":  "Halchenko",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Yoshiki",
+                           "family":  "Vázquez-Baeza",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  "261-272",
+        "publisher":  "Springer Science and Business Media LLC",
+        "title":  [
+                      "SciPy 1.0: fundamental algorithms for scientific computing in Python"
+                  ],
+        "volume":  "17"
+    },
+    {
+        "container":  [
+                          "ACM Transactions on Mathematical Software"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 2003,
+                                                 9
+                                             ]
+                                         ]
+                      },
+        "issue":  "3",
+        "DOI":  "10.1145/838250.838251",
+        "author":  [
+                       {
+                           "given":  "Joaquim R. R. A.",
+                           "family":  "Martins",
+                           "sequence":  "first",
+                           "affiliation":  [
+                                               {
+                                                   "name":  "University of Toronto Institute for Aerospace Studies, Toronto, Canada"
+                                               }
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Peter",
+                           "family":  "Sturdza",
+                           "sequence":  "additional",
+                           "affiliation":  [
+                                               {
+                                                   "name":  "Stanford University, Stanford, CA"
+                                               }
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Juan J.",
+                           "family":  "Alonso",
+                           "sequence":  "additional",
+                           "affiliation":  [
+                                               {
+                                                   "name":  "Stanford University, Stanford, CA"
+                                               }
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  "245-262",
+        "publisher":  "Association for Computing Machinery (ACM)",
+        "title":  [
+                      "The complex-step derivative approximation"
+                  ],
+        "volume":  "29"
+    },
+    {
+        "container":  [
+                          "SIAM Journal on Numerical Analysis"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 1980,
+                                                 4
+                                             ]
+                                         ]
+                      },
+        "issue":  "2",
+        "DOI":  "10.1137/0717021",
+        "author":  [
+                       {
+                           "given":  "F. N.",
+                           "family":  "Fritsch",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "R. E.",
+                           "family":  "Carlson",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  "238-246",
+        "publisher":  "Society for Industrial \u0026 Applied Mathematics (SIAM)",
+        "title":  [
+                      "Monotone Piecewise Cubic Interpolation"
+                  ],
+        "volume":  "17"
+    },
+    {
+        "container":  [
+                          "SIAM Journal on Scientific Computing"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 1997,
+                                                 1
+                                             ]
+                                         ]
+                      },
+        "issue":  "1",
+        "DOI":  "10.1137/s1064827594276424",
+        "author":  [
+                       {
+                           "given":  "Lawrence F.",
+                           "family":  "Shampine",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Mark W.",
+                           "family":  "Reichelt",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  "1-22",
+        "publisher":  "Society for Industrial \u0026 Applied Mathematics (SIAM)",
+        "title":  [
+                      "The MATLAB ODE Suite"
+                  ],
+        "volume":  "18"
+    },
+    {
+        "container":  [
+
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 2014,
+                                                 7,
+                                                 11
+                                             ]
+                                         ]
+                      },
+        "issue":  null,
+        "DOI":  "10.1201/b17208",
+        "author":  null,
+        "page":  null,
+        "publisher":  "CRC Press",
+        "title":  [
+                      "Handbook of Industrial Drying"
+                  ],
+        "volume":  null
+    },
+    {
+        "container":  [
+
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 2018,
+                                                 10,
+                                                 8
+                                             ]
+                                         ]
+                      },
+        "issue":  null,
+        "DOI":  "10.1201/9781482234213",
+        "author":  [
+                       {
+                           "given":  "Suhas V.",
+                           "family":  "Patankar",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  null,
+        "publisher":  "CRC Press",
+        "title":  [
+                      "Numerical Heat Transfer and Fluid Flow"
+                  ],
+        "volume":  null
+    },
+    {
+        "container":  [
+                          "Journal of Food Engineering"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 2004,
+                                                 2
+                                             ]
+                                         ]
+                      },
+        "issue":  "3",
+        "DOI":  "10.1016/s0260-8774(03)00144-4",
+        "author":  [
+                       {
+                           "given":  "L.",
+                           "family":  "Mayor",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "A.M.",
+                           "family":  "Sereno",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  "373-386",
+        "publisher":  "Elsevier BV",
+        "title":  [
+                      "Modelling shrinkage during convective drying of food materials: a review"
+                  ],
+        "volume":  "61"
+    },
+    {
+        "container":  [
+                          "Applied Energy"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 2014,
+                                                 10
+                                             ]
+                                         ]
+                      },
+        "issue":  null,
+        "DOI":  "10.1016/j.apenergy.2014.06.027",
+        "author":  [
+                       {
+                           "given":  "Thijs",
+                           "family":  "Defraeye",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  "323-344",
+        "publisher":  "Elsevier BV",
+        "title":  [
+                      "Advanced computational modelling for drying processes – A review"
+                  ],
+        "volume":  "131"
+    },
+    {
+        "container":  [
+                          "Applied Mathematical Sciences"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 2011
+                                             ]
+                                         ]
+                      },
+        "issue":  null,
+        "DOI":  "10.1007/978-1-4419-7916-2",
+        "author":  [
+                       {
+                           "given":  "Weizhang",
+                           "family":  "Huang",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       },
+                       {
+                           "given":  "Robert D.",
+                           "family":  "Russell",
+                           "sequence":  "additional",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  null,
+        "publisher":  "Springer New York",
+        "title":  [
+                      "Adaptive Moving Mesh Methods"
+                  ],
+        "volume":  null
+    },
+    {
+        "container":  [
+                          "Advances in Heat Transfer",
+                          "Advances in Heat Transfer Volume 13"
+                      ],
+        "published":  {
+                          "date-parts":  [
+                                             [
+                                                 1977
+                                             ]
+                                         ]
+                      },
+        "issue":  null,
+        "DOI":  "10.1016/s0065-2717(08)70223-5",
+        "author":  [
+                       {
+                           "given":  "Stephen",
+                           "family":  "Whitaker",
+                           "sequence":  "first",
+                           "affiliation":  [
+
+                                           ],
+                           "role":  [
+                                        {
+                                            "vocabulary":  "crossref",
+                                            "role":  "author"
+                                        }
+                                    ]
+                       }
+                   ],
+        "page":  "119-203",
+        "publisher":  "Elsevier",
+        "title":  [
+                      "Simultaneous Heat, Mass, and Momentum Transfer in Porous Media: A Theory of Drying"
+                  ],
+        "volume":  null
+    }
+]

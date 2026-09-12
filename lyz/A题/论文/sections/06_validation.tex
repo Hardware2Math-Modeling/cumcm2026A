@@ -1,0 +1,87 @@
+\section{模型检验与误差分析}
+\subsection{问题一温度场的独立级数检验}
+仅检查求解器成功退出不足以确认空间离散正确。第一问温度方程为常系数线性圆柱导热方程，可使用与有限体积法不同的特征函数展开建立参考解\cite{carslaw,crank}。令$x=r/R_0$、$w(x,t)=T_a(t)-T(x,t)$，则
+\begin{equation}
+w_t=\frac{\alpha}{R_0^2}\frac1x(xw_x)_x+T_a'(t),\quad
+w_x(0,t)=0,\quad -w_x(1,t)=Bi\,w(1,t).
+\end{equation}
+初始环境温度与材料同为28 $^\circ$C，故$w(x,0)=0$。设$J_0,J_1$为第一类贝塞尔函数，特征根$\zeta_n$满足
+\begin{equation}
+\zeta_nJ_1(\zeta_n)=BiJ_0(\zeta_n),\qquad
+\mu_n=\frac{\alpha\zeta_n^2}{R_0^2},\quad
+A_n=\frac{2Bi}{(\zeta_n^2+Bi^2)J_0(\zeta_n)}.
+\end{equation}
+将空间常数源展开并积分各模态，得到
+\begin{equation}
+T(x,t)=T_a(t)-\sum_{n=1}^{\infty}A_nJ_0(\zeta_nx)
+\int_0^t e^{-\mu_n(t-s)}T_a'(s)\dd s .
+\label{eq:series}
+\end{equation}
+记卷积为$I_n(t)$。在环境线性插值段内斜率为$b$，可精确递推
+\begin{equation}
+I_n(t+\Delta t)=e^{-\mu_n\Delta t}I_n(t)
++\frac{b}{\mu_n}(1-e^{-\mu_n\Delta t}).
+\end{equation}
+这种计算不用有限体积网格，也不用原BDF积分器，因此能提供具有独立性的交叉验证。小参数时用\texttt{expm1}计算指数差，减少相减消去。
+
+\fig{fig7}{0.88}{问题一独立级数对照与空间加密差异；纵轴量级见图上科学计数}{fig:validation}
+
+已有验证在1801个整数秒、21个输出位置上比较：240与360项级数的最大差为$1.53\times10^{-8}\,^\circ$C；主网格与360项参考解的最大差为$2.80\times10^{-7}\,^\circ$C。该结果支持第一问温度计算的数值一致性，但不能直接替代非线性水分和变物性方程的验证。
+
+\nextpage
+\subsection{空间加密与时间容差检验}
+\input{tables/grids}
+表\ref{tab:grids}显示，早期均匀网格的临界时间仍有明显变化，而表面加密后的结果更快稳定。均匀网格与加密网格的节点分布不同，不能把整张表当作等比细化序列来机械拟合收敛阶；同类型加密网格之间的差异更适合作为现有计算的空间误差指示。
+
+\begin{table}[H]\centering
+\caption{1280与2560区间加密网格的最大输出差}\label{tab:errors}
+\small
+\begin{tabularx}{\linewidth}{Xr}
+\toprule 比较量 & 最大绝对差\\\midrule
+问题一前1800 s温度 / $^\circ$C & $8.40\times10^{-7}$\\
+问题一前1800 s含水率 / (kg/kg) & $6.90\times10^{-7}$\\
+问题二前3 h含水率 / (kg/kg) & $9.88\times10^{-7}$\\
+问题三共同输出时刻含水率 / (kg/kg) & $9.88\times10^{-7}$\\
+问题四共同输出时刻、实际位置含水率 / (kg/kg) & $1.68\times10^{-6}$\\
+问题三临界时间 / s & 0.02431\\
+问题四临界时间 / s & 0.00949\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+问题四在固定参考坐标上的前3 h含水率最大差另为$3.28\times10^{-6}$ kg/kg，与表\ref{tab:errors}使用的全程实际输出位置比较口径不同。明确比较域、时间点和坐标基准，可以避免把两个不同检查结果误认为不一致。
+
+在1280区间加密网格上，将相对容差从$2\times10^{-10}$收紧为$2\times10^{-11}$，并将前4 h最大步长从30 s缩短为10 s，问题三、四的临界时间分别仅变化0.000477 s和0.000156 s。这比末两级空间网格差更小，说明当前时间离散误差不是主要限制。
+
+上述网格差不是严格的数学误差上界；它们表明结果在现有细化范围内趋于稳定，不能保证恰好位于四舍五入分界附近的每个末位数字都保持不变。本文以未舍入数据做比较，最后统一输出四位小数，避免提前截断误差。
+
+\nextpage
+\subsection{整体守恒与后期环境敏感性}
+按照归一化体积权重，离散平均含水率为
+\begin{equation}
+\overline C(t)=2\sum_i\omega_i C_i(t),\qquad
+\frac{\dd\overline C}{\dd t}
+=2\sum_i(W_{i-1/2}-W_{i+1/2})=-2W_{N+1/2}.
+\end{equation}
+在状态向量中增加累计流出量$B_C$，令$B_C'=2W_{N+1/2}$、$B_C(0)=0$，则应满足
+\begin{equation}
+\overline C(t)+B_C(t)=2.55 .
+\label{eq:masscheck}
+\end{equation}
+前三问参考干密度固定，第四问$\rho_dR^2$固定，该检查均对应参考干质量的水分收支。主计算最大账差分别为$1.24\times10^{-14}$、$1.15\times10^{-14}$、$1.11\times10^{-14}$ kg/kg。其意义是程序的通量加总和积累量相互一致。
+
+第一问热物性固定，同样可定义$\overline T=2\sum_i\omega_iT_i$、$B_T'=-2H_{N+1/2}/(820\times2600)$，检查$\overline T-28=B_T$。最大差为$1.68\times10^{-13}\,^\circ$C。变物性问题不把这一常热容量恒等式当作完整能量守恒证明。
+
+\begin{table}[H]\centering
+\caption{已有640区间网格结果中的后期环境延长对照}\label{tab:sensitivity}
+\begin{tabular}{lcc}
+\toprule
+4 h后环境方案 & 问题三 / h & 问题四 / h\\\midrule
+3--4 h均值保持 & 57.4740 & 51.0920\\
+末次测量值保持 & 57.1694 & 50.8242\\
+\bottomrule
+\end{tabular}
+\end{table}
+末次测量为50.165 $^\circ$C、0.04986 kg/kg。两种合理延长方式分别造成约0.3046 h、0.2678 h的时长差，远大于网格细化和时间容差变化的影响。因此，结果的小数位主要表达模型求解与题目展示要求，不能解读成实际干燥时间具有同等精度。
+
+综合而言，独立解检查线性子模型，网格细化检查空间分辨率，容差收紧检查时间积分，整体守恒检查局部收支实现，环境对照检查输入假设的影响。五类证据互相补充；其中极小的离散账差来自结构一致性，不是实验预测误差达到$10^{-14}$的证据。
