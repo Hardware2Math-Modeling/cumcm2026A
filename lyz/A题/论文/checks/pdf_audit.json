@@ -1,0 +1,736 @@
+{
+  "pages_total": 30,
+  "reference_pages": [
+    28
+  ],
+  "pages_abstract_through_references": 28,
+  "abstract_one_page": true,
+  "missing_glyph_pages": [],
+  "out_of_page_text": [],
+  "overfull_warnings": [],
+  "undefined_warnings": [],
+  "citations_count": 14,
+  "figures_count": 9,
+  "tables_count": 12,
+  "fonts": [
+    {
+      "name": "QVIUWV+SimHei",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "IRQUGZ+SimSun",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "DTQSCH+LMRoman12-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "KONLXK+LMRoman12-Bold-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "WEQGOX+CMSY8",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "LSWRAB+CMMI12",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "ISPLYI+CMR12",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "PPZLBF+CMSY10",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "EXEMUK+CMR8",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "VJKBIL+LMRoman10-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "MIMRVH+CMMI10",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "MIUVPK+LMRoman10-Bold-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "RARIWR+CMMI8",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "KOOBRH+LMRoman8-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "MCGVSW+CMR10",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "FJVZLN+CMSY7",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "TWNMZG+CMMI7",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "TSIGKM+CMR7",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "WQXNCM+CMMIB10",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "CCBSFE+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "FLGHMT+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "BKHREM+MicrosoftYaHei-Bold",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "EZVIJO+MicrosoftYaHei-Bold",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "MDQMML+CMEX10",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "ABAKMZ+CMMI6",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "PDNPAS+CMR6",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "ZFFJEW+CMSY6",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "AOGCSG+LMSans8-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "HCRATS+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "EYSDIV+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "BFIDME+LMMono12-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "JXCYQC+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "DUPCVZ+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "FXDPIL+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "BJDXWW+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "DXPRWV+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "GKOPEV+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "BFEDDQ+MicrosoftYaHei-Bold",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "CLTCKT+MicrosoftYaHei-Bold",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "EGYXNT+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "BZAUBC+MicrosoftYaHei",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "DMMGKO+MicrosoftYaHei-Bold",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "GBCVMJ+MicrosoftYaHei-Bold",
+      "embedded": true,
+      "kind": "glyph_programs"
+    },
+    {
+      "name": "QEULYP+LMMono10-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "CPWLDB+LMRoman7-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "TDODLP+LMMonoLt10-Bold-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    },
+    {
+      "name": "QJRUYZ+LMMono8-Regular-Identity-H",
+      "embedded": true,
+      "kind": "font_file"
+    }
+  ],
+  "bookmarks": 40,
+  "pages": [
+    {
+      "page": 1,
+      "characters": 962,
+      "first_lines": [
+        "考虑变物性与径向收缩的药材",
+        "热风干燥建模及数值分析",
+        "摘"
+      ],
+      "last_lines": [
+        "境延长假设。",
+        "关键词：药材干燥；热质耦合；有限体积法；移动边界；自适应BDF",
+        "1"
+      ]
+    },
+    {
+      "page": 2,
+      "characters": 985,
+      "first_lines": [
+        "1",
+        "问题背景与重述",
+        "1.1"
+      ],
+      "last_lines": [
+        "文中C 均指药材干基含水率。空气数据如何作为材料表面的有效平衡边界，将在模型假设及问题",
+        "一中明确；题目提供的数值本身不构成完整的吸附等温关系。",
+        "2"
+      ]
+    },
+    {
+      "page": 3,
+      "characters": 871,
+      "first_lines": [
+        "2",
+        "问题分析",
+        "问题一分析。研究对象是具有径向空间差异的圆柱体，需要同时获得T(r, t) 和"
+      ],
+      "last_lines": [
+        "图1",
+        "建模、求解与验证的总体技术路线",
+        "3"
+      ]
+    },
+    {
+      "page": 4,
+      "characters": 951,
+      "first_lines": [
+        "3",
+        "模型假设",
+        "为使给定数据能够闭合为可计算问题，并保持论文与既有算法一致，采用以下假设。"
+      ],
+      "last_lines": [
+        "数值收敛检查回答“所列方程是否被准确求解”，不直接证明全部物理假设均成立。后文分别报告",
+        "离散误差和环境延长方式的敏感性。",
+        "4"
+      ]
+    },
+    {
+      "page": 5,
+      "characters": 771,
+      "first_lines": [
+        "4",
+        "符号说明",
+        "表1"
+      ],
+      "last_lines": [
+        "度必须取TK = T + 273.15。下标r, t, x 表示相应偏导，点号表示时间导数；表面下标s",
+        "表示在r = R(t) 处取值。公式中的通量均以从中心向外为正。",
+        "5"
+      ]
+    },
+    {
+      "page": 6,
+      "characters": 789,
+      "first_lines": [
+        "5",
+        "模型的建立与求解",
+        "5.1"
+      ],
+      "last_lines": [
+        "比热容cp 把温升转换为显热变化。两种储存量的基准不同，却可通过局部传递定律进",
+        "入同一径向几何框架[4, 6]。",
+        "6"
+      ]
+    },
+    {
+      "page": 7,
+      "characters": 879,
+      "first_lines": [
+        "5.1.2",
+        "从能量收支建立温度方程",
+        "薄壳温度在短时间dt 内变化约为Tt dt。第一问ρ, cp 固定，因此显热增量写为"
+      ],
+      "last_lines": [
+        "常物性热方程是本研究唯一可以用线性级数解独立验证的子问题。变物性模型需要保留散度形式，",
+        "不能直接把常系数展开式中的k 替换为k(C)。",
+        "7"
+      ]
+    },
+    {
+      "page": 8,
+      "characters": 865,
+      "first_lines": [
+        "5.1.3",
+        "从水质量守恒建立非线性扩散模型",
+        "采用有效菲克关系，将相对骨架的水分通量写为"
+      ],
+      "last_lines": [
+        "温度调整慢，且C 下降会进一步降低D，由此产生的表面低含水率区域需要较高空间",
+        "分辨率。该特征解释了后续采用表面加密网格的必要性。",
+        "8"
+      ]
+    },
+    {
+      "page": 9,
+      "characters": 872,
+      "first_lines": [
+        "5.1.4",
+        "表面加密网格与有限体积离散",
+        "令x = r/R0，把径向区间归一化到[0, 1]。对N 个区间定义"
+      ],
+      "last_lines": [
+        "元，总和时内部交换自动抵消。非均匀节点之间使用真实间距，不能以统一的1/N 代",
+        "替。界面物性取平均状态是一种离散近似，其可信度由后文网格与独立解检验确认。",
+        "9"
+      ]
+    },
+    {
+      "page": 10,
+      "characters": 689,
+      "first_lines": [
+        "5.1.5",
+        "隐式时间积分与结果提取",
+        "把节点状态交错组成y = (T0, C0, T1, C1, . . . , TN, CN)T，离散系统写为"
+      ],
+      "last_lines": [
+        "取题目要求的21 个半径位置。每秒输出不要求内部步长恰好为1 s，计算网格也不等同",
+        "于输出位置网格。",
+        "10"
+      ]
+    },
+    {
+      "page": 11,
+      "characters": 904,
+      "first_lines": [
+        "5.1.6",
+        "预热温度分布与物理解释",
+        "表2"
+      ],
+      "last_lines": [
+        "描述径向温度分布，不能据此宣称端面温度与任意轴向位置也具有完全相同的演化。第",
+        "一问输出文件对应1–1800 s、0–2 cm 的温度网格，其展示精度为四位小数。",
+        "11"
+      ]
+    },
+    {
+      "page": 12,
+      "characters": 935,
+      "first_lines": [
+        "5.1.7",
+        "预热水分分布与输出文件",
+        "表3"
+      ],
+      "last_lines": [
+        "为result1.xlsx 的“温度”和“水分浓度”两张表；其中每秒21 个位置，共1800 个",
+        "时间行。表格末值仍远高于0.15，说明30 min 仅是预热观测窗口，并非干燥完成时间。",
+        "12"
+      ]
+    },
+    {
+      "page": 13,
+      "characters": 844,
+      "first_lines": [
+        "5.2",
+        "问题二：全过程的变物性热质耦合",
+        "5.2.1"
+      ],
+      "last_lines": [
+        "热方程不是完整混合物焓方程，未对ρ(C)cp(C)T 整体求时间导数；这样的处理是沿用",
+        "题给经验系数的有效显热近似，而不是声称组分迁移没有能量效应。",
+        "13"
+      ]
+    },
+    {
+      "page": 14,
+      "characters": 890,
+      "first_lines": [
+        "5.2.2",
+        "同步求解、数据范围与过程特征",
+        "问题二继续采用式(5.16) 的表面加密网格和式(5.19) 的控制体更新。区别在于，每"
+      ],
+      "last_lines": [
+        "模型及其后期含水率输出用于问题三。该范围是现有交付的事实，不应把前3 h 文件称",
+        "为已包含整个约57 h 的逐秒温湿记录。",
+        "14"
+      ]
+    },
+    {
+      "page": 15,
+      "characters": 1011,
+      "first_lines": [
+        "5.2.3",
+        "温度、水分数值结果与模型比较",
+        "表4"
+      ],
+      "last_lines": [
+        "比较，不应把两张表首尾连接成实际阶段切换轨迹。若要模拟真实的分阶段切换，还需",
+        "给出切换时刻及参数过渡规则，现有题目要求则是统一使用附录3。",
+        "15"
+      ]
+    },
+    {
+      "page": 16,
+      "characters": 803,
+      "first_lines": [
+        "5.3",
+        "问题三：固定尺寸下的全域干燥终点",
+        "5.3.1"
+      ],
+      "last_lines": [
+        "后期环境延长是与数据范围有关的物理假设，不能靠细化空间网格消除。第六部分利用既有末值保",
+        "持结果报告该假设的敏感性。",
+        "16"
+      ]
+    },
+    {
+      "page": 17,
+      "characters": 795,
+      "first_lines": [
+        "5.3.2",
+        "连续事件定位与长时间过程求解",
+        "计算中在每次事件函数评估时检查全部径向节点，使用"
+      ],
+      "last_lines": [
+        "按题目四位小数报告为57.4740 h。若按整秒给出严格低于的停止时刻，可取206907",
+        "s；该区别来自严格不等式与数值报告规则，不是新的物理干燥机制。",
+        "17"
+      ]
+    },
+    {
+      "page": 18,
+      "characters": 1132,
+      "first_lines": [
+        "5.3.3",
+        "全程水分分布与终点结果",
+        "表6"
+      ],
+      "last_lines": [
+        "优化，因此此处仅依据现有分布解释潜在限制，不报告未经计算的节能比例或最优控制",
+        "策略。",
+        "18"
+      ]
+    },
+    {
+      "page": 19,
+      "characters": 706,
+      "first_lines": [
+        "5.4",
+        "问题四：考虑径向收缩的移动域模型",
+        "5.4.1"
+      ],
+      "last_lines": [
+        "因此第三、四问时长差是两个模型方案的综合差异。若要单独识别收缩贡献，需要固定",
+        "物性作额外对照；本次依照要求不新增计算。",
+        "19"
+      ]
+    },
+    {
+      "page": 20,
+      "characters": 718,
+      "first_lines": [
+        "5.4.2",
+        "骨架、水分连续性与坐标变换",
+        "在固定空间坐标中，单位体积的干物质量满足"
+      ],
+      "last_lines": [
+        "焓迁移和机械变形功。它与水分精确的参考干质量连续性各有物理约定，不能据此推断",
+        "题给经验密度同时满足所有湿质量约束。",
+        "20"
+      ]
+    },
+    {
+      "page": 21,
+      "characters": 863,
+      "first_lines": [
+        "5.4.3",
+        "变域耦合模型与数值实现",
+        "题目附录4 的物性为"
+      ],
+      "last_lines": [
+        "持不变。故C = 2 P",
+        "i ωiCi 仍可解释为干质量加权平均，离散水分守恒检查保持成立。",
+        "21"
+      ]
+    },
+    {
+      "page": 22,
+      "characters": 1081,
+      "first_lines": [
+        "5.4.4",
+        "收缩后的干燥时长与实际位置结果",
+        "表7"
+      ],
+      "last_lines": [
+        "表面含水率及当前半径。空值表示“没有材料”，零值则表示“有材料但水分为零”，二",
+        "者不可替换。",
+        "22"
+      ]
+    },
+    {
+      "page": 23,
+      "characters": 921,
+      "first_lines": [
+        "6",
+        "模型检验与误差分析",
+        "6.1"
+      ],
+      "last_lines": [
+        "1.53 × 10−8 ◦C；主网格与360 项参考解的最大差为2.80 × 10−7 ◦C。该结果支持第一问",
+        "温度计算的数值一致性，但不能直接替代非线性水分和变物性方程的验证。",
+        "23"
+      ]
+    },
+    {
+      "page": 24,
+      "characters": 904,
+      "first_lines": [
+        "6.2",
+        "空间加密与时间容差检验",
+        "表8"
+      ],
+      "last_lines": [
+        "不能保证恰好位于四舍五入分界附近的每个末位数字都保持不变。本文以未舍入数据做",
+        "比较，最后统一输出四位小数，避免提前截断误差。",
+        "24"
+      ]
+    },
+    {
+      "page": 25,
+      "characters": 768,
+      "first_lines": [
+        "6.3",
+        "整体守恒与后期环境敏感性",
+        "按照归一化体积权重，离散平均含水率为"
+      ],
+      "last_lines": [
+        "积分，整体守恒检查局部收支实现，环境对照检查输入假设的影响。五类证据互相补充；",
+        "其中极小的离散账差来自结构一致性，不是实验预测误差达到10−14 的证据。",
+        "25"
+      ]
+    },
+    {
+      "page": 26,
+      "characters": 932,
+      "first_lines": [
+        "7",
+        "模型评价与推广改进",
+        "7.1"
+      ],
+      "last_lines": [
+        "一步结合能耗、品质损伤指标构建工艺优化问题。当前有限体积、隐式积分和阈值检测",
+        "框架可继续复用，但新增参数需有实验来源，新增效果需单独计算验证。",
+        "26"
+      ]
+    },
+    {
+      "page": 27,
+      "characters": 1054,
+      "first_lines": [
+        "8",
+        "结论",
+        "本文根据题给环境、经验物性与半径数据，建立并整理了固定圆柱和收缩圆柱两类"
+      ],
+      "last_lines": [
+        "程示意及图表改绘建议。模型假设、原始数据与引用依据均在文中或项目记录中明示；",
+        "正式提交前由参赛成员独立复核并按赛事当届规定完善使用声明。",
+        "27"
+      ]
+    },
+    {
+      "page": 28,
+      "characters": 2100,
+      "first_lines": [
+        "参考文献",
+        "[1] Mujumdar A S, ed. Handbook of Industrial Drying[M]. 4th ed. Boca Raton: CRC Press,",
+        "2014. DOI: 10.1201/b17208."
+      ],
+      "last_lines": [
+        "https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.",
+        "PchipInterpolator.html.",
+        "28"
+      ]
+    },
+    {
+      "page": 29,
+      "characters": 1810,
+      "first_lines": [
+        "附录B",
+        "核心代码与复现说明",
+        "B.1"
+      ],
+      "last_lines": [
+        "54",
+        "return out",
+        "29"
+      ]
+    },
+    {
+      "page": 30,
+      "characters": 1845,
+      "first_lines": [
+        "B.2",
+        "稀疏雅可比与事件定义",
+        "55"
+      ],
+      "last_lines": [
+        "原模型复算应沿用既有tf2 环境、完整工作目录及参数；本轮未运行求解器。论文在本目录执",
+        "行两次xelatex main.tex 即可编译，详见README。以上摘录不构成独立脚本。",
+        "30"
+      ]
+    }
+  ],
+  "pdf_sha256": "9fd1d3fbd628d63e6fa0ed14ca379edd3fff7da8951e279c318bfbea91fc0ab7",
+  "result_table_checks": [
+    {
+      "page": 11,
+      "checked_values": 35,
+      "missing_values": []
+    },
+    {
+      "page": 12,
+      "checked_values": 35,
+      "missing_values": []
+    },
+    {
+      "page": 15,
+      "checked_values": 60,
+      "missing_values": []
+    },
+    {
+      "page": 18,
+      "checked_values": 50,
+      "missing_values": []
+    },
+    {
+      "page": 22,
+      "checked_values": 36,
+      "missing_values": []
+    }
+  ],
+  "original_code_unchanged": true,
+  "footer_checks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ]
+}

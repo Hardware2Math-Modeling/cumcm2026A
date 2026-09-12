@@ -1,0 +1,54 @@
+% !TeX program = xelatex
+\documentclass[UTF8,a4paper,zihao=-4,fontset=windows]{ctexart}
+\usepackage[left=25mm,right=25mm,top=23mm,bottom=23mm,footskip=11mm]{geometry}
+\usepackage{amsmath,amssymb,bm,booktabs,array,tabularx,multirow}
+\usepackage{graphicx,float,caption,xcolor,fancyhdr,enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{listings}
+\usepackage[unicode,hidelinks,bookmarksnumbered]{hyperref}
+\hypersetup{pdftitle={考虑变物性与径向收缩的药材热风干燥建模及数值分析},pdfauthor={},pdfsubject={药材烘干问题：有限体积法与守恒验证}}
+\definecolor{ink}{HTML}{19394F}
+\definecolor{teal}{HTML}{247C82}
+\definecolor{light}{HTML}{EDF4F5}
+\ctexset{
+ section={format=\Large\bfseries\centering,beforeskip=12pt,afterskip=10pt},
+ subsection={format=\large\bfseries,beforeskip=10pt,afterskip=7pt},
+ subsubsection={format=\normalsize\bfseries,beforeskip=8pt,afterskip=5pt}
+}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{2pt}
+\linespread{1.23}
+\setlength{\abovedisplayskip}{8pt}
+\setlength{\belowdisplayskip}{8pt}
+\setlength{\textfloatsep}{11pt}
+\setlength{\intextsep}{10pt}
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.24}
+\captionsetup{font=small,labelfont=bf,labelsep=quad,skip=5pt}
+\pagestyle{fancy}\fancyhf{}\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlist[enumerate]{leftmargin=2em,itemsep=3pt,topsep=4pt}
+\setlist[itemize]{leftmargin=2em,itemsep=3pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\pd}{\partial}
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+\newcommand{\fig}[4]{\begin{figure}[H]\centering\includegraphics[width=#2\linewidth]{figures/#1.pdf}\caption{#3}\label{#4}\end{figure}}
+\newcommand{\note}[1]{\par\smallskip\noindent\colorbox{light}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\small #1}}\par\smallskip}
+\newcommand{\nextpage}{\clearpage}
+\tikzset{box/.style={draw=teal,rounded corners=2pt,fill=light,align=center,minimum height=11mm,text width=36mm,font=\small},arr/.style={-{Stealth[length=2mm]},thick,draw=ink}}
+\lstset{language=Python,basicstyle=\ttfamily\fontsize{8}{10}\selectfont,keywordstyle=\bfseries\color{ink},commentstyle=\color{teal},stringstyle=\color{teal},numbers=left,numberstyle=\tiny\color{gray},numbersep=6pt,breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{gray!40},tabsize=4,columns=fullflexible,keepspaces=true}
+\begin{document}
+\pagenumbering{arabic}
+\input{sections/01_front}
+\nextpage\input{sections/02_q1}
+\nextpage\input{sections/03_q2}
+\nextpage\input{sections/04_q3}
+\nextpage\input{sections/05_q4}
+\nextpage\input{sections/06_validation}
+\nextpage\input{sections/07_evaluation}
+\nextpage\input{sections/08_conclusion}
+\nextpage\input{sections/09_references}
+\nextpage\input{sections/10_code}
+\end{document}
