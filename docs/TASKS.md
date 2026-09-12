@@ -145,6 +145,11 @@
 
 ### 收尾与修复阶段（2026-09-11）
 
+- [x] **暂停 CI 自动触发（2026-09-11，用户明确要求）**：`.github/workflows/ci.yml` 的 `push` /
+      `pull_request` 整块注释，只保留 `workflow_dispatch`；`docs/BRANCHING.md` §3.4/§4.2 同步暂停说明、
+      本地替代门禁与恢复步骤。**直接提交到 `main`**，属 AGENTS.md 铁律 7 的一次性例外（经用户要求）。
+      影响：Actions 不再自动红绿，lint/selfcheck/pytest/产物校验改用 `make lint|selfcheck|test|doctor` 本地执行；
+      未 rebase 到新 `main` 的分支仍带旧版 ci.yml，push 到那些分支仍会触发 CI。
 - [x] **修复：论文从未编出过可用 PDF。** 5 处 `\input` 无保护 + `paper/tab`、`paper/figs` 产物未入库
       → 新增 `\geninput` / `\qonevalues` 宏（缺失时打印醒目占位框，不静默跳过）；
       `make paper` 改为依赖 `tables figs`；生成产物入库；CI 增加"产物已入库"校验

@@ -1,31 +1,39 @@
 # CI：保证 main 永远可运行、可编译
 #
+# ⚠️ 2026-09-11 起赛期内暂停：本 workflow 不再由 push / pull_request 自动触发，
+#    仅剩手动 workflow_dispatch（Actions → 左侧选 "check" → Run workflow）。
+#    暂停说明、影响与恢复步骤：docs/BRANCHING.md §4.2。
+#
 # 对应 docs/BRANCHING.md §3.4 的「PR 合并条件」第 1、2 条。
 #
 # ⚠️ 不要试图把 "lint-and-test" 设成 required status check ——
 #    分支保护是私有仓库的付费功能（见 docs/BRANCHING.md §4）。
-#    CI 本身免费（私有仓库额度 2000 分钟/月，够用），照常跑；
+#    CI 本身免费（私有仓库额度 2000 分钟/月，够用），恢复触发后照常跑；
 #    失去的只是「不绿就物理上合不了」的强制力，靠人看红绿即可。
 
 name: check
 
 on:
-  push:
-    branches:
-      - main
-      - model
-      - impl
-      - paper
-      - infra
-      # 短特性分支。GitHub 的 branches 过滤器里 `*` **不跨 `/`**，
-      # 所以只写 [main, model, impl, paper] 会让 impl/feat-* 这类分支
-      # （docs/BRANCHING.md §2 规定的标准命名）永远不触发 CI。必须写 `/**`。
-      - 'model/**'
-      - 'impl/**'
-      - 'paper/**'
-      - 'infra/**'
-  pull_request:
-    branches: [main]
+  # ⚠️ 赛期内暂停自动触发（用户于 2026-09-11 决定）：push 与 pull_request 都不再跑本 workflow。
+  #    恢复：删掉下面这一行 `workflow_dispatch:`，并去掉本块中所有 `# ` 前缀。
+  workflow_dispatch:
+
+  # push:
+  #   branches:
+  #     - main
+  #     - model
+  #     - impl
+  #     - paper
+  #     - infra
+  #     # 短特性分支。GitHub 的 branches 过滤器里 `*` **不跨 `/`**，
+  #     # 所以只写 [main, model, impl, paper] 会让 impl/feat-* 这类分支
+  #     # （docs/BRANCHING.md §2 规定的标准命名）永远不触发 CI。必须写 `/**`。
+  #     - 'model/**'
+  #     - 'impl/**'
+  #     - 'paper/**'
+  #     - 'infra/**'
+  # pull_request:
+  #   branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

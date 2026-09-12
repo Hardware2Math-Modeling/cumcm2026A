@@ -137,7 +137,7 @@ gh pr create --base main --head impl \
 ```
 
 **PR 合并条件（缺一不可）**：
-1. `make check` 绿（CI 自动跑）
+1. `make check` 绿（**赛期内 CI 已暂停自动触发，见 §4.2 —— 改为本地跑 `make check` 并在 PR 描述里贴出结果**）
 2. `make paper` 能编出 PDF（改了 `paper/` 或 `common/` 时必须）
 3. `docs/OWNERS.md` §3 规定的 reviewer 已 approve
 4. 分支已 rebase 到最新 `main`
@@ -172,10 +172,29 @@ Free for organizations" —— 反过来，私有仓库要 GitHub Team（约 $4/
 | 禁止 force push `main` | 约定。**这一条最需要自律** |
 | PR 必须有人 approve | PR 描述里 `@` 指定 reviewer，人工确认 |
 | 自动指派 reviewer（CODEOWNERS） | 同上，手动 `@` |
-| Required status checks 拦截合并 | **CI 照常跑**（私有仓库免费额度 2000 分钟/月，够用），只是不能设成"不绿就拦"。看红绿再点合并 |
+| Required status checks 拦截合并 | **CI 自 2026-09-11 起自动触发已暂停（见下）**；恢复触发后照常跑（私有仓库免费额度 2000 分钟/月，够用），只是不能设成"不绿就拦"。看红绿再点合并 |
 
-**关键点：CI 本身是免费的**，`.github/workflows/ci.yml` 照常工作。
+**关键点：CI 本身是免费的**，`.github/workflows/ci.yml` 恢复触发后照常工作。
 失去的只是"不绿就物理上合不了"这个强制力，而这一条在三人团队里靠人看就够了。
+
+> **⚠️ 赛期内暂停 CI 自动触发（2026-09-11，用户决定）**
+>
+> `.github/workflows/ci.yml` 的 `push` / `pull_request` 已整块注释，只保留 `workflow_dispatch`。
+> 因此 **Actions 不再给出红绿信号**，PR 合并条件里的"CI 自动跑"改由本地执行：
+>
+> | 原 CI 步骤 | 本地替代 |
+> |---|---|
+> | `ruff check / format` | `make lint`（本机无 ruff 时会提示并跳过） |
+> | `scripts/selfcheck.py` | `make selfcheck` |
+> | `pytest -q` | `make test` |
+> | `probe_templates.py` + 论文产物已入库 | `make doctor` |
+>
+> **残留面**：只有 `main` 带上了这次改动；`model` / `impl` / `paper/**` 及其他远程分支在 rebase 到
+> 新 `main` 之前仍是旧版 ci.yml（GitHub 按被推送 ref 上的 workflow 文件判定触发），
+> push 到那些分支仍会跑 CI。若要**立即全局停用**，在网页 Actions → 左侧 `check` → "Disable workflow"。
+>
+> **恢复**：`git revert "$(git log --format=%H --grep='赛期内暂停 CI 自动触发' -1)"`（或按 ci.yml 里注释还原 `on:` 块）；
+> 也可以只手动跑一次：Actions → `check` → Run workflow。
 
 ### 4.3 赛期内唯一靠得住的是三条约定
 
