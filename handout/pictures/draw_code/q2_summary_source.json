@@ -1,0 +1,30 @@
+{
+  "source": "results/result2.xlsx",
+  "source_sha256": "f7203ca6725c9aa11245bdd734c99a703cfb0649bdf5f34274dcb8b11cc3a1ca",
+  "original_pdf_sha256": "ae540176c26e0f7e8ea9dcc39bac28d75d590f064c390fe4e7c0f506bebd3cb4",
+  "sheets": {
+    "T": "温度",
+    "C": "水分浓度"
+  },
+  "time_range_s": [
+    0,
+    10800
+  ],
+  "time_step_s": 1,
+  "points_per_curve": 10801,
+  "radius_m": [
+    0.0,
+    0.005,
+    0.01,
+    0.015,
+    0.02
+  ],
+  "internal_units": {
+    "time": "s",
+    "radius": "m",
+    "T": "K",
+    "C": "kg/kg"
+  },
+  "resampling": false,
+  "smoothing": false
+}

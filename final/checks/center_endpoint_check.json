@@ -1,0 +1,26 @@
+{
+  "q23_s2560": {
+    "time_s": 206906.3987685154,
+    "nodes": 2561,
+    "center_C": 0.15,
+    "maximum_C": 0.15,
+    "argmax_x": 0.0,
+    "surface_C": 0.05264694505163615,
+    "largest_noncentral_C": 0.1499998613694345,
+    "nodes_above_threshold_plus_1e_12": 0,
+    "max_excess_over_center": 0.0,
+    "table_times_center_is_max": true
+  },
+  "q4_s2560": {
+    "time_s": 183931.20846219483,
+    "nodes": 2561,
+    "center_C": 0.15000000000000002,
+    "maximum_C": 0.15000000000000002,
+    "argmax_x": 0.0,
+    "surface_C": 0.05260750008757187,
+    "largest_noncentral_C": 0.14999981505133728,
+    "nodes_above_threshold_plus_1e_12": 0,
+    "max_excess_over_center": 0.0,
+    "table_times_center_is_max": true
+  }
+}

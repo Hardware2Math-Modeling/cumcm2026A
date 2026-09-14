@@ -1,0 +1,26 @@
+% !TEX root = ../main.tex
+\section*{附录B\quad 核心代码与复现说明}
+\addcontentsline{toc}{section}{附录B 核心代码与复现说明}
+\subsection*{B.1\quad 物性、网格与通量右端}
+以下为现有\texttt{solve\_model.py}核心片段，省略输入读取、日志和导出；完整原始代码随论文保存在\texttt{code/}目录。这里的\texttt{volumes}对应正文$\omega_i$，\texttt{heat/water}对应$H/W$。
+\lstinputlisting[firstline=19,lastline=54,firstnumber=19]{code/solve_model.py}
+
+\nextpage
+\subsection*{B.2\quad 稀疏雅可比与事件定义}
+\lstinputlisting[firstline=55,lastline=84,firstnumber=55]{code/solve_model.py}
+
+\subsection*{B.3\quad 程序、结果与文稿的对应关系}
+\begin{table}[H]\centering\small
+\caption{随附文件与用途}\label{tab:files}
+\begin{tabularx}{\linewidth}{lX}
+\toprule 文件或目录 & 用途\\\midrule
+\texttt{main.tex}、\texttt{sections/} & 论文主文件及各章节LaTeX源码\\
+\texttt{figures/}、\texttt{tables/} & 矢量图、由已有摘要生成的结果表\\
+\texttt{code/solve\_model.py} & 原有限体积与BDF求解程序\\
+\texttt{code/check\_accuracy.py} & 原独立解、网格及容差检查程序\\
+\texttt{code/export\_results.py} & 原输出插值与Excel导出程序\\
+\texttt{checks/} & 既有数值摘要、精度记录、引用核对与排版检查\\
+\bottomrule
+\end{tabularx}
+\end{table}
+\small 原模型复算应沿用既有\texttt{tf2}环境、完整工作目录及参数；本轮未运行求解器。论文在本目录执行两次\texttt{xelatex main.tex}即可编译，详见README。以上摘录不构成独立脚本。

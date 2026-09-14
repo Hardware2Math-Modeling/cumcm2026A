@@ -1,0 +1,75 @@
+% 现稿的“问题三” subsection 由调用方保留；本片段重写“问题三模型的建立”开头。
+% 后面的“问题三模型的求解”及问题四相关小节保持原稿不变。
+% 采用局部紧凑排版，结束时恢复现稿字号与间距。
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{2em}
+\linespread{1.03}\selectfont
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+
+\subsubsection{问题三模型的建立}
+
+\indent 问题三、四的终点判据可由中心含水率单点确定，证明如下。记阈值 $C_{\rm crit}=0.15$，并假设一维轴对称径向模型成立、初始含水率均匀 $C(r,0)=2.55$、无内部水分源、$D(C,T_K)>0$；问题四采用均匀径向收缩。附件\,1 的边界驱动满足
+\begin{equation*}
+ C_\infty(t)\le M=0.051<C_{\rm crit},\qquad t\ge0,
+\end{equation*}
+
+\indent 其中 $M$ 是后期闭合曲线的数值上界（拟合最大值约为 $0.0500652$），不是新增物性参数。
+
+\indent 令 $\xi=r/R(t)$、$u(\xi,t)=C(R(t)\xi,t)$。均匀收缩速度 $v=r\dot R/R$ 与材料坐标的运动项相消，固定域 $0\le\xi\le1$ 上统一得到
+\begin{equation*}
+ u_t=\frac{1}{R(t)^2\xi}\frac{\pd}{\pd\xi}\!\left(\xi D u_\xi\right),\qquad u_\xi(0,t)=0.
+ \tag{P1}
+\end{equation*}
+
+\indent 问题三是 $R(t)=R_0$ 的特例。对 $\xi>0$ 展开式 (P1)，在任一驻点 $u_\xi=0$ 处有
+\begin{equation*}
+ u_t=\frac{D}{R^2}u_{\xi\xi};\qquad
+ u_t(0,t)=\frac{2D(0,t)}{R(t)^2}u_{\xi\xi}(0,t).
+ \tag{P2}
+\end{equation*}
+
+\indent 因 $D/R^2>0$，局部极大值只能下降，局部极小值只能上升。表面 Robin 条件为
+\begin{equation*}
+ -\frac{D_s}{R(t)}u_\xi(1,t)=h_m\,[u(1,t)-C_\infty(t)],
+ \tag{P3}
+\end{equation*}
+
+\indent 故 $u(1,t)>M$ 时必有 $u_\xi(1,t)<0$。
+
+\indent 下面证明更强的比较不等式。对任意 $0\le\xi_1<\xi_2\le1$，有
+\begin{equation*}
+ u(\xi_2,t)\le\max\{u(\xi_1,t),M\}.
+ \tag{P4}
+\end{equation*}
+
+\indent 取 $\delta,\varepsilon>0$，令
+\begin{equation*}
+ g_\delta(s)=\frac{s+M+\sqrt{(s-M)^2+\delta^2}}2,\qquad
+ F=u(\xi_2,t)-g_\delta(u(\xi_1,t))-\varepsilon t .
+ \tag{P5}
+\end{equation*}
+
+\indent 其中 $g_\delta\ge\max\{s,M\}$ 且 $g_\delta'>0$。若 $F$ 在有限时空区域取得正最大值：初始面因 $u(\xi,0)=2.55$ 不可能；对角线 $\xi_1=\xi_2$ 不可能；若 $\xi_2=1$，则 $F>0$ 推出 $u(1,t)>M$，由 (P3) 得 $u_\xi(1,t)<0$，与右端最大值要求 $F_{\xi_2}\ge0$ 矛盾。故最大值只能在 $0\le\xi_1<\xi_2<1$ 的内部。
+
+\indent 在该内部最大值处，$u_\xi(\xi_2,t)=0$、$u_{\xi\xi}(\xi_2,t)\le0$，由 (P2) 得 $u_t(\xi_2,t)\le0$；又因 $F_{\xi_1}=0$ 且 $g_\delta'>0$，有 $u_\xi(\xi_1,t)=0$，从 $F_{\xi_1\xi_1}\le0$ 得 $u_{\xi\xi}(\xi_1,t)\ge0$，故 $u_t(\xi_1,t)\ge0$（$\xi_1=0$ 时用轴对称极限）。于是
+\begin{equation*}
+ F_t=u_t(\xi_2,t)-g_\delta'(u(\xi_1,t))u_t(\xi_1,t)-\varepsilon\le-\varepsilon<0.
+ \tag{P6}
+\end{equation*}
+
+\indent 与时空正最大值的时间导数非负矛盾。故 $F\le0$；令 $\varepsilon\to0$、$\delta\to0$ 即得 (P4)。
+
+\indent 在 (P4) 中取 $\xi_1=0$，且 $M<C_{\rm crit}$，得到
+\begin{equation*}
+ C(0,t)<C_{\rm crit}\quad\Longleftrightarrow\quad
+ C(r,t)<C_{\rm crit}\quad(0\le r\le R(t)),
+ \qquad \max_{0\le r\le R(t)}C(r,t)=C(0,t)\quad[C(0,t)>M].
+ \tag{P7}
+\end{equation*}
+
+\indent 因此，烘干终点可直接由中心含水率判定：问题三求 $C(0,t_*^{(3)})=C_{\rm crit}$，问题四在材料坐标中使用同一判据后再逆映射输出。计算时以中心值作事件检测，最终全域扫描仅用于离散误差核验；严格小于阈值时取首个合格输出时刻。
+
+\endgroup

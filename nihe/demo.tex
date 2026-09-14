@@ -1,0 +1,36 @@
+% !TeX program = xelatex
+\documentclass[UTF8,a4paper,zihao=-4,fontset=fandol]{ctexart}
+\usepackage[left=25mm,right=25mm,top=23mm,bottom=23mm,footskip=11mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,tabularx}
+\usepackage{graphicx,float,caption,xcolor,fancyhdr,enumitem}
+\usepackage[unicode,hidelinks,bookmarksnumbered]{hyperref}
+\hypersetup{pdftitle={问题二环境边界拟合：独立插入稿},pdfauthor={}}
+\definecolor{ink}{HTML}{19394F}
+\definecolor{teal}{HTML}{247C82}
+\definecolor{light}{HTML}{EDF4F5}
+\ctexset{
+ section={format=\Large\bfseries\centering,beforeskip=12pt,afterskip=10pt},
+ subsection={format=\large\bfseries,beforeskip=10pt,afterskip=7pt},
+ subsubsection={format=\normalsize\bfseries,beforeskip=8pt,afterskip=5pt}
+}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{2pt}
+\linespread{1.23}
+\setlength{\abovedisplayskip}{8pt}
+\setlength{\belowdisplayskip}{8pt}
+\setlength{\textfloatsep}{11pt}
+\setlength{\intextsep}{10pt}
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.24}
+\captionsetup{font=small,labelfont=bf,labelsep=quad,skip=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\numberwithin{equation}{section}
+\begin{document}
+\setcounter{section}{5}
+\setcounter{subsection}{1}
+\subsection{问题二：变物性热质耦合模型的建立与求解}
+\input{q2_boundary_fit}
+\end{document}
