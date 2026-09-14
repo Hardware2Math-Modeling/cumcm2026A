@@ -1,0 +1,44 @@
+\providecommand{\niheAssetPath}{../nihe/}
+\providecommand{\Tinf}{T_\infty}
+\providecommand{\Cinf}{C_\infty}
+\input{\niheAssetPath fit_values.tex}
+
+\subsubsection{问题二模型的建立}
+\label{sec:nihe-boundary}
+\subsubsection*{step1 环境边界拟合}
+
+利用附件1的烘房观测数据，拟合逐渐趋稳的温度与水分浓度曲线，估计其稳定值，为问题二的环境边界设定提供依据。
+
+\textbf{模型建立。}选用具有有限平台的Logistic模型，将环境温度$\Tinf(t)$与水分浓度$\Cinf(t)$分别表示为“平台减去随时间衰减的正分式”。在系数与时间尺度均为正的约束下，两条曲线连续上升并逐渐趋于稳定，既能描述初期变化，也能直接给出长期极限；温度与浓度的模型参数分别由观测数据估计。
+
+\textbf{求温度与水分浓度的拟合值。}使用附件1在0--14400 s内的全部\niheCount{}组观测，以带界非线性最小二乘法求解参数，得到下式（系数作展示舍入）。其中$t$以s计，$\Tinf$以K计，$\Cinf$以kg/kg计：
+\begin{equation}
+\begin{aligned}
+\Tinf(t)
+&\approx\niheTempPlateauPrint
+-\frac{\niheTempAmplitudePrint}
+{1+\niheTempShapePrint\,\mathrm{e}^{\,t/\niheTempTauPrint}},\\[9pt]
+\Cinf(t)
+&\approx\niheMoistPlateauPrint
+-\frac{\niheMoistAmplitudePrint}
+{1+\niheMoistShapePrint\,\mathrm{e}^{\,t/\niheMoistTauPrint}}.
+\end{aligned}
+\label{eq:nihe-logistic}
+\end{equation}
+令$t\to\infty$，分式趋于零，得到烘房稳定温度与水分浓度的拟合值：
+\begin{equation}
+\begin{aligned}
+\lim_{t\to\infty}\bigl[\Tinf(t)-273.15\bigr]
+&\approx\niheTempStablePrint\,{}^\circ\mathrm{C},\\[3pt]
+\lim_{t\to\infty}\Cinf(t)
+&\approx\niheMoistStablePrint\,\mathrm{kg/kg}.
+\end{aligned}
+\label{eq:nihe-limits}
+\end{equation}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\linewidth]{\niheAssetPath fit_for_paper.pdf}
+\caption{烘房温度与水分浓度的拟合曲线；阴影为工况不变假设下的外推区间}
+\label{fig:nihe-fit}
+\end{figure}

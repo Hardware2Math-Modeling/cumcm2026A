@@ -12,6 +12,7 @@
 | `tables/*.tex` | 被 `\input` 的结果表片段 |
 | `figures/*.pdf` | 被 `\includegraphics` 引用的矢量图 |
 | `code/solve_model.py` | **编译依赖**：附录 B 用 `\lstinputlisting` 摘录它，缺了会编译失败 |
+| `font-config.tex` | 跨平台字体配置：默认自动识别 Windows/macOS，可手动强制字体集 |
 | `.latexmkrc` | 固定 XeLaTeX 引擎 + 输出到 `build/` |
 
 ## 编译
@@ -33,15 +34,15 @@ xelatex -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 
 `build/` 目录已被根 `.gitignore` 的 `build/` 规则忽略，中间件不会入库。
 
-## 和原稿的唯一差别：字体集
+## Windows / macOS 字体切换
 
-原稿写的是 `fontset=windows`（SimSun / SimHei / KaiTi），这套字体只存在于 Windows。
-在 macOS 上编译**不会报错**，但会把所有汉字悄悄丢掉 —— 出一份 30 页的「无字天书」，
-log 里是成片的 `Missing character: There is no 考 (U+8003) in font ...`。
+`main.tex` 默认通过 `font-config.tex` 让 CTeX 自动识别系统：Windows 使用
+SimSun/SimHei/KaiTi，macOS 使用 Songti SC/Heiti SC/PingFang SC，其他系统回退到
+TeX Live 自带的 Fandol。通常不需要改源码，因此同一份稿件可直接在两种系统编译。
 
-所以本目录的 `main.tex` 改成了 `fontset=macnew`，用 macOS 自带的
-Songti SC / Heiti SC / PingFang SC。**要拿回 Windows 上编，把 `macnew` 改回 `windows` 即可。**
-（找不到这些字体时，`fontset=fandol` 是最保险的跨平台回退，TeX Live 自带 Fandol 字体。）
+若要强制选择字体集，只改 `font-config.tex` 中的 `\providecommand{\CJKFontset}{auto}`：
+可选值为 `auto`、`windows`、`macnew`、`fandol`。强制 `windows` 或 `macnew` 时，
+对应的系统字体必须已安装。
 
 ## 在 VSCode 里保存即编译
 

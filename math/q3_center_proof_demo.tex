@@ -1,0 +1,21 @@
+% !TeX program = xelatex
+% 独立编译包装文件；正文片段见 q3_center_proof.tex
+\documentclass[UTF8,a4paper,fontset=fandol]{ctexart}
+\usepackage[left=19mm,right=19mm,top=16mm,bottom=16mm]{geometry}
+\usepackage{amsmath,amssymb,mathtools,enumitem,xcolor,fancyhdr,hyperref}
+\hypersetup{hidelinks,pdftitle={问题三中心控制性证明正文片段}}
+\ctexset{section={format=\large\bfseries,beforeskip=4pt,afterskip=3pt},subsection={format=\normalsize\bfseries,beforeskip=3pt,afterskip=2pt},subsubsection={format=\normalsize\bfseries,beforeskip=3pt,afterskip=2pt}}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\linespread{1.03}
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\setlist[enumerate]{leftmargin=2em,itemsep=0pt,topsep=1pt,parsep=0pt}
+\pagestyle{fancy}\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\pd}{\partial}
+\begin{document}
+\small
+\subsection{问题三：固定尺寸下热质耦合的“干燥终点”模型}
+\input{q3_center_proof}
+\end{document}

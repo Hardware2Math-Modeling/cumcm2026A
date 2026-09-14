@@ -1,9 +1,7 @@
 % !TeX program = xelatex
-% fontset=macnew ：用 macOS 自带 Songti SC / Heiti SC / PingFang SC 出中文。
-% 原稿写的是 fontset=windows（SimSun/SimHei/KaiTi），本机没有这三款字体，
-% 编译能出 PDF 但所有汉字都会缺字（log 里成片的 "Missing character"）。
-% 若要在 Windows 上编译，把 macnew 换回 windows 即可。
-\documentclass[UTF8,a4paper,zihao=-4,fontset=macnew]{ctexart}
+% 字体默认按当前操作系统自动选择；需要强制切换时只改 font-config.tex。
+\input{font-config}
+\documentclass[UTF8,a4paper,zihao=-4]{ctexart}
 \usepackage[left=25mm,right=25mm,top=23mm,bottom=23mm,footskip=11mm]{geometry}
 \usepackage{amsmath,amssymb,bm,booktabs,array,tabularx,multirow}
 \usepackage{graphicx,float,caption,xcolor,fancyhdr,enumitem}

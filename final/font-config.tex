@@ -1,0 +1,20 @@
+% final/font-config.tex —— 跨平台中文字体选择
+%
+% 默认值 auto 交给 ctex 自动检测操作系统：
+%   Windows -> Windows 字体（SimSun/SimHei/KaiTi）
+%   macOS   -> macOS 字体（Songti SC/Heiti SC/PingFang SC）
+%   其他系统 -> TeX Live 自带 Fandol 字体
+%
+% 如需强制指定字体集，只改下面这一行：
+%   auto | windows | macnew | fandol
+% 也可以在命令行中预先定义 CJKFontset 后再 input main.tex。
+\providecommand{\CJKFontset}{auto}
+
+% fontset 是 ctexart 的类选项，必须在 \documentclass 前传入。
+% auto 不传选项，保留 ctex 的系统自动检测逻辑。
+\def\CJKFontsetAuto{auto}
+\ifx\CJKFontset\CJKFontsetAuto
+\else
+  \edef\CJKFontsetOption{fontset=\CJKFontset}
+  \expandafter\PassOptionsToClass\expandafter{\CJKFontsetOption}{ctexart}
+\fi

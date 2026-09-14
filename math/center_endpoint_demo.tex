@@ -1,0 +1,201 @@
+% !TeX program = xelatex
+\documentclass[UTF8,a4paper,fontset=fandol]{ctexart}
+\usepackage[left=25mm,right=25mm,top=22mm,bottom=22mm,footskip=10mm]{geometry}
+\usepackage{amsmath,amssymb,mathtools,booktabs,array,enumitem,xcolor,fancyhdr,hyperref}
+\hypersetup{hidelinks,pdftitle={第三、四问中心控制性证明嵌入示例}}
+\definecolor{ink}{HTML}{19394F}
+\definecolor{teal}{HTML}{247C82}
+\definecolor{light}{HTML}{EDF4F5}
+\ctexset{
+  section={format=\Large\bfseries\centering,beforeskip=12pt,afterskip=9pt},
+  subsection={format=\large\bfseries,beforeskip=10pt,afterskip=6pt},
+  subsubsection={format=\normalsize\bfseries,beforeskip=8pt,afterskip=4pt}
+}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{2pt}
+\linespread{1.20}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.18}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=2pt,topsep=3pt}
+\setlist[itemize]{leftmargin=2.2em,itemsep=2pt,topsep=3pt}
+\numberwithin{equation}{section}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\pd}{\partial}
+\newcommand{\crit}{0.15}
+\newcommand{\ambmax}{0.051}
+\newcommand{\insertnote}[1]{\par\smallskip\noindent\colorbox{light}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\small #1}}\par\smallskip}
+
+\begin{document}
+
+\begin{center}
+  {\zihao{2}\bfseries 第三、四问“中心点决定干燥终点”证明}\par
+  \vspace{5pt}
+  {\large 论文嵌入 demo（不改动 \texttt{final/}）}
+\end{center}
+
+\insertnote{本 demo 的用途是给现有论文提供可直接搬运的证明段落与编排方案。建议在问题三的“模型建立”中完整放置第\,\ref{sec:proof} 节；问题四完成移动坐标变换后只引用命题和结论。现有数值程序仍可保留全域扫描，作为离散误差与模型假设的独立审计。}
+
+\section*{建议的最小合入路径}
+
+现有 \texttt{final/main.tex} 通过 \texttt{sections/04\_q3.tex} 和 \texttt{sections/05\_q4.tex} 组织正文，因此不需要在主文件中复制公式。合入时可按下表处理：
+
+\begin{center}
+\begin{tabular}{p{0.25\linewidth}p{0.65\linewidth}}
+\toprule
+位置 & 建议写法 \\
+\midrule
+问题三模型建立、后期边界闭合之后 & 插入下节“中心控制性引理”，给出假设、比较函数证明和终点判据；将原“中心仅作预判、再扫全域”的表述改为“中心是解析判据，数值上仍作全域复核”。 \\
+问题三模型求解 & 保留连续事件定位，并把事件函数由全域最大值的主判据改写为中心值；全域最大值检查作为数值审计。 \\
+问题四坐标变换之后 & 用一段话引用同一引理：取 $R(t)=R_0$ 得问题三，取附件\,2 的 $R(t)$ 得问题四；因此不再重复证明，只说明逆映射和域外掩码。 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{第三、四问共用的中心控制性引理}\label{sec:proof}
+
+\subsection{命题与适用条件}
+
+令 $C(r,t)$ 为径向位置 $r$ 的干基含水率，$R(t)$ 为药材当前半径。问题三中 $R(t)=R_0$，问题四中 $R(t)$ 由附件\,2 插值。终点阈值为 $\crit$。在下列条件下，中心值可以决定全域是否达标：
+
+\begin{enumerate}
+  \item 采用一维轴对称径向模型，初始含水率均匀，即 $C(r,0)=2.55$；
+  \item 水分方程无内部生成项；问题四采用均匀径向收缩；
+  \item 扩散系数满足 $D(C,T_K)>0$，解在 $t>0$ 对空间变量足够光滑；
+  \item 边界驱动满足
+  \begin{equation}
+    C_\infty(t)\le \ambmax<\crit,\qquad t\ge0.
+    \label{eq:ambient-bound}
+  \end{equation}
+\end{enumerate}
+
+这里的 $\ambmax$ 不是新增物性参数，而是对附件\,1 后期闭合曲线的数值上界：拟合曲线的最大值约为 $0.0500652$，取上界为 $0.051$ 留出显示与插值余量。结论只在上述模型与边界闭合假设的范围内成立。
+
+\subsection{固定域方程与端点符号}
+
+引入材料坐标
+\begin{equation}
+  \xi=\frac{r}{R(t)},\qquad u(\xi,t)=C\bigl(R(t)\xi,t\bigr),
+  \qquad 0\le\xi\le1.
+  \label{eq:demo-coordinate}
+\end{equation}
+均匀径向收缩的材料速度为 $v=r\dot R/R$，故物质导数中的运动项与坐标变换完全相消，水分方程统一写为
+\begin{equation}
+  u_t=\frac{1}{R(t)^2\xi}\frac{\pd}{\pd\xi}
+  \left(\xi D\,u_\xi\right).
+  \label{eq:demo-pde}
+\end{equation}
+问题三只需令 $R(t)=R_0$。在 $\xi>0$ 处展开式\eqref{eq:demo-pde}，得到
+\begin{equation}
+  u_t=\frac{D}{R^2}u_{\xi\xi}
+  +\frac{1}{R^2}\left(D_\xi+\frac{D}{\xi}\right)u_\xi.
+  \label{eq:demo-expanded}
+\end{equation}
+因此在任一内部驻点 $u_\xi=0$ 处，
+\begin{equation}
+  u_t=\frac{D}{R^2}u_{\xi\xi}.
+  \label{eq:demo-extremum}
+\end{equation}
+由于 $D/R^2>0$，局部极大值只能下降，局部极小值只能上升。轴心的对称条件 $u_\xi(0,t)=0$ 给出相同的极限关系
+\begin{equation}
+  u_t(0,t)=\frac{2D(0,t)}{R(t)^2}u_{\xi\xi}(0,t).
+  \label{eq:demo-center}
+\end{equation}
+
+表面 Robin 条件在材料坐标中为
+\begin{equation}
+  -\frac{D_s}{R(t)}u_\xi(1,t)
+  =h_m\bigl[u(1,t)-C_\infty(t)\bigr].
+  \label{eq:demo-robin}
+\end{equation}
+若 $u(1,t)>\ambmax$，由式\eqref{eq:ambient-bound} 和 $h_m>0$ 有
+\begin{equation}
+  u_\xi(1,t)<0.
+  \label{eq:demo-surface-sign}
+\end{equation}
+也就是说，只要表面还高于环境上界，含水率沿向外方向就必须下降。
+
+\subsection{比较不等式的证明}
+
+我们先证明一个比“中心最后干”更强的结论：对任意 $0\le\xi_1<\xi_2\le1$，
+\begin{equation}
+  u(\xi_2,t)\le \max\{u(\xi_1,t),\ambmax\}.
+  \label{eq:demo-comparison}
+\end{equation}
+
+为避免 $\max$ 在拐点处不可导，取 $\delta>0$ 并定义
+\begin{equation}
+  g_\delta(s)=\frac{s+\ambmax+\sqrt{(s-\ambmax)^2+\delta^2}}{2}.
+  \label{eq:demo-smooth-max}
+\end{equation}
+它满足 $g_\delta(s)\ge\max\{s,\ambmax\}$、$g_\delta'(s)>0$，且 $\delta\to0$ 时逐点收敛于该最大值。对任意 $\varepsilon>0$，令
+\begin{equation}
+  F(\xi_1,\xi_2,t)=u(\xi_2,t)-g_\delta\bigl(u(\xi_1,t)\bigr)-\varepsilon t.
+  \label{eq:demo-F}
+\end{equation}
+假设 $F$ 在某个有限时空区域取得正最大值，逐项排除其位置：
+
+\begin{enumerate}
+  \item $t=0$ 时 $u(\xi,0)=2.55$，故 $F\le0$；
+  \item $\xi_1=\xi_2$ 时 $F=u-g_\delta(u)-\varepsilon t\le0$；
+  \item 若 $\xi_2=1$，则 $F>0$ 意味着 $u(1,t)>\ambmax$，由式\eqref{eq:demo-surface-sign} 得 $u_\xi(1,t)<0$。但右端点处正最大值要求沿可行方向 $F_{\xi_2}=u_\xi(1,t)\ge0$，矛盾；
+  \item 只剩 $0\le\xi_1<\xi_2<1$。在正最大值处，
+  \begin{equation*}
+    u_\xi(\xi_2,t)=0,\quad u_{\xi\xi}(\xi_2,t)\le0,
+    \quad\Longrightarrow\quad u_t(\xi_2,t)\le0.
+  \end{equation*}
+  若 $\xi_1>0$，则 $F_{\xi_1}=0$ 且 $g_\delta'>0$，从而 $u_\xi(\xi_1,t)=0$；再由 $F_{\xi_1\xi_1}\le0$ 得 $u_{\xi\xi}(\xi_1,t)\ge0$，所以 $u_t(\xi_1,t)\ge0$。若 $\xi_1=0$，由轴对称条件和单侧二阶导数同样得到 $u_t(0,t)\ge0$。
+\end{enumerate}
+
+于是，在该正最大值处
+\begin{equation}
+  F_t=u_t(\xi_2,t)-g_\delta'\bigl(u(\xi_1,t)\bigr)u_t(\xi_1,t)-\varepsilon
+  \le-\varepsilon<0.
+  \label{eq:demo-Ft}
+\end{equation}
+然而，时空区域内正最大值的时间方向导数应为非负（若在时间区间末端，则左导数也非负），矛盾。因此 $F\le0$。依次令 $\varepsilon\to0$、$\delta\to0$，即得式\eqref{eq:demo-comparison}。
+
+\subsection{中心判据与两问的落地}
+
+在式\eqref{eq:demo-comparison} 中令 $\xi_1=0$，得到
+\begin{equation}
+  u(\xi,t)\le\max\{u(0,t),\ambmax\}.
+  \label{eq:demo-center-bound}
+\end{equation}
+因为 $\ambmax<\crit$，只要中心达到严格标准 $u(0,t)<\crit$，就有
+\begin{equation}
+  u(\xi,t)<\crit,\qquad 0\le\xi\le1.
+  \label{eq:demo-global-dry}
+\end{equation}
+反向蕴含显然成立，所以在本模型范围内
+\begin{equation}
+  \boxed{\;C(0,t)<\crit\quad\Longleftrightarrow\quad
+  C(r,t)<\crit\ \text{对所有 }0\le r\le R(t)\;}.
+  \label{eq:demo-equivalence}
+\end{equation}
+此外，当 $u(0,t)>\ambmax$ 时，式\eqref{eq:demo-center-bound} 与中心点本身共同给出
+\begin{equation}
+  \max_{0\le r\le R(t)}C(r,t)=C(0,t).
+  \label{eq:demo-max-center}
+\end{equation}
+
+对问题三，$R(t)=R_0$，连续终点可由
+\begin{equation}
+  C(0,t_*^{(3)})=\crit
+\end{equation}
+定位；对问题四，在材料坐标中使用同一判据，实际位置由
+\begin{equation}
+  C(r,t)=u\!\left(\frac{r}{R(t)},t\right),\qquad 0\le r\le R(t)
+\end{equation}
+逆映射得到。若结果文件要求严格小于 $\crit$，则事件等号时刻用于报告临界值，输出网格上仍取首个满足严格不等式的时刻。
+
+从计算实现看，事件监测函数可由每次遍历全域的 $M(t)-\crit$ 改为单点函数 $C(0,t)-\crit$；因此自适应积分器无需在每个候选时刻扫描全部径向节点，终点定位和后处理的开销随节点数显著降低。为核查离散误差，仍可在最终时刻或稀疏审计时刻对全域取最大值，这一检查不再是连续终点判据的必要步骤。
+
+\insertnote{论文表述建议：把“中心离表面最远，所以最后干”改成上面的比较不等式证明；把“先看中心、再查全域”保留为数值实现和审计流程，而不是把几何直觉当作证明。该结论依赖一维径向模型、均匀收缩、正扩散系数及式\eqref{eq:ambient-bound} 的边界闭合，不能外推为任意材料或任意环境下的无条件结论。}
+
+\end{document}
