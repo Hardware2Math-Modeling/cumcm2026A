@@ -2580,5 +2580,10 @@
     0.9999998474121093,
     1.0
   ],
-  "mesh": "surface_graded_power_2"
+  "mesh": "surface_graded_power_2",
+  "latent_heat": true,
+  "rho_d0_kg_m3": 230.98591549295776,
+  "min_T_K": 299.75907319585434,
+  "min_C": 2.4483105362304713,
+  "boundary_description": "attachment 1 humidity interpreted as kg water/kg dry air"
 }

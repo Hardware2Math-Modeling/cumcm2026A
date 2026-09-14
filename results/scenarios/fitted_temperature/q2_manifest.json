@@ -1,0 +1,61 @@
+{
+  "question_id": "q2",
+  "model_version": "latent-v2",
+  "numerical_version": "latent-validated-v1",
+  "status": "computed_and_readback_verified",
+  "run_command": "python scripts/run_q2.py",
+  "parameters": {
+    "n_internal": 1281,
+    "rtol": 2e-10,
+    "atol": 2e-11,
+    "max_step": 60.0,
+    "align_boundary_knots": true
+  },
+  "python": "3.11.15",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "input_hashes": {
+    "problem\\A题.pdf": "052d8014bff5727c019b72e44fdffaf5c145ce04050dd938baaf3527db331736",
+    "problem\\附件\\附件1.xlsx": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7",
+    "problem\\附件\\附件3\\result2.xlsx": "23b261b295c1b787d000eebbca6521c37075107b6fcf78724f8d395ce1798ff4"
+  },
+  "event_time_s": 225948.45972623286,
+  "mass_balance_relative": 3.8313578889025016e-15,
+  "validation": "results/validation/fitted_numerics.json",
+  "submission_file": "results\\scenarios\\fitted_temperature\\result2.xlsx",
+  "submission_sha256": "cc00dbaf7d69ec3424815b88de605da698840bc4487efe881d075b364b976fb7",
+  "boundary_description": "attachment 1 through 4 h; then 50.0082 degC, 20% RH at 101325 Pa",
+  "latent_heat": true,
+  "source_hashes": {
+    "src\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\common\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\common\\boundary.py": "33c47834707614a92c68471e27f1dafcfb65cb56b0cc5de5f0dc0e814ea6a8c0",
+    "src\\common\\correlations.py": "3a15163a449a7fda41816de4e6ccf259a71f4ffa88fd4cf6c21a285d483ee531",
+    "src\\common\\export.py": "6616fd13975ee8045525f53e0c0d4bacbd1fd43f3058256a751f340fcb08a839",
+    "src\\common\\io_excel.py": "072aa38e270c2cdbaeb36a0e1a277e44380dab7a69de7869a32db20bc3eba48b",
+    "src\\common\\numerical_settings.py": "46c44016456a26fbea57d3e0f4e4a4cd68fc2ac455ff25d5e79c0be267b3383e",
+    "src\\common\\paths.py": "7aee1657e3a8c8971ea1339a340ca0a17ec9efdaf2b07079f6b5f067098ce92d",
+    "src\\common\\plotting.py": "2293eb4f735beffce6b91765dfd2aef7a18f0364236be911bcb9479a102b42df",
+    "src\\common\\problem_spec.py": "82a00bdc09abced2d51414e5ded28de64ed15d165c0146c205a3be2030574f29",
+    "src\\common\\psychrometrics.py": "ebcf20b38dadf9a19168f20966f85e33b2963ec4ab9b8a8e5b5e8af0f9fb7d5b",
+    "src\\common\\radial.py": "85ca820b4f0254bec721699ea1429d49d2314b1c6be72a2dbe570a3def730df1",
+    "src\\common\\solution.py": "5c74f3b120d94049a901eba6974a6f2045253b05425a1685b2578469a3f83e08",
+    "src\\common\\units.py": "235a3c264fc04d13b7a33ad9ed16ce909953fbfc7d3a6f92610433e3ee97d697",
+    "src\\q1\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q1\\solver.py": "35637411203685a9107b6a64e80f849896736d39e002bbbbf4720d17d517c4f2",
+    "src\\q2\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q2\\solver.py": "ad5382045167aa560015cd42d3d3172bc451f5486d780f7106c49e59f057d66c",
+    "src\\q3\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q3\\solver.py": "3a22530b11e9ee5ad3b8275592c99dc18c2aa1a0f9a8140b9f135251b24583bc",
+    "src\\q4\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src\\q4\\solver.py": "aea30c796d28519c66ced65c64fc46895d0845f88f6fb3a2f4df8bb5838c9dab"
+  },
+  "limitations": [
+    "One-dimensional radial model; end effects omitted",
+    "Prescribed empirical heat capacity and shrinkage"
+  ],
+  "readback": "results\\validation\\fitted-output-check.json",
+  "temperature_source": "results/validation/ambient_fit.json"
+}

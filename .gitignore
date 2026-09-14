@@ -21,8 +21,12 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
-dist/
+# 根锚定：这两条本意是 setuptools 的仓库根 build/ 与 dist/。
+# 若写成 build/（无前导斜杠），git 会匹配**任意层级**的 build 目录，
+# 于是 paper/build/ 整个目录被排除——而 git 不会遍历被排除的目录，
+# 里面任何 ! 白名单都会失效（这就是最终 PDF 提交不上去的原因）。
+/build/
+/dist/
 *.egg-info/
 .eggs/
 pip-log.txt
@@ -70,9 +74,15 @@ tempCodeRunnerFile.py
 .devtmp/
 .npm/
 
-# --- LaTeX：只忽略编译中间件，**不忽略最终 PDF** ---------------------------
+# --- LaTeX：忽略编译中间件，只白名单最终 PDF -------------------------------
+# 注意：! 否定能生效的前提是父目录 paper/build/ 未被排除，
+# 因此它依赖上面 Python 段的 /build/ 已做根锚定，两者不可拆开改。
+# 要再放行别的产物（如 main.bbl），在下面照样加一行 !paper/build/xxx 即可。
 paper/build/*
-!paper/build/.gitkeep
+!paper/build/main.pdf
+# handout/final are standalone copies; their build outputs are reproducible.
+handout/build/
+final/build/
 *.aux
 *.bcf
 *.blg

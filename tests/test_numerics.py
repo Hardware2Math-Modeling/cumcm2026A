@@ -12,6 +12,7 @@ from common import correlations, export, io_excel
 from common.boundary import Boundary
 from common.problem_spec import Q1, Q3, Q4
 from common.radial import RadialModel, outward_flux, solve_radial
+from common.psychrometrics import humidity_ratio, gas_evaporation_capacity
 
 
 class NumericalTests(unittest.TestCase):
@@ -31,7 +32,7 @@ class NumericalTests(unittest.TestCase):
         self.assertLess(outward_flux(300,320,25),0)
         b=Boundary.from_attachments()
         b.T_amb[:]=Q1.initial.T
-        b.C_amb[:]=Q1.initial.C
+        b.C_amb[:]=humidity_ratio(Q1.initial.T, 1.0)
         m=RadialModel(Q1,41,b)
         np.testing.assert_allclose(m.rhs(600,m.initial()),0,atol=1e-13)
 
@@ -70,7 +71,8 @@ class NumericalTests(unittest.TestCase):
         b.T_amb[:]=Q1.initial.T+10
         b.C_amb[:]=Q1.initial.C
         times=np.array([100,600,1800.])
-        s=solve_radial(Q1,boundary=b,n_internal=321,sample_times=times)
+        s=solve_radial(Q1,boundary=b,n_internal=321,sample_times=times,
+                       moisture_boundary="legacy_effective")
         # 圆柱第三类边界解析级数，独立于有限体积实现。
         p=Q1.properties
         k=float(p.k(1,300)); alpha=k/float(p.rho(1,300)*p.cp(1,300))
@@ -99,6 +101,33 @@ class NumericalTests(unittest.TestCase):
     def test_radius_extrapolation_rejected(self):
         with self.assertRaises(ValueError):
             Boundary.from_attachments().radius(259201)
+
+    def test_dewpoint_prevents_evaporation_and_condensation_releases_heat(self):
+        b = Boundary.from_attachments()
+        b.T_amb[:] = 310.0
+        b.C_amb[:] = humidity_ratio(300.0, 1.0)
+        m = RadialModel(Q1, 21, b)
+        moisture, _, latent = m.surface_fluxes(0, 299.0, 2.55)
+        self.assertLess(moisture, 0)
+        self.assertLess(latent, 0)
+        self.assertAlmostEqual(gas_evaporation_capacity(300., b.C_amb[0], 25.), 0.)
+
+    def test_latent_heat_is_coupled_in_all_questions(self):
+        for spec in (Q1, Q3, Q4):
+            m = RadialModel(spec, 21)
+            y = m.initial()
+            y[:21] += 10.
+            with_latent = m.rhs(0., y)
+            m.latent_heat = False
+            without_latent = m.rhs(0., y)
+            self.assertLess(with_latent[20], without_latent[20])
+            np.testing.assert_array_equal(with_latent[21:42], without_latent[21:42])
+
+    def test_dry_solid_mass_preserved_during_shrinkage(self):
+        m = RadialModel(Q4, 21)
+        for t in (0., 3600., 86400., 259200.):
+            self.assertAlmostEqual(m.dry_density(t)*m.radius(t)**2,
+                                   m.rho_d0*Q4.geometry.radius0**2)
 
 
 if __name__=="__main__":

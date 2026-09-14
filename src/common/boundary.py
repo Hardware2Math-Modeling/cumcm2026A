@@ -6,6 +6,7 @@ import numpy as np
 
 from .io_excel import read_attachment
 from .units import c_to_k, cm_to_m
+from .psychrometrics import humidity_ratio
 
 
 @dataclass
@@ -17,6 +18,17 @@ class Boundary:
     R: np.ndarray
     late_T_shift: float = 0.0
     late_C_shift: float = 0.0
+    late_T: float | None = None
+    late_Y: float | None = None
+    description: str = "attachment 1 humidity interpreted as kg water/kg dry air"
+
+    @classmethod
+    def for_problem(cls, problem, temperature_c=60.0, relative_humidity=0.20):
+        if problem == "q1":
+            return cls.from_attachments()
+        T = float(c_to_k(temperature_c))
+        return cls.from_attachments(late_T=T, late_Y=float(humidity_ratio(T, relative_humidity)),
+                                   description=f"attachment 1 through 4 h; then {temperature_c:g} degC, {100*relative_humidity:g}% RH at 101325 Pa")
 
     @classmethod
     def from_attachments(cls, **kwargs):
@@ -28,8 +40,13 @@ class Boundary:
 
     def ambient(self, t):
         late = np.asarray(t) > self.ambient_t[-1]
-        return (np.interp(t, self.ambient_t, self.T_amb) + late * self.late_T_shift,
-                np.interp(t, self.ambient_t, self.C_amb) + late * self.late_C_shift)
+        T = np.interp(t, self.ambient_t, self.T_amb)
+        Y = np.interp(t, self.ambient_t, self.C_amb)
+        if self.late_T is not None:
+            T = np.where(late, self.late_T, T)
+        if self.late_Y is not None:
+            Y = np.where(late, self.late_Y, Y)
+        return T + late * self.late_T_shift, Y + late * self.late_C_shift
 
     def radius(self, t):
         if np.any(np.asarray(t) > self.radius_t[-1] + 1e-7):

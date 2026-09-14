@@ -26,7 +26,6 @@ import numpy as np
 import pandas as pd
 
 from _bootstrap import setup
-
 setup()
 
 from common import io_excel, paths, plotting, units  # noqa: E402
@@ -473,4 +472,4 @@ def extra_figures() -> list[str]:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

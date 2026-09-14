@@ -45,6 +45,20 @@
 
 % ---------- 插图 ----------
 \graphicspath{{figs/}}
+\pagestyle{plain}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.15em}
+\setlength{\textfloatsep}{14pt plus 3pt minus 2pt}
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\textfraction}{0.04}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{totalnumber}{5}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}\heiti\zihao{3}\@title\par\end{center}\vspace{0.5em}}
+\makeatother
 
 % ---------- 流程图与示意图（TikZ；不依赖外部图片文件） ----------
 \usepackage{tikz}
@@ -63,6 +77,12 @@
 
 % ---------- 代码（Python 样式；统一 UTF-8，XeLaTeX 下中文正常） ----------
 \usepackage{listings}
+\setmonofont{Consolas}
+\newfontfamily{\listingsymbol}{Segoe UI Symbol}
+\xeCJKDeclareSubCJKBlock{codesymbols}{"23F8,"26A0,"2713,"2717}
+\xeCJKDeclareSubCJKBlock{variation}{"FE0F}
+\setCJKmonofont[codesymbols=Segoe UI Symbol,variation=Segoe UI Emoji]{FangSong}
+\setCJKmainfont[BoldFont=SimHei,ItalicFont=KaiTi,codesymbols=Segoe UI Symbol,variation=Segoe UI Emoji]{SimSun}
 \lstset{
   language=Python,
   basicstyle=\ttfamily\scriptsize,
@@ -82,6 +102,11 @@
   numbers=left,
   numberstyle=\tiny\color{gray},
   tabsize=4,
+  aboveskip=0.6em,
+  belowskip=0.6em,
+  literate={⚠}{{\listingsymbol ⚠}}1 {✓}{{\listingsymbol ✓}}1
+           {✗}{{\listingsymbol ✗}}1 {⏸}{{\listingsymbol ⏸}}1
+           {️}{{}}0,
 }
 
 % ---------- 数学单位（siunitx v3 语法：\qty{}{} 与 \unit{}，勿用 v2 的 \SI{}{}） ----------
@@ -137,15 +162,6 @@
 % =============================================================
 % 自定义命令
 % =============================================================
-% \instruction{...}：醒目的 TODO 占位提示（待填内容用）
-\newcommand{\instruction}[1]{%
-  \par\medskip\noindent
-  \fcolorbox{orange!70!black}{orange!10}{%
-    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
-      \textbf{\textcolor{orange!60!black}{【TODO 占位】}}\, #1}}%
-  \par\medskip
-}
-
 % \code{...}：行内代码
 \newcommand{\code}[1]{\texttt{#1}}
 

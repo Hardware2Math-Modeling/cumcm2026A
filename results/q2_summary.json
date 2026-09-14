@@ -2580,5 +2580,10 @@
     0.9999998474121093,
     1.0
   ],
-  "mesh": "surface_graded_power_2"
+  "mesh": "surface_graded_power_2",
+  "latent_heat": true,
+  "rho_d0_kg_m3": 275.0422535211268,
+  "min_T_K": 299.96442721732114,
+  "min_C": 0.0037957488914155237,
+  "boundary_description": "attachment 1 through 4 h; then 60 degC, 20% RH at 101325 Pa"
 }

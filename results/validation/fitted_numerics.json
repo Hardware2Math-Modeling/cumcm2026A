@@ -1,0 +1,23 @@
+{
+  "temperature_K": 323.15822110038613,
+  "rows": [
+    {
+      "q": "q3",
+      "coarse_n": 641,
+      "fine_n": 1281,
+      "delta_output_C": 2.3661115966799873e-06,
+      "delta_event_s": 1.3273398024903145,
+      "mass_balance_relative": 5.7470368333537516e-15,
+      "sample_count": 3766
+    },
+    {
+      "q": "q4",
+      "coarse_n": 641,
+      "fine_n": 1281,
+      "delta_output_C": 0.0005009654038224329,
+      "delta_event_s": 0.7777887518750504,
+      "mass_balance_relative": 8.881784197001252e-15,
+      "sample_count": 3498
+    }
+  ]
+}

@@ -27,7 +27,7 @@ from common import export, io_excel, paths, problem_spec  # noqa: E402
 from common.numerical_settings import production_options
 
 
-def run(problem: str) -> int:
+def run(problem: str, *, boundary=None) -> int:
     spec = problem_spec.get(problem)
     print("=" * 72)
     print(spec.describe())
@@ -63,6 +63,8 @@ def run(problem: str) -> int:
     sol.meta.setdefault("wall_time_s", round(wall, 3))
     print(f"  求解完成，耗时 {wall:.2f} s")
     print("  " + export.summarize(sol, spec))
+    if sol.meta.get("event_time_s") is not None and sol.meta["max_C_final_internal"] >= spec.extra.get("target_C", 0.15):
+        raise RuntimeError("下一输出时刻未严格低于阈值，拒绝误标达标结果")
     print("  正在流式写入结果文件……", flush=True)
 
     # 2) 交付物

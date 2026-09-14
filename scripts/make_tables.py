@@ -46,6 +46,8 @@ from common import paths  # noqa: E402
 
 def _fmt(v: float) -> str:
     """保留四位小数（题目要求）。NaN 输出为空。"""
+    if isinstance(v, str):
+        return v
     try:
         f = float(v)
     except (TypeError, ValueError):
